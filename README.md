@@ -12,10 +12,6 @@ To use these scripts, you will need to have Agisoft Metashape installed on your 
 
 Once installed, simply clone this repository and run the scripts using Python. Each script may require specific parameters to be set, so make sure to refer to the documentation provided with each script for detailed usage instructions.
 
-## Contributing
-
-Contributions to this repository are welcome. If you have scripts that you believe would be beneficial for UAV photogrammetry digital twin creation, feel free to submit a pull request. Please ensure that any contributions adhere to the standards and guidelines outlined in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
-
 ## License
 
 The scripts in this repository are distributed under the terms of the MIT License. See the [LICENSE](LICENSE) file for details.
