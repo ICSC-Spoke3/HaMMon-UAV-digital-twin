@@ -58,6 +58,13 @@ print("--Adding Photos 3")
 chunk.addPhotos(photos)
 doc.save()
 
+# estimate image quality
+for camera in chunk.cameras:
+    chunk.analyzePhotos(camera)
+    if float(camera.photo.meta['Image/Quality']) < 0.5:
+         camera.enabled = False
+doc.save()
+
 print(str(len(chunk.cameras)) + " images loaded")
 
 print("--Matching Photos 4")
@@ -73,34 +80,60 @@ print("--Aligning Cameras 5")
 chunk.alignCameras()
 doc.save()
 
-print("--Building Depth Maps 6")
-chunk.buildDepthMaps(downscale = 2, filter_mode = Metashape.MildFiltering)
+progress_printer = ProgressPrinter("buildDeptMaps")
+chunk.buildDepthMaps(
+                downscale = 2,
+                filter_mode = Metashape.MildFiltering, 
+                reuse_depth = True,
+                progress = progress_printer)
 doc.save()
 
-chunk.buildModel(source_data = Metashape.DepthMapsData)
+progress_printer = ProgressPrinter("buildModel")
+chunk.buildModel(source_data = Metashape.DepthMapsData,
+                 surface_type = Metashape.HeightField,
+                 face_count = Metashape.HighFaceCount,
+                 interpolation = Metashape.DisabledInterpolation,
+                 vertex_color = True,
+                 progress = progress_printer)
 doc.save()
 
 print("--Building UV 7")
-chunk.buildUV(page_count = 2, texture_size = 4096)
+progress_printer = ProgressPrinter("buildUV")
+chunk.buildUV(page_count = 2, 
+              texture_size = 4096,
+              progress = progress_printer)
 doc.save()
 
 print("--Building Texture 8")
-chunk.buildTexture(texture_size = 4096, ghosting_filter = True)
+progress_printer = ProgressPrinter("buildTexture")
+chunk.buildTexture(blending_mode = Metashape.MosaicBlending,
+                   texture_size = 4096,
+                   fill_holes = True, 
+                   ghosting_filter = True, 
+                   progress = progress_printer)
 doc.save()
 
 has_transform = chunk.transform.scale and chunk.transform.rotation and chunk.transform.translation
 
 if has_transform:
     print("--Building Point Cloud (has_transform) 9")
-    chunk.buildPointCloud()
+    progress_printer = ProgressPrinter("buildPointCloud")
+    chunk.buildPointCloud(
+        point_colors = True, 
+        point_confidence = True, 
+        keep_depth = True,
+        progress = progress_printer)
     doc.save()
 
     print("--Building Dem (has_transform) 10")
-    chunk.buildDem(source_data=Metashape.PointCloudData)
+    chunk.buildDem(source_data = Metashape.PointCloudData,
+                   interpolation = Metashape.EnabledInterpolation, 
+                   progress = progress_printer)
     doc.save()
 
     print("--Building Orthomosaic (has_transform) 11")
-    chunk.buildOrthomosaic(surface_data=Metashape.ElevationData)
+    progress_printer = ProgressPrinter("buildOrthomosaic")
+    chunk.buildOrthomosaic(surface_data = Metashape.ElevationData, progress = progress_printer)
     doc.save()
 
 print("--Exporting results")
