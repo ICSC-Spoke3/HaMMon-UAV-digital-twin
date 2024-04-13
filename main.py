@@ -21,12 +21,11 @@ try:
 
     # check image_folder exist
     if not os.path.isdir(image_folder):
-        raise FileNotFoundError(f"{image_folder} path does not exist")
+        raise FileNotFoundError(f"{image_folder} does not exist")
     
     # only image_folder
     if len(sys.argv) == 2:
         # Save on Moduli
-        username = getpass.getuser()
         output_folder_name = os.path.basename(image_folder) + '_' + datetime.datetime.now().strftime("%d%m_%H%M")
         output_folder = os.path.join('/storage/Metashape_Hammon/Modelli', output_folder_name)
         os.makedirs(output_folder, exist_ok=True)
@@ -45,7 +44,7 @@ except Exception as e:
     print(f"Error: {str(e)}")
 
 # check presence of image in image_folder
-photos = find_files(image_folder, [".jpg", ".jpeg", ".tif", ".tiff"])
+photos = find_files(image_folder, [".jpg", ".jpeg", "jp2", "j2k", "jxl", ".tif", ".tiff", ".png", ".bmp", ".exr", ".tga", ".pgm", ".ppm", ".dng", ".mpo", ".seq", ".ara"])
 
 print("--Creating Project 1")
 doc = Metashape.Document()
