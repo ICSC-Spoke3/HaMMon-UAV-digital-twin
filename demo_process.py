@@ -111,7 +111,7 @@ if has_transform:
 
     print("--Colorize Point Cloud 7")
     progress_printer = ProgressPrinter("colorizePointCloud")
-    chunk.colorizePointCloud(souce_data=Metashape.ImagesData,
+    chunk.colorizePointCloud(source_data=Metashape.ImagesData,
                              subdivide_task=True,
                              progress=progress_printer)
     doc.save(version="colorizePointCloud", archive=True)
@@ -136,7 +136,7 @@ doc.save(version="buildModel", archive= True)
 
 print("--Colorize Model 9")
 progress_printer = ProgressPrinter("colorizeModel")
-chunk.colorizeModel(souce_data=Metashape.ImagesData,
+chunk.colorizeModel(source_data=Metashape.ImagesData,
                     progress=progress_printer)
 doc.save(version="colorizeModel", archive= True)
 
