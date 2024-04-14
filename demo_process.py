@@ -121,11 +121,11 @@ if has_transform:
 
 print("--Build Model 8")
 progress_printer = ProgressPrinter("buildModel")
-chunk.buildModel(surface_type=Metashape.SurfaceType.Arbitrary,
+chunk.buildModel(surface_type=Metashape.Arbitrary,
                  source_data = Metashape.DepthMapsData,
                  interpolation=Metashape.EnabledInterpolation,
                  face_count= Metashape.HighFaceCount,
-                 vertex_color=True,
+                 vertex_colors=True,
                  vertex_confidence=True,
                  keep_depth=True,
                  build_texture= True,
