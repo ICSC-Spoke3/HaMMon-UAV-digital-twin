@@ -159,6 +159,7 @@ doc.save(version="buildTexture", archive= True)
 
 # missing buildTiledModel
 # detectMarkers
+
 if has_transform:
     print("--Build DEM 12")
     progress_printer = ProgressPrinter("buildDem")
@@ -172,7 +173,7 @@ if has_transform:
     print("--Build Orthomosaic 13")
     progress_printer = ProgressPrinter("buildOrthomosaic")
     chunk.buildOrthomosaic(surface_data=Metashape.ElevationData)
-    doc.save()
+    doc.save(version="buildOrthomosaic", archive= True)
 
 # export results
 chunk.exportReport(path=output_folder + '/report.pdf',
