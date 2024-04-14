@@ -105,7 +105,7 @@ if has_transform:
                           point_confidence=True,
                           keep_depth=True,
                           subdivide_task=True,
-                          progres=progress_printer)
+                          progress=progress_printer)
     # point spacing default = 0.1(m)
     doc.save(version="buildPointCloud", archive= True)
 
