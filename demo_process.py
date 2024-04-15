@@ -1,6 +1,7 @@
 import Metashape
 from progress_printer import ProgressPrinter
-import os, sys, datetime
+from system_monitor import SystemMonitor
+import os, sys, datetime, threading, subprocess
 
 
 # Checking compatibility: to remove if it give trubleshooting
@@ -46,16 +47,30 @@ except Exception as e:
 # check presence of image in image_folder
 photos = find_files(image_folder, [".jpg", ".jpeg", "jp2", "j2k", "jxl", ".tif", ".tiff", ".png", ".bmp", ".exr", ".tga", ".pgm", ".ppm", ".dng", ".mpo", ".seq", ".ara"])
 
+# Monitoring setup
+monitor = SystemMonitor('New Project', 'system.csv')
+monitor.create_csv(log_file='system.csv')
+thread = threading.Thread(target=monitor.start)
+thread.start()
+
 print("--Creating Project 1")
 doc = Metashape.Document()
 chunk = doc.addChunk()
-doc.save(output_folder + '/project.psx', version="creation", archive= True)
+doc.save(output_folder + '/project.psx')
+
+monitor.stop()
+thread.join()   # wait thread end
+
+# Monitoring setup
+monitor = SystemMonitor('addPhotos', 'system.csv')
+thread = threading.Thread(target=monitor.start)
+thread.start()
 
 print("--Adding Photos 2")
 progress_printer = ProgressPrinter("addPhotos")
 chunk.addPhotos(filenames=photos,
                 progress=progress_printer)
-doc.save(version="addPhotos", archive= True)
+doc.save()
 
 print(str(len(chunk.cameras)) + " images loaded")
 
@@ -73,7 +88,7 @@ chunk.matchPhotos(downscale=1,
                   guided_matching= False,
                   subdivide_task= True,
                   progress=progress_printer) # Progress callback
-doc.save(version="matchPhotos", archive= True)
+doc.save()
 
 print("--Align Cameras 4")
 progress_printer = ProgressPrinter("alignCameras")
@@ -81,7 +96,7 @@ chunk.alignCameras(adaptive_fitting= False,
                    reset_alignment= False,
                    subdivide_task=True,
                    progress= progress_printer)
-doc.save(version="alignCameras", archive= True)
+doc.save()
 
 print("--Build Depth Maps 5")
 progress_printer = ProgressPrinter("buildDepthMaps")
@@ -90,7 +105,7 @@ chunk.buildDepthMaps(downscale = 2,
                      reuse_depth= False,
                      subdivide_task=True,
                      progress=progress_printer)
-doc.save(version="buildDepthMaps", archive= True)
+doc.save()
 
 has_transform = chunk.transform.scale and chunk.transform.rotation and chunk.transform.translation
 # 4x4 matrix specifying chunck location in the world coordinate system
@@ -107,16 +122,16 @@ if has_transform:
                           subdivide_task=True,
                           progress=progress_printer)
     # point spacing default = 0.1(m)
-    doc.save(version="buildPointCloud", archive= True)
+    doc.save()
 
     print("--Colorize Point Cloud 7")
     progress_printer = ProgressPrinter("colorizePointCloud")
     chunk.colorizePointCloud(source_data=Metashape.ImagesData,
                              subdivide_task=True,
                              progress=progress_printer)
-    doc.save(version="colorizePointCloud", archive=True)
+    doc.save()
 
-    # filterPointCloud
+    # missing filterPointCloud
 
 
 print("--Build Model 8")
@@ -132,20 +147,20 @@ chunk.buildModel(surface_type=Metashape.Arbitrary,
                  subdivide_task=True,
                  progress=progress_printer)
 # split in block
-doc.save(version="buildModel", archive= True)
+doc.save()
 
 print("--Colorize Model 9")
 progress_printer = ProgressPrinter("colorizeModel")
 chunk.colorizeModel(source_data=Metashape.ImagesData,
                     progress=progress_printer)
-doc.save(version="colorizeModel", archive= True)
+doc.save()
 
 print("--Build Model UV 10")
 progress_printer = ProgressPrinter("buildUV")
 chunk.buildUV(mapping_mode=Metashape.GenericMapping,
               page_count = 1, texture_size = 8192,
               progress= progress_printer)
-doc.save(version="buildUV", archive= True)
+doc.save()
 
 print("--Build Texture 11")
 progress_printer = ProgressPrinter("buildTexture")
@@ -155,13 +170,12 @@ chunk.buildTexture(
     fill_holes=True,
     ghosting_filter = True,
     progress=progress_printer)
-doc.save(version="buildTexture", archive= True)
+doc.save()
 
 # missing buildTiledModel
-# detectMarkers
+# missing detectMarkers
 
 if has_transform:
-    doc.save()
     print("--Build DEM 12")
     progress_printer = ProgressPrinter("buildDem")
     chunk.buildDem(source_data=Metashape.PointCloudData,
@@ -169,25 +183,24 @@ if has_transform:
                    subdivide_task=True,
                    progress=progress_printer)
     # resolution(m)
-    doc.save(version="buildDem", archive= True)
-
     doc.save()
+
     print("--Build Orthomosaic 13")
     progress_printer = ProgressPrinter("buildOrthomosaic")
     chunk.buildOrthomosaic(surface_data=Metashape.ElevationData,
                            fill_holes= True,
                            subdivide_task=True,
                            progress= progress_printer)
-    doc.save(version="buildOrthomosaic", archive= True)
+    doc.save()
 
 # export results
 chunk.exportReport(path=output_folder + '/report.pdf',
                    title="Report")
 
-# exportCameras
-# exportOrthophotos
-# exportTexture
-# exportTiledModel
+# missing exportCameras
+# missing exportOrthophotos
+# missing exportTexture
+# missing exportTiledModel
 
 
 if chunk.model:

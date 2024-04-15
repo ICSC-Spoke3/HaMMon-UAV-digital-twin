@@ -13,11 +13,6 @@ class SystemMonitor:
 
     def start(self):
         self.running = True
-        header = ['Level', 'Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM used', 'RAM active', 'GPU ID', 'GPU Model', 'GPU Temp', 'GPU Core %', 'GPU RAM']
-        with open('system.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(header)
-
         while self.running:
             cpu_usage, cpu_core_usage = self.log_cpu()
             ram_usage, ram_available, size_available, ram_active, size_active = self.log_ram()
@@ -28,6 +23,12 @@ class SystemMonitor:
 
     def stop(self):
         self.running = False
+    
+    def create_csv(self, log_file):
+        header = ['Level', 'Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM used', 'RAM active', 'GPU ID', 'GPU Model', 'GPU Temp', 'GPU Core %', 'GPU RAM']
+        with open(log_file, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(header)
 
     def parese_dataram(self, ram_memory):
         # Convert in GB and exclude the decimal part
@@ -76,8 +77,9 @@ class SystemMonitor:
         stats = self.parse_gpustat(stats_str)
         return stats
 
-monitor = SystemMonitor('SystemMonitor', 'system.csv')
-thread = threading.Thread(target=monitor.start)
-thread.start()
-time.sleep(20)
-monitor.stop()
+#monitor = SystemMonitor('SystemMonitor', 'system.csv')
+#monitor.create_csv(log_file='system.csv')
+#thread = threading.Thread(target=monitor.start)
+#thread.start()
+#time.sleep(20)
+#monitor.stop()
