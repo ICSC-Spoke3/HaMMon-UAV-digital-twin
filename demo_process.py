@@ -161,6 +161,7 @@ doc.save(version="buildTexture", archive= True)
 # detectMarkers
 
 if has_transform:
+    doc.save()
     print("--Build DEM 12")
     progress_printer = ProgressPrinter("buildDem")
     chunk.buildDem(source_data=Metashape.PointCloudData,
@@ -170,9 +171,13 @@ if has_transform:
     # resolution(m)
     doc.save(version="buildDem", archive= True)
 
+    doc.save()
     print("--Build Orthomosaic 13")
     progress_printer = ProgressPrinter("buildOrthomosaic")
-    chunk.buildOrthomosaic(surface_data=Metashape.ElevationData)
+    chunk.buildOrthomosaic(surface_data=Metashape.ElevationData,
+                           fill_holes= True,
+                           subdivide_task=True,
+                           progress= progress_printer)
     doc.save(version="buildOrthomosaic", archive= True)
 
 # export results
