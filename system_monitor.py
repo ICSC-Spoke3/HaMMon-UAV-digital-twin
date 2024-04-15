@@ -7,7 +7,7 @@ import subprocess
 
 class SystemMonitor:
     def __init__(self, module_name, log_file):
-        logging.basicConfig(filename=log_file, level=logging.INFO, filemode='a')
+        logging.basicConfig(filename=log_file, level=logging.INFO, filemode='a', format='%(name)s,%(message)s')
         self.logger = logging.getLogger(module_name)
         self.running = False
 
@@ -25,7 +25,7 @@ class SystemMonitor:
         self.running = False
     
     def create_csv(self, log_file):
-        header = ['Level', 'Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM used', 'RAM active', 'GPU ID', 'GPU Model', 'GPU Temp', 'GPU Core %', 'GPU RAM']
+        header = ['Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM used', 'RAM active', 'GPU ID', 'GPU Model', 'GPU Temp', 'GPU Core %', 'GPU RAM']
         with open(log_file, 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(header)
