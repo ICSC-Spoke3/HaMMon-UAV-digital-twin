@@ -55,8 +55,8 @@ thread.start()
 
 print("--Creating Project 1")
 doc = Metashape.Document()
-chunk = doc.addChunk()
 doc.save(output_folder + '/project.psx')
+chunk = doc.addChunk()
 
 monitor.stop()
 thread.join()   # wait thread end
@@ -72,10 +72,18 @@ chunk.addPhotos(filenames=photos,
                 progress=progress_printer)
 doc.save()
 
+monitor.stop()
+thread.join()   # wait thread end
+
 print(str(len(chunk.cameras)) + " images loaded")
 
 # missing analyzeImages
 # missing optimizeCameras
+
+# Monitoring setup
+monitor = SystemMonitor('matchPhotos', 'system.csv')
+thread = threading.Thread(target=monitor.start)
+thread.start()
 
 print("--Matching Photos 3")
 progress_printer = ProgressPrinter("matchPhotos")
@@ -90,6 +98,14 @@ chunk.matchPhotos(downscale=1,
                   progress=progress_printer) # Progress callback
 doc.save()
 
+monitor.stop()
+thread.join()   # wait thread end
+
+# Monitoring setup
+monitor = SystemMonitor('alignCameras', 'system.csv')
+thread = threading.Thread(target=monitor.start)
+thread.start()
+
 print("--Align Cameras 4")
 progress_printer = ProgressPrinter("alignCameras")
 chunk.alignCameras(adaptive_fitting= False,
@@ -97,6 +113,14 @@ chunk.alignCameras(adaptive_fitting= False,
                    subdivide_task=True,
                    progress= progress_printer)
 doc.save()
+
+monitor.stop()
+thread.join()   # wait thread end
+
+# Monitoring setup
+monitor = SystemMonitor('buildDepthMaps', 'system.csv')
+thread = threading.Thread(target=monitor.start)
+thread.start()
 
 print("--Build Depth Maps 5")
 progress_printer = ProgressPrinter("buildDepthMaps")
@@ -107,12 +131,21 @@ chunk.buildDepthMaps(downscale = 2,
                      progress=progress_printer)
 doc.save()
 
+monitor.stop()
+thread.join()   # wait thread end
+
 has_transform = chunk.transform.scale and chunk.transform.rotation and chunk.transform.translation
 # 4x4 matrix specifying chunck location in the world coordinate system
 # scale: scale component 
 # rotation: rotation component
 # translation: translation component
 if has_transform:
+
+    # Monitoring setup
+    monitor = SystemMonitor('buildPointCloud', 'system.csv')
+    thread  = threading.Thread(target=monitor.start)
+    thread.start()
+
     print("--Build Point Cloud 6")
     progress_printer = ProgressPrinter("buildPointCloud")
     chunk.buildPointCloud(source_data=Metashape.DepthMapsData,
@@ -124,6 +157,14 @@ if has_transform:
     # point spacing default = 0.1(m)
     doc.save()
 
+    monitor.stop()
+    thread.join()   # wait thread end
+
+    # Monitoring setup
+    monitor = SystemMonitor('colorizePointCloud', 'system.csv')
+    thread  = threading.Thread(target=monitor.start)
+    thread.start()
+
     print("--Colorize Point Cloud 7")
     progress_printer = ProgressPrinter("colorizePointCloud")
     chunk.colorizePointCloud(source_data=Metashape.ImagesData,
@@ -131,8 +172,15 @@ if has_transform:
                              progress=progress_printer)
     doc.save()
 
+    monitor.stop()
+    thread.join()   # wait thread end
+
     # missing filterPointCloud
 
+# Monitoring setup
+monitor = SystemMonitor('buildModel', 'system.csv')
+thread  = threading.Thread(target=monitor.start)
+thread.start()
 
 print("--Build Model 8")
 progress_printer = ProgressPrinter("buildModel")
@@ -149,11 +197,27 @@ chunk.buildModel(surface_type=Metashape.Arbitrary,
 # split in block
 doc.save()
 
+monitor.stop()
+thread.join()   # wait thread end
+
+# Monitoring setup
+monitor = SystemMonitor('colorizeModel', 'system.csv')
+thread  = threading.Thread(target=monitor.start)
+thread.start()
+
 print("--Colorize Model 9")
 progress_printer = ProgressPrinter("colorizeModel")
 chunk.colorizeModel(source_data=Metashape.ImagesData,
                     progress=progress_printer)
 doc.save()
+
+monitor.stop()
+thread.join()   # wait thread end
+
+# Monitoring setup
+monitor = SystemMonitor('buildUV', 'system.csv')
+thread  = threading.Thread(target=monitor.start)
+thread.start()
 
 print("--Build Model UV 10")
 progress_printer = ProgressPrinter("buildUV")
@@ -161,6 +225,14 @@ chunk.buildUV(mapping_mode=Metashape.GenericMapping,
               page_count = 1, texture_size = 8192,
               progress= progress_printer)
 doc.save()
+
+monitor.stop()
+thread.join()   # wait thread end
+
+# Monitoring setup
+monitor = SystemMonitor('buildTexture', 'system.csv')
+thread  = threading.Thread(target=monitor.start)
+thread.start()
 
 print("--Build Texture 11")
 progress_printer = ProgressPrinter("buildTexture")
@@ -172,10 +244,18 @@ chunk.buildTexture(
     progress=progress_printer)
 doc.save()
 
+monitor.stop()
+thread.join()   # wait thread end
+
 # missing buildTiledModel
 # missing detectMarkers
 
 if has_transform:
+    # Monitoring setup
+    monitor = SystemMonitor('buildDem', 'system.csv')
+    thread  = threading.Thread(target=monitor.start)
+    thread.start()
+    
     print("--Build DEM 12")
     progress_printer = ProgressPrinter("buildDem")
     chunk.buildDem(source_data=Metashape.PointCloudData,
@@ -185,6 +265,14 @@ if has_transform:
     # resolution(m)
     doc.save()
 
+    monitor.stop()
+    thread.join()   # wait thread end
+
+    # Monitoring setup
+    monitor = SystemMonitor('buildOrthomosaic', 'system.csv')
+    thread  = threading.Thread(target=monitor.start)
+    thread.start()
+
     print("--Build Orthomosaic 13")
     progress_printer = ProgressPrinter("buildOrthomosaic")
     chunk.buildOrthomosaic(surface_data=Metashape.ElevationData,
@@ -192,6 +280,9 @@ if has_transform:
                            subdivide_task=True,
                            progress= progress_printer)
     doc.save()
+
+    monitor.stop()
+    thread.join()   # wait thread end
 
 # export results
 chunk.exportReport(path=output_folder + '/report.pdf',
