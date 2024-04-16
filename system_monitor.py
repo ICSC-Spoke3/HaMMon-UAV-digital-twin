@@ -34,10 +34,8 @@ class SystemMonitor:
         # Convert in GB and exclude the decimal part
         ram_memory = int(ram_memory / 1024 / 1024)
         size = 'GB'
-        if ram_memory < 1000:
-            size = 'MB'
         # Add a thousand separator
-        ram_memory = "{:,}".format(ram_memory)
+        ram_memory = "{:.}".format(ram_memory)
         return ram_memory, size
     
     def parse_gpustat(self, gpustat_output):
@@ -77,9 +75,9 @@ class SystemMonitor:
         stats = self.parse_gpustat(stats_str)
         return stats
 
-#monitor = SystemMonitor('SystemMonitor', 'system.csv')
-#monitor.create_csv(log_file='system.csv')
-#thread = threading.Thread(target=monitor.start)
-#thread.start()
-#time.sleep(20)
-#monitor.stop()
+monitor = SystemMonitor('SystemMonitor', 'system.csv')
+monitor.create_csv(log_file='system.csv')
+thread = threading.Thread(target=monitor.start)
+thread.start()
+time.sleep(20)
+monitor.stop()
