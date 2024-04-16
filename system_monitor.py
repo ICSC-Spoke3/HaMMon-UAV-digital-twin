@@ -32,7 +32,7 @@ class SystemMonitor:
 
     def parese_dataram(self, ram_memory):
         # Convert in GB and exclude the decimal part
-        ram_memory = ram_memory / 1024 / 1024
+        ram_memory = ram_memory / 1000
         size = 'GB'
         return ram_memory, size
     
