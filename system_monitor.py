@@ -35,7 +35,7 @@ class SystemMonitor:
         ram_memory = int(ram_memory / 1024 / 1024)
         size = 'GB'
         # Add a thousand separator
-        ram_memory = "{:.}".format(ram_memory)
+        ram_memory = "{:,}".format(ram_memory)
         return ram_memory, size
     
     def parse_gpustat(self, gpustat_output):
