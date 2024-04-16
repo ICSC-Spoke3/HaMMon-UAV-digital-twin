@@ -15,17 +15,17 @@ class SystemMonitor:
         self.running = True
         while self.running:
             cpu_usage, cpu_core_usage = self.log_cpu()
-            ram_usage, ram_available, ram_active = self.log_ram()
+            ram_usage, ram_total, ram_active = self.log_ram()
             stats = self.log_gpu()
             for stat in stats:
-                self.logger.info(f'{time.time()}; {cpu_usage}; {cpu_core_usage}; {ram_usage}; {ram_available} GB; {ram_active} GB; {stat["id"]}; {stat["model"]}; {stat["temp"]}; {stat["cpu_usage"]}; {stat["mem_used"]}/{stat["mem_total"]} MB')
+                self.logger.info(f'{time.time()}; {cpu_usage}; {cpu_core_usage}; {ram_usage}; {ram_active} GB; {ram_total} GB; {stat["id"]}; {stat["model"]}; {stat["temp"]}; {stat["cpu_usage"]}; {stat["mem_used"]}/{stat["mem_total"]} MB')
             time.sleep(5)  # every 5 sec
 
     def stop(self):
         self.running = False
     
     def create_csv(self, log_file):
-        header = ['Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM used', 'RAM active', 'GPU ID', 'GPU Model', 'GPU Temp', 'GPU Core %', 'GPU RAM']
+        header = ['Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM active', 'RAM available', 'GPU ID', 'GPU Model', 'GPU Temp', 'GPU Core %', 'GPU RAM']
         with open(log_file, 'w', newline='') as file:
             writer = csv.writer(file, delimiter=';')
             writer.writerow(header)
@@ -62,9 +62,9 @@ class SystemMonitor:
 
     def log_ram(self):
         ram_usage = psutil.virtual_memory().percent
-        ram_available  = self.parese_dataram(psutil.virtual_memory().available)
+        ram_total  = self.parese_dataram(psutil.virtual_memory().total)
         ram_active = self.parese_dataram(psutil.virtual_memory().active)
-        return ram_usage, ram_available, ram_active
+        return ram_usage, ram_total, ram_active
         
     def log_gpu(self):
         result = subprocess.run(['gpustat'], stdout=subprocess.PIPE)
