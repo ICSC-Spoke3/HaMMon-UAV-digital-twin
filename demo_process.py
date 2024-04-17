@@ -231,6 +231,7 @@ progress_printer = ProgressPrinter("buildUV")
 chunk.buildUV(mapping_mode=Metashape.GenericMapping,
               page_count = 1, texture_size = 8192,
               progress= progress_printer)
+# page_count parameter for BuildUV operation has the same meaning as texture count (i.e. number of texture atlas pages)
 doc.save()
 
 monitor.stop()
