@@ -46,6 +46,10 @@ except Exception as e:
 # check presence of image in image_folder
 photos = find_files(image_folder, [".jpg", ".jpeg", "jp2", "j2k", "jxl", ".tif", ".tiff", ".png", ".bmp", ".exr", ".tga", ".pgm", ".ppm", ".dng", ".mpo", ".seq", ".ara"])
 
+# Settings preference:
+# disable CPU when performing GPU accelerated processing
+Metashape.app.cpu_enable = False
+
 print("--Creating Project 1")
 doc = Metashape.Document()
 doc.save(output_folder + '/project.psx')
