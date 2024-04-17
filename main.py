@@ -160,3 +160,4 @@ if chunk.orthomosaic:
     chunk.exportRaster(output_folder + '/orthomosaic.tif', source_data = Metashape.OrthomosaicData, split_in_blocks=True)
 
 print('Processing finished, results saved to ' + output_folder + '.')
+Metashape.app.quit()

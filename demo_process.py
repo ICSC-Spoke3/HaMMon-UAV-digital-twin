@@ -47,9 +47,12 @@ except Exception as e:
 # check presence of image in image_folder
 photos = find_files(image_folder, [".jpg", ".jpeg", "jp2", "j2k", "jxl", ".tif", ".tiff", ".png", ".bmp", ".exr", ".tga", ".pgm", ".ppm", ".dng", ".mpo", ".seq", ".ara"])
 
-# Settings preference
+# Agisoft settings preference
 # disable CPU when performing GPU accelerated processing
 Metashape.app.cpu_enable = False
+# enable log file
+Metashape.app.settings.log_enable = True
+Metashape.app.settings.log_path = output_folder + '/log.txt'
 
 # Monitoring setup
 monitor = SystemMonitor('New Project', 'system.csv')
@@ -311,3 +314,4 @@ if chunk.orthomosaic:
     chunk.exportRaster(output_folder + '/orthomosaic.tif', source_data = Metashape.OrthomosaicData)
 
 print('Processing finished, results saved to ' + output_folder + '.')
+Metashape.app.quit()
