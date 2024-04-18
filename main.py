@@ -118,6 +118,14 @@ doc.save()
 
 has_transform = chunk.transform.scale and chunk.transform.rotation and chunk.transform.translation
 
+# or directly check reference on cameras
+"""
+has_reference = False
+for c in chunk.cameras:
+    if c.reference.location:
+        has_reference = True
+"""
+
 if has_transform:
     print("--Building Point Cloud (has_transform) 9")
     progress_printer = ProgressPrinter("buildPointCloud")
