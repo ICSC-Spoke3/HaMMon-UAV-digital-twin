@@ -55,8 +55,9 @@ Metashape.app.settings.log_enable = True
 Metashape.app.settings.log_path = output_folder + '/log.txt'
 
 # Monitoring setup
-monitor = SystemMonitor('New Project', 'system.csv')
-monitor.create_csv(log_file='system.csv')
+output_csv = output_folder + '/system.csv'
+monitor = SystemMonitor('New Project', output_csv)
+monitor.create_csv(log_file=output_csv)
 thread = threading.Thread(target=monitor.start)
 thread.start()
 
@@ -69,7 +70,7 @@ monitor.stop()
 thread.join()   # wait thread end
 
 # Monitoring setup
-monitor = SystemMonitor('addPhotos', 'system.csv')
+monitor = SystemMonitor('addPhotos', output_csv)
 thread = threading.Thread(target=monitor.start)
 thread.start()
 
@@ -88,7 +89,7 @@ print(str(len(chunk.cameras)) + " images loaded")
 # missing optimizeCameras
 
 # Monitoring setup
-monitor = SystemMonitor('matchPhotos', 'system.csv')
+monitor = SystemMonitor('matchPhotos', output_csv)
 thread = threading.Thread(target=monitor.start)
 thread.start()
 
@@ -109,7 +110,7 @@ monitor.stop()
 thread.join()   # wait thread end
 
 # Monitoring setup
-monitor = SystemMonitor('alignCameras', 'system.csv')
+monitor = SystemMonitor('alignCameras', output_csv)
 thread = threading.Thread(target=monitor.start)
 thread.start()
 
@@ -125,7 +126,7 @@ monitor.stop()
 thread.join()   # wait thread end
 
 # Monitoring setup
-monitor = SystemMonitor('buildDepthMaps', 'system.csv')
+monitor = SystemMonitor('buildDepthMaps', output_csv)
 thread = threading.Thread(target=monitor.start)
 thread.start()
 
@@ -149,7 +150,7 @@ has_transform = chunk.transform.scale and chunk.transform.rotation and chunk.tra
 if has_transform:
 
     # Monitoring setup
-    monitor = SystemMonitor('buildPointCloud', 'system.csv')
+    monitor = SystemMonitor('buildPointCloud', output_csv)
     thread  = threading.Thread(target=monitor.start)
     thread.start()
 
@@ -168,7 +169,7 @@ if has_transform:
     thread.join()   # wait thread end
 
     # Monitoring setup
-    monitor = SystemMonitor('colorizePointCloud', 'system.csv')
+    monitor = SystemMonitor('colorizePointCloud', output_csv)
     thread  = threading.Thread(target=monitor.start)
     thread.start()
 
@@ -185,7 +186,7 @@ if has_transform:
     # missing filterPointCloud
 
 # Monitoring setup
-monitor = SystemMonitor('buildModel', 'system.csv')
+monitor = SystemMonitor('buildModel', output_csv)
 thread  = threading.Thread(target=monitor.start)
 thread.start()
 
@@ -208,7 +209,7 @@ monitor.stop()
 thread.join()   # wait thread end
 
 # Monitoring setup
-monitor = SystemMonitor('colorizeModel', 'system.csv')
+monitor = SystemMonitor('colorizeModel', output_csv)
 thread  = threading.Thread(target=monitor.start)
 thread.start()
 
@@ -222,7 +223,7 @@ monitor.stop()
 thread.join()   # wait thread end
 
 # Monitoring setup
-monitor = SystemMonitor('buildUV', 'system.csv')
+monitor = SystemMonitor('buildUV', output_csv)
 thread  = threading.Thread(target=monitor.start)
 thread.start()
 
@@ -238,7 +239,7 @@ monitor.stop()
 thread.join()   # wait thread end
 
 # Monitoring setup
-monitor = SystemMonitor('buildTexture', 'system.csv')
+monitor = SystemMonitor('buildTexture', output_csv)
 thread  = threading.Thread(target=monitor.start)
 thread.start()
 
@@ -260,7 +261,7 @@ thread.join()   # wait thread end
 
 if has_transform:
     # Monitoring setup
-    monitor = SystemMonitor('buildDem', 'system.csv')
+    monitor = SystemMonitor('buildDem', output_csv)
     thread  = threading.Thread(target=monitor.start)
     thread.start()
     
@@ -277,7 +278,7 @@ if has_transform:
     thread.join()   # wait thread end
 
     # Monitoring setup
-    monitor = SystemMonitor('buildOrthomosaic', 'system.csv')
+    monitor = SystemMonitor('buildOrthomosaic', output_csv)
     thread  = threading.Thread(target=monitor.start)
     thread.start()
 
