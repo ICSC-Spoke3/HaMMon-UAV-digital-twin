@@ -72,9 +72,10 @@ class SystemMonitor:
         stats = self.parse_gpustat(stats_str)
         return stats
 
-monitor = SystemMonitor('SystemMonitor', 'system.csv')
-monitor.create_csv(log_file='system.csv')
-thread = threading.Thread(target=monitor.start)
-thread.start()
-time.sleep(20)
-monitor.stop()
+if __name__ == "__main__":
+    monitor = SystemMonitor('SystemMonitor', 'system.csv')
+    monitor.create_csv(log_file='system.csv')
+    thread = threading.Thread(target=monitor.start)
+    thread.start()
+    time.sleep(20)
+    monitor.stop()
