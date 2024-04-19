@@ -52,7 +52,7 @@ photos = find_files(image_folder, [".jpg", ".jpeg", "jp2", "j2k", "jxl", ".tif",
 Metashape.app.cpu_enable = False
 print("--CPU STATUS", Metashape.app.cpu_enable)
 # enable log file
-Metashape.app.settings.log_path = 'log.txt'
+Metashape.app.settings.log_path = output_folder + '/log.txt'
 Metashape.app.settings.log_enable = True
 
 print("--LOG STATUS", Metashape.app.settings.log_enable)
