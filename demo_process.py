@@ -253,6 +253,7 @@ doc.save(version="buildUV")
 monitor.stop()
 thread.join()   # wait thread end
 
+"""
 # Monitoring setup
 monitor = SystemMonitor('buildTexture', output_csv)
 thread  = threading.Thread(target=monitor.start)
@@ -270,6 +271,7 @@ doc.save(version="buildTexture")
 
 monitor.stop()
 thread.join()   # wait thread end
+"""
 
 # missing buildTiledModel
 # missing detectMarkers
