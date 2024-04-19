@@ -52,8 +52,9 @@ photos = find_files(image_folder, [".jpg", ".jpeg", "jp2", "j2k", "jxl", ".tif",
 Metashape.app.cpu_enable = False
 print("--CPU STATUS", Metashape.app.cpu_enable)
 # enable log file
+Metashape.app.settings.log_path = '/output_folder/log.txt'
 Metashape.app.settings.log_enable = True
-Metashape.app.settings.log_path = output_folder + '/log.txt'
+
 print("--LOG STATUS", Metashape.app.settings.log_enable)
 print("--PATH", Metashape.app.settings.log_path)
 
@@ -211,6 +212,7 @@ doc.save(version="buildModel")
 monitor.stop()
 thread.join()   # wait thread end
 
+"""
 # Monitoring setup
 monitor = SystemMonitor('colorizeModel', output_csv)
 thread  = threading.Thread(target=monitor.start)
@@ -224,6 +226,7 @@ doc.save(version="colorizeModel")
 
 monitor.stop()
 thread.join()   # wait thread end
+"""
 
 # Monitoring setup
 monitor = SystemMonitor('buildUV', output_csv)
@@ -305,7 +308,7 @@ chunk.exportReport(path=output_folder + '/report.pdf',
 # missing exportTexture
 # missing exportTiledModel
 
-
+"""
 if chunk.model:
     chunk.exportModel(output_folder + '/model.obj')
 
@@ -317,6 +320,6 @@ if chunk.elevation:
 
 if chunk.orthomosaic:
     chunk.exportRaster(output_folder + '/orthomosaic.tif', source_data = Metashape.OrthomosaicData)
-
+"""
 print('Processing finished, results saved to ' + output_folder + '.')
 Metashape.app.quit()
