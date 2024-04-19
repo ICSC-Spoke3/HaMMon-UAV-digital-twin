@@ -15,17 +15,17 @@ class SystemMonitor:
         self.running = True
         while self.running:
             cpu_usage, cpu_core_usage = self.log_cpu()
-            ram_usage, ram_total, ram_active = self.log_ram()
+            ram_usage, ram_total, ram_available, ram_active, ram_used = self.log_ram()
             stats = self.log_gpu()
             for stat in stats:
-                self.logger.info(f'{time.time()}; {cpu_usage}; {cpu_core_usage}; {ram_usage}; {ram_active} GB; {ram_total} GB; {stat["id"]}; {stat["model"]}; {stat["temp"]}; {stat["cpu_usage"]}; {stat["mem_used"]}/{stat["mem_total"]} MB')
-            time.sleep(5)  # every 5 sec
+                self.logger.info(f'{time.time()}; {cpu_usage}; {cpu_core_usage}; {ram_usage}; {ram_active} GB; {ram_total} GB; {ram_available} GB; {ram_used} GB; {stat["id"]}; {stat["model"]}; {stat["temp"]}; {stat["cpu_usage"]}; {stat["mem_used"]}/{stat["mem_total"]} MB')
+            time.sleep(5)  # every 5 sec                                         ,  , ram_available,  , ram_used
 
     def stop(self):
         self.running = False
     
     def create_csv(self, log_file):
-        header = ['Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM active', 'RAM available', 'GPU ID', 'GPU Model', 'GPU Temp', 'GPU Core %', 'GPU RAM']
+        header = ['Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM active', 'RAM total', 'GPU ID', 'GPU Model', 'GPU Temp', 'GPU Core %', 'GPU RAM']
         with open(log_file, 'w', newline='') as file:
             writer = csv.writer(file, delimiter=';')
             writer.writerow(header)
@@ -62,9 +62,11 @@ class SystemMonitor:
 
     def log_ram(self):
         ram_usage = psutil.virtual_memory().percent
-        ram_total  = self.parese_dataram(psutil.virtual_memory().total)
+        ram_total = self.parese_dataram(psutil.virtual_memory().total)
+        ram_available = self.parese_dataram(psutil.virtual_memory().available)
         ram_active = self.parese_dataram(psutil.virtual_memory().active)
-        return ram_usage, ram_total, ram_active
+        ram_used = self.parese_dataram(psutil.virtual_memory().used)
+        return ram_usage, ram_total, ram_available, ram_active, ram_used
         
     def log_gpu(self):
         result = subprocess.run(['gpustat'], stdout=subprocess.PIPE)
