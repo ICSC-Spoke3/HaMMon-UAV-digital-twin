@@ -25,7 +25,7 @@ class SystemMonitor:
         self.running = False
     
     def create_csv(self, log_file):
-        header = ['Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM active', 'RAM total', 'GPU ID', 'GPU Model', 'GPU Temp', 'GPU Core %', 'GPU RAM']
+        header = ['Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM active', 'RAM total', 'RAM Available', 'RAM Used', 'GPU ID', 'GPU Model', 'GPU Temp', 'GPU Core %', 'GPU RAM']
         with open(log_file, 'w', newline='') as file:
             writer = csv.writer(file, delimiter=';')
             writer.writerow(header)
