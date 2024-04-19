@@ -211,7 +211,6 @@ doc.save(version="buildModel")
 monitor.stop()
 thread.join()   # wait thread end
 
-"""
 # Monitoring setup
 monitor = SystemMonitor('colorizeModel', output_csv)
 thread  = threading.Thread(target=monitor.start)
@@ -225,7 +224,6 @@ doc.save(version="colorizeModel")
 
 monitor.stop()
 thread.join()   # wait thread end
-"""
 
 # Monitoring setup
 monitor = SystemMonitor('buildUV', output_csv)
@@ -243,7 +241,6 @@ doc.save(version="buildUV")
 monitor.stop()
 thread.join()   # wait thread end
 
-"""
 # Monitoring setup
 monitor = SystemMonitor('buildTexture', output_csv)
 thread  = threading.Thread(target=monitor.start)
@@ -261,7 +258,6 @@ doc.save(version="buildTexture")
 
 monitor.stop()
 thread.join()   # wait thread end
-"""
 
 # missing buildTiledModel
 # missing detectMarkers
@@ -309,7 +305,7 @@ chunk.exportReport(path=output_folder + '/report.pdf',
 # missing exportTexture
 # missing exportTiledModel
 
-"""
+
 if chunk.model:
     chunk.exportModel(output_folder + '/model.obj')
 
@@ -321,6 +317,6 @@ if chunk.elevation:
 
 if chunk.orthomosaic:
     chunk.exportRaster(output_folder + '/orthomosaic.tif', source_data = Metashape.OrthomosaicData)
-"""
+
 print('Processing finished, results saved to ' + output_folder + '.')
 Metashape.app.quit()
