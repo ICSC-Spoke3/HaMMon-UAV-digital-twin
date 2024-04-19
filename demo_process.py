@@ -50,9 +50,12 @@ photos = find_files(image_folder, [".jpg", ".jpeg", "jp2", "j2k", "jxl", ".tif",
 # Agisoft settings preference
 # disable CPU when performing GPU accelerated processing
 Metashape.app.cpu_enable = False
+print("--CPU STATUS", Metashape.app.cpu_enable)
 # enable log file
 Metashape.app.settings.log_enable = True
 Metashape.app.settings.log_path = output_folder + '/log.txt'
+print("--LOG STATUS", Metashape.app.settings.log_enable)
+print("--PATH", Metashape.app.settings.log_path)
 
 # Monitoring setup
 output_csv = output_folder + '/system.csv'
