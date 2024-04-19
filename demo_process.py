@@ -1,7 +1,7 @@
 import Metashape
 from progress_printer import ProgressPrinter
 from system_monitor import SystemMonitor
-import os, sys, datetime, threading
+import os, sys, datetime, threading, time
 
 
 # Checking compatibility: to remove if it give trubleshooting
@@ -60,8 +60,17 @@ print("--PATH", Metashape.app.settings.log_path)
 
 # Monitoring setup
 output_csv = output_folder + '/system.csv'
-monitor = SystemMonitor('New Project', output_csv)
+monitor = SystemMonitor('Inizio', output_csv)
 monitor.create_csv(log_file=output_csv)
+thread = threading.Thread(target=monitor.start)
+thread.start()
+time.sleep(3)
+monitor.stop()
+thread.join()   # wait thread end
+
+# Monitoring setup
+output_csv = output_folder + '/system.csv'
+monitor = SystemMonitor('New Project', output_csv)
 thread = threading.Thread(target=monitor.start)
 thread.start()
 
@@ -321,5 +330,15 @@ if chunk.elevation:
 if chunk.orthomosaic:
     chunk.exportRaster(output_folder + '/orthomosaic.tif', source_data = Metashape.OrthomosaicData)
 """
+
+# Monitoring setup
+output_csv = output_folder + '/system.csv'
+monitor = SystemMonitor('Fine', output_csv)
+thread = threading.Thread(target=monitor.start)
+thread.start()
+time.sleep(3)
+monitor.stop()
+thread.join()   # wait thread end
+
 print('Processing finished, results saved to ' + output_folder + '.')
 Metashape.app.quit()
