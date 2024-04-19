@@ -1,7 +1,7 @@
 import Metashape
 from progress_printer import ProgressPrinter
 from system_monitor import SystemMonitor
-import os, sys, datetime, threading, subprocess
+import os, sys, datetime, threading
 
 
 # Checking compatibility: to remove if it give trubleshooting
@@ -78,7 +78,7 @@ print("--Adding Photos 2")
 progress_printer = ProgressPrinter("addPhotos")
 chunk.addPhotos(filenames=photos,
                 progress=progress_printer)
-doc.save()
+doc.save(version="addPhotos")
 
 monitor.stop()
 thread.join()   # wait thread end
@@ -104,7 +104,7 @@ chunk.matchPhotos(downscale=1,
                   guided_matching= False,
                   subdivide_task= True,
                   progress=progress_printer) # Progress callback
-doc.save()
+doc.save(version="matchPhotos")
 
 monitor.stop()
 thread.join()   # wait thread end
@@ -120,7 +120,7 @@ chunk.alignCameras(adaptive_fitting= False,
                    reset_alignment= False,
                    subdivide_task=True,
                    progress= progress_printer)
-doc.save()
+doc.save(version="alignCameras")
 
 monitor.stop()
 thread.join()   # wait thread end
@@ -137,7 +137,7 @@ chunk.buildDepthMaps(downscale = 2,
                      reuse_depth= False,
                      subdivide_task=True,
                      progress=progress_printer)
-doc.save()
+doc.save(version="buildDepthMaps")
 
 monitor.stop()
 thread.join()   # wait thread end
@@ -163,7 +163,7 @@ if has_transform:
                           subdivide_task=True,
                           progress=progress_printer)
     # point spacing default = 0.1(m)
-    doc.save()
+    doc.save(version="buildPointCloud")
 
     monitor.stop()
     thread.join()   # wait thread end
@@ -178,7 +178,7 @@ if has_transform:
     chunk.colorizePointCloud(source_data=Metashape.ImagesData,
                              subdivide_task=True,
                              progress=progress_printer)
-    doc.save()
+    doc.save(version="colorizePointCloud")
 
     monitor.stop()
     thread.join()   # wait thread end
@@ -203,7 +203,7 @@ chunk.buildModel(surface_type=Metashape.Arbitrary,
                  subdivide_task=True,
                  progress=progress_printer)
 # split in block
-doc.save()
+doc.save(version="buildModel")
 
 monitor.stop()
 thread.join()   # wait thread end
@@ -217,7 +217,7 @@ print("--Colorize Model 9")
 progress_printer = ProgressPrinter("colorizeModel")
 chunk.colorizeModel(source_data=Metashape.ImagesData,
                     progress=progress_printer)
-doc.save()
+doc.save(version="colorizeModel")
 
 monitor.stop()
 thread.join()   # wait thread end
@@ -233,7 +233,7 @@ chunk.buildUV(mapping_mode=Metashape.GenericMapping,
               page_count = 1, texture_size = 8192,
               progress= progress_printer)
 # page_count parameter for BuildUV operation has the same meaning as texture count (i.e. number of texture atlas pages)
-doc.save()
+doc.save(version="buildUV")
 
 monitor.stop()
 thread.join()   # wait thread end
@@ -251,7 +251,7 @@ chunk.buildTexture(
     fill_holes=True,
     ghosting_filter = True,
     progress=progress_printer)
-doc.save()
+doc.save(version="buildTexture")
 
 monitor.stop()
 thread.join()   # wait thread end
@@ -272,7 +272,7 @@ if has_transform:
                    subdivide_task=True,
                    progress=progress_printer)
     # resolution(m)
-    doc.save()
+    doc.save(version="buildDem")
 
     monitor.stop()
     thread.join()   # wait thread end
@@ -288,7 +288,7 @@ if has_transform:
                            fill_holes= True,
                            subdivide_task=True,
                            progress= progress_printer)
-    doc.save()
+    doc.save(version="buildOrthomosaic")
 
     monitor.stop()
     thread.join()   # wait thread end
