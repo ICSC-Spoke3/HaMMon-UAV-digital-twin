@@ -69,7 +69,6 @@ monitor.stop()
 thread.join()   # wait thread end
 
 # Monitoring setup
-output_csv = output_folder + '/system.csv'
 monitor = SystemMonitor('New Project', output_csv)
 thread = threading.Thread(target=monitor.start)
 thread.start()
@@ -221,7 +220,7 @@ doc.save(version="buildModel")
 monitor.stop()
 thread.join()   # wait thread end
 
-"""
+
 # Monitoring setup
 monitor = SystemMonitor('colorizeModel', output_csv)
 thread  = threading.Thread(target=monitor.start)
@@ -235,7 +234,7 @@ doc.save(version="colorizeModel")
 
 monitor.stop()
 thread.join()   # wait thread end
-"""
+
 
 # Monitoring setup
 monitor = SystemMonitor('buildUV', output_csv)
@@ -253,7 +252,7 @@ doc.save(version="buildUV")
 monitor.stop()
 thread.join()   # wait thread end
 
-"""
+
 # Monitoring setup
 monitor = SystemMonitor('buildTexture', output_csv)
 thread  = threading.Thread(target=monitor.start)
@@ -271,7 +270,6 @@ doc.save(version="buildTexture")
 
 monitor.stop()
 thread.join()   # wait thread end
-"""
 
 # missing buildTiledModel
 # missing detectMarkers
@@ -319,22 +317,44 @@ chunk.exportReport(path=output_folder + '/report.pdf',
 # missing exportTexture
 # missing exportTiledModel
 
-"""
+
 if chunk.model:
+    # Monitoring setup
+    monitor = SystemMonitor('exportModel', output_csv)
+    thread = threading.Thread(target=monitor.start)
+    thread.start()
     chunk.exportModel(output_folder + '/model.obj')
+    monitor.stop()
+    thread.join()   # wait thread end
 
 if chunk.point_cloud:
+    # Monitoring setup
+    monitor = SystemMonitor('exportPointCloud', output_csv)
+    thread = threading.Thread(target=monitor.start)
+    thread.start()
     chunk.exportPointCloud(output_folder + '/point_cloud.las', source_data = Metashape.PointCloudData)
+    monitor.stop()
+    thread.join()   # wait thread end
 
 if chunk.elevation:
+    # Monitoring setup
+    monitor = SystemMonitor('exportDEM', output_csv)
+    thread = threading.Thread(target=monitor.start)
+    thread.start()
     chunk.exportRaster(output_folder + '/dem.tif', source_data = Metashape.ElevationData)
+    monitor.stop()
+    thread.join()   # wait thread end
 
 if chunk.orthomosaic:
+    # Monitoring setup
+    monitor = SystemMonitor('exportOrthomosaic', output_csv)
+    thread = threading.Thread(target=monitor.start)
+    thread.start()
     chunk.exportRaster(output_folder + '/orthomosaic.tif', source_data = Metashape.OrthomosaicData)
-"""
+    monitor.stop()
+    thread.join()   # wait thread end
 
 # Monitoring setup
-output_csv = output_folder + '/system.csv'
 monitor = SystemMonitor('Fine', output_csv)
 thread = threading.Thread(target=monitor.start)
 thread.start()
