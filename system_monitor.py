@@ -17,15 +17,16 @@ class SystemMonitor:
             cpu_usage, cpu_core_usage = self.log_cpu()
             ram_usage, ram_total, ram_available, ram_active, ram_used = self.log_ram()
             stats = self.log_gpu()
-            for stat in stats:
-                self.logger.info(f'{time.time()}; {cpu_usage}; {cpu_core_usage}; {ram_usage}; {ram_active} GB; {ram_total} GB; {ram_available} GB; {ram_used} GB; {stat["id"]}; {stat["model"]}; {stat["temp"]}; {stat["cpu_usage"]}; {stat["mem_used"]}/{stat["mem_total"]} MB')
+            self.logger.info(f'{time.time()}; {cpu_usage}; {cpu_core_usage}; {ram_usage}; {ram_active} GB; {ram_total} GB; {ram_available} GB; {ram_used} GB; {stats}')
+            #for stat in stats:
+                # self.logger.info(f'{time.time()}; {cpu_usage}; {cpu_core_usage}; {ram_usage}; {ram_active} GB; {ram_total} GB; {ram_available} GB; {ram_used} GB; {stat["id"]}; {stat["model"]}; {stat["temp"]}; {stat["cpu_usage"]}; {stat["mem_used"]}/{stat["mem_total"]} MB')
             time.sleep(5)  # every 5 sec
 
     def stop(self):
         self.running = False
     
     def create_csv(self, log_file):
-        header = ['Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM active', 'RAM total', 'RAM Available', 'RAM Used', 'GPU ID', 'GPU Model', 'GPU Temp', 'GPU Core %', 'GPU RAM']
+        header = ['Modulo', 'Time', 'CPU usage %', 'Cores usage %', 'RAM usage %', 'RAM active', 'RAM total', 'RAM Available', 'RAM Used', 'GPUs']
         with open(log_file, 'w', newline='') as file:
             writer = csv.writer(file, delimiter=';')
             writer.writerow(header)
@@ -46,11 +47,11 @@ class SystemMonitor:
                 memgpu = parts[2].split()
                 stat = {
                     'id': id_gpumodel[0],
-                    'model': ' '.join(id_gpumodel[1:]),
+                    'model': ''.join(id_gpumodel[1:]) + ' ' + ''.join(memgpu[2:]),
                     'temp': temp_gpu[0][:-1],
                     'cpu_usage': ''.join(temp_gpu[1:]),
-                    'mem_used': memgpu[0],
-                    'mem_total': ''.join(memgpu[2:])
+                    'mem_used': memgpu[0]
+                    #'mem_total': ''.join(memgpu[2:])
                 }
                 stats.append(stat)
         return stats
