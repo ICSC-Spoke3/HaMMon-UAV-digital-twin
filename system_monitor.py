@@ -39,7 +39,7 @@ class SystemMonitor:
         lines = gpustat_output.split('\n')
         stats = []
         for i, line in enumerate(lines):
-            if line and i % 2 != 0: # check empty row
+            if line and i != 0: # check empty row and avoid timestamp row
                 parts = line.split("|")
                 id_gpumodel = parts[0].split()
                 temp_gpu = parts[1].split()
