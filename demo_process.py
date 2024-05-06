@@ -68,7 +68,7 @@ gpuMask = int(gpuBinary,2)
 Metashape.Application.gpu_mask = gpuMask
 """
 gpuMask  = int("1", 2)
-Metashape.Application.gpu_mask = 2
+Metashape.app.gpu_mask = 2
 
 # enable log file
 Metashape.Application.Settings.log_path = output_folder + 'log.txt'
