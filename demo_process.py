@@ -74,8 +74,8 @@ Metashape.Application.gpu_mask = gpuMask
 Metashape.Application.Settings.log_path = output_folder + 'log.txt'
 Metashape.Application.Settings.log_enable = True
 
-print("--LOG STATUS", Metashape.app.settings.log_enable)
-print("--PATH", Metashape.app.settings.log_path)
+print("--LOG STATUS", Metashape.Application.Settings.log_enable)
+print("--PATH", Metashape.Application.Settings.log_path)
 
 # Monitoring setup
 output_csv = output_folder + 'system.csv'
