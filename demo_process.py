@@ -51,9 +51,27 @@ photos = find_files(image_folder, [".jpg", ".jpeg", "jp2", "j2k", "jxl", ".tif",
 # disable CPU when performing GPU accelerated processing
 Metashape.app.cpu_enable = False
 print("--CPU STATUS", Metashape.app.cpu_enable)
+
+# GPU settings one GPU!
+"""
+# Determine GPU binary string
+gpuBinary = ""
+gpus = Metashape.Application.enumGPUDevices()
+for gpu in gpus:
+    gpuBinary += "1"
+if gpuBinary == "": gpuBinary = "0"
+
+# Convert binary string to int
+gpuMask = int(gpuBinary,2)
+
+# Enable all GPUs
+Metashape.Application.gpu_mask = gpuMask
+"""
+Metashape.Application.gpu_mask = 1
+
 # enable log file
-Metashape.app.settings.log_path = output_folder + 'log.txt'
-Metashape.app.settings.log_enable = True
+Metashape.Application.settings.log_path = output_folder + 'log.txt'
+Metashape.Application.settings.log_enable = True
 
 print("--LOG STATUS", Metashape.app.settings.log_enable)
 print("--PATH", Metashape.app.settings.log_path)
