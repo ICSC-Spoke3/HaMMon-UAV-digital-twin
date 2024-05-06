@@ -71,8 +71,8 @@ gpuMask  = int("1", 2)
 Metashape.Application.gpu_mask = gpuMask
 
 # enable log file
-Metashape.Application.settings.log_path = output_folder + 'log.txt'
-Metashape.Application.settings.log_enable = True
+Metashape.Application.Settings.log_path = output_folder + 'log.txt'
+Metashape.Application.Settings.log_enable = True
 
 print("--LOG STATUS", Metashape.app.settings.log_enable)
 print("--PATH", Metashape.app.settings.log_path)
