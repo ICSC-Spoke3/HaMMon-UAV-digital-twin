@@ -21,7 +21,7 @@ class SystemMonitor:
             self.logger.info(f'{time.time()}; {cpu_usage}; {cpu_core_usage}; {ram_usage}; {ram_active} GB; {ram_total} GB; {ram_available} GB; {ram_used} GB; {gpu_info_filter}')
             #for stat in stats:
                 # self.logger.info(f'{time.time()}; {cpu_usage}; {cpu_core_usage}; {ram_usage}; {ram_active} GB; {ram_total} GB; {ram_available} GB; {ram_used} GB; {stat["id"]}; {stat["model"]}; {stat["temp"]}; {stat["cpu_usage"]}; {stat["mem_used"]}/{stat["mem_total"]} MB')
-            time.sleep(5)  # every 5 sec
+            time.sleep(30)  # every 30 sec
 
     def stop(self):
         self.running = False
