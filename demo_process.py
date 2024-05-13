@@ -67,8 +67,9 @@ gpuMask = int(gpuBinary,2)
 # Enable all GPUs
 Metashape.Application.gpu_mask = gpuMask
 """
-gpuMask  = int("1", 2)
-Metashape.app.gpu_mask = 2
+gpuMask  = int("10", 2)
+#gpuMask  = int("11", 2)
+Metashape.app.gpu_mask = gpuMask
 
 # enable log file
 Metashape.Application.Settings.log_path = output_folder + 'log.txt'
@@ -364,6 +365,7 @@ if chunk.elevation:
     monitor.stop()
     thread.join()   # wait thread end
 
+"""
 if chunk.orthomosaic:
     # Monitoring setup
     monitor = SystemMonitor('exportOrthomosaic', output_csv)
@@ -372,6 +374,7 @@ if chunk.orthomosaic:
     chunk.exportRaster(output_folder + '/orthomosaic.tif', source_data = Metashape.OrthomosaicData)
     monitor.stop()
     thread.join()   # wait thread end
+"""
 
 # Monitoring setup
 monitor = SystemMonitor('Fine', output_csv)
