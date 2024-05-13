@@ -365,16 +365,14 @@ if chunk.elevation:
     monitor.stop()
     thread.join()   # wait thread end
 
-"""
 if chunk.orthomosaic:
     # Monitoring setup
     monitor = SystemMonitor('exportOrthomosaic', output_csv)
     thread = threading.Thread(target=monitor.start)
     thread.start()
-    chunk.exportRaster(output_folder + '/orthomosaic.tif', source_data = Metashape.OrthomosaicData)
+    chunk.exportRaster(output_folder + '/orthomosaic.tif', source_data = Metashape.OrthomosaicData, split_in_blocks=True)
     monitor.stop()
     thread.join()   # wait thread end
-"""
 
 # Monitoring setup
 monitor = SystemMonitor('Fine', output_csv)
