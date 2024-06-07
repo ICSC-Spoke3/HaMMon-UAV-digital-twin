@@ -1,6 +1,6 @@
 import Metashape
 from progress_printer import ProgressPrinter
-import os, sys, time, datetime, getpass
+import os, sys, datetime
 
 
 # Checking compatibility: to remove if it give trubleshooting
