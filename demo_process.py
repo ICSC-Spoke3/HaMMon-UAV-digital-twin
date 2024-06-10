@@ -4,7 +4,7 @@ from system_monitor import SystemMonitor
 import os, sys, datetime, threading, time
 
 
-# Checking compatibility: to remove if it give trubleshooting
+# Checking compatibility: to remove if it gives trubleshooting
 compatible_major_version = "2.1"
 found_major_version = ".".join(Metashape.app.version.split('.')[:2])
 if found_major_version != compatible_major_version:
