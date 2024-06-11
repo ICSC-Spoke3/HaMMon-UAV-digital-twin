@@ -71,7 +71,7 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--config', help='Path configuration file JSON/YAML')
     parser.add_argument('-i', '--input', help='Path project photos')
     parser.add_argument('-o', '--output', help='Saving path project files')
-    #TODO da gestire i folder di input e output
+    #TODO da gestire i folder di output
     input_images_folder = ""
     output_save_folder = "."
     
@@ -84,11 +84,17 @@ if __name__ == "__main__":
         if not os.path.isdir(input_images_folder):
             raise FileNotFoundError(f"{input_images_folder} does not exit")
         
+        # check number of images
+        image_files = find_files(input_images_folder, [".jpg", ".jpeg", ".tif", ".tiff", ".png", ".bmp", ".dng"])
+        if len(image_files) < 2:
+            raise ValueError("Not enough images to process in the path.")
+
 
 
     else:
         print("Error: Missing input photos folder. \nSpecifica <--input> il path delle raw photos.")
         exit(1)
+
     if args.output:
         output_save_folder = args.output
     # check config and exec parameters
