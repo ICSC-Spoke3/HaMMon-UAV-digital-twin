@@ -2,6 +2,7 @@
 import argparse
 import json
 import yaml
+import os
 from src import step1
 from src import step2
 
@@ -25,7 +26,7 @@ def execute_steps(steps_params_to_run: dict):
         step2.run(steps_params_to_run['step2'])
     
 """
-dato un json o yaml ritorna il dict di step: param
+dato un json o yaml ritorna il dict {step: param}
 """
 def get_config_from_file(filename: str) -> dict:
     try:
@@ -53,6 +54,15 @@ def get_config_from_cli(input_config: str)  -> dict:
         workflow[step] = params.split(',')
     return workflow
 
+"""Trova tutti i file con le estensioni specificate in una data cartella e ne ritorna la lista"""
+def find_files(folder: str, types: list[str]) -> list[str]:
+    files = []
+    for entry in os.scandir(folder):
+        if entry.is_file():
+            file_extension = os.path.splitext(entry.name)[1].lower()
+            if file_extension in types:
+                files.append(entry.path)
+    return files
 
 if __name__ == "__main__":
     # args argument
@@ -62,18 +72,25 @@ if __name__ == "__main__":
     parser.add_argument('-i', '--input', help='Path project photos')
     parser.add_argument('-o', '--output', help='Saving path project files')
     #TODO da gestire i folder di input e output
-    input_folder = ""
-    output_folder = "."
+    input_images_folder = ""
+    output_save_folder = "."
     
     args = parser.parse_args()
     # check input/output folder
     if args.input:
-        input_folder = args.input 
+        input_images_folder = args.input
+
+        # check image_folder exist
+        if not os.path.isdir(input_images_folder):
+            raise FileNotFoundError(f"{input_images_folder} does not exit")
+        
+
+
     else:
         print("Error: Missing input photos folder. \nSpecifica <--input> il path delle raw photos.")
         exit(1)
     if args.output:
-        output_folder = args.output
+        output_save_folder = args.output
     # check config and exec parameters
     if args.config and args.exec:
         print("Errore: non puoi specificare sia <--config> che <--exec>.")

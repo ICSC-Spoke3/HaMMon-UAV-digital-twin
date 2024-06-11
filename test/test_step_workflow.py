@@ -1,11 +1,12 @@
 import unittest
-import json
-import yaml
+import json, yaml
 import os
+import tempfile, shutil
 from unittest.mock import patch
 from step_workflow import get_config_from_file
 from step_workflow import get_config_from_cli
 from step_workflow import execute_steps
+from step_workflow import find_files
 
 class TestStepWorkflow(unittest.TestCase):
     def setUp(self):
@@ -16,6 +17,7 @@ class TestStepWorkflow(unittest.TestCase):
         self.empty_file = 'empty.json'
         self.workflow = {'step1': 'value'}
 
+        # fill tmp files
         with open(self.json_file, 'w') as f:
             json.dump({'workflow': self.workflow}, f)
 
@@ -25,8 +27,18 @@ class TestStepWorkflow(unittest.TestCase):
         with open(self.invalid_format_file, 'w') as f:
             f.write("'workflow': self.workflow")
 
-        # fill empty file
+        # fill tmp empty_file
         open(self.empty_file, 'w').close()
+
+        # create tmp image folder
+        self.tmpdirname = tempfile.mkdtemp()
+        # create different extension image
+        with open(os.path.join(self.tmpdirname, 'jpg_file.jpg'), 'w') as f:
+            f.write('This is a jpg file content')
+        with open(os.path.join(self.tmpdirname, 'png_file.png'), 'w') as f:
+            f.write('This is a png file content')
+        with open(os.path.join(self.tmpdirname, 'txt_file.txt'), 'w') as f:
+            f.write('This is a txt file content')
 
 
     # on close, delete all support files
@@ -35,6 +47,8 @@ class TestStepWorkflow(unittest.TestCase):
         os.remove(self.yaml_file)
         os.remove(self.invalid_format_file)
         os.remove(self.empty_file)
+        # remove tmp images folder
+        shutil.rmtree(self.tmpdirname)
 
     # get_config_file
     def test_get_config_from_file_json(self):
@@ -126,6 +140,27 @@ class TestStepWorkflow(unittest.TestCase):
         with self.assertRaises(SystemExit):
             execute_steps(steps_params_input)
         mock_step.run.assert_not_called()
+
+    # find_files
+    def test_find_files_only_accepted_format(self):
+        image_files = find_files(self.tmpdirname, ['.jpg', '.png'])
+        self.assertEqual(len(image_files), 2, 'Read only images files')
+        self.assertIn(os.path.join(self.tmpdirname, 'jpg_file.jpg'), image_files, 'jpg_file.jpg should be on list')
+        self.assertIn(os.path.join(self.tmpdirname, 'png_file.png'), image_files, 'png_file.png should be on list')
+
+    def test_find_files_no_files_found(self):
+        no_files = find_files(self.tmpdirname, ['.doc'])
+        self.assertEqual(len(no_files), 0, 'Should not be different file format')
+
+    def test_find_files_non_existent_folder(self):
+        with self.assertRaises(FileNotFoundError):
+            find_files('/non/existent/folder', ['.jpg', '.png'])
+        with self.assertRaises(FileNotFoundError):
+            find_files('', ['.jpg', '.png'])
+
+    def test_find_files_empty_types_list(self):
+        no_files = find_files(self.tmpdirname, [])
+        self.assertEqual(len(no_files), 0, 'Should not be file if list format is empty')
 
     
 if __name__ == '__main__':
