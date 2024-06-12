@@ -3,11 +3,12 @@ import argparse
 import json
 import yaml
 import os
+from src.settings import Settings
 from src import step1
 from src import step2
 
 
-valid_steps = ['step1', 'step2', "step3"]
+valid_steps = ['step1', 'step2', 'step3', 'settings']
 
 """ core """
 def execute_steps(steps_params_to_run: dict):
@@ -19,11 +20,27 @@ def execute_steps(steps_params_to_run: dict):
     if any(step not in valid_steps for step in steps_params_to_run):
         print("Errore: uno o più processi specificati non sono validi.")
         exit(1)
+
+    if 'settings' in steps_params_to_run:
+        # para input
+        my_settings = Settings(steps_params_to_run['settings'])
+        my_settings.stampare()
         
+        """
+        # Ottieni il valore di un setting
+        print(my_settings.get_setting('setting1'))  # Stampa 'value1'
+
+        # Imposta il valore di un setting
+        my_settings.set_setting('setting3', 'value3')
+        """
+    else:
+        #default
+        pass
     if 'step1' in steps_params_to_run:
         step1.run(steps_params_to_run['step1'])
     if 'step2' in steps_params_to_run:
         step2.run(steps_params_to_run['step2'])
+
     
 """
 dato un json o yaml ritorna il dict {step: param}
@@ -71,12 +88,12 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--config', help='Path configuration file JSON/YAML')
     parser.add_argument('-i', '--input', help='Path project photos')
     parser.add_argument('-o', '--output', help='Saving path project files')
-    #TODO da gestire i folder di output
+    
     input_images_folder = ""
     output_save_folder = "."
     
     args = parser.parse_args()
-    # check input/output folder
+    # check input folder
     if args.input:
         input_images_folder = args.input
 
@@ -84,19 +101,22 @@ if __name__ == "__main__":
         if not os.path.isdir(input_images_folder):
             raise FileNotFoundError(f"{input_images_folder} does not exit")
         
-        # check number of images
+        # check number of images    # TODO lista delle estensioni da aggiornare
         image_files = find_files(input_images_folder, [".jpg", ".jpeg", ".tif", ".tiff", ".png", ".bmp", ".dng"])
         if len(image_files) < 2:
             raise ValueError("Not enough images to process in the path.")
-
-
-
     else:
-        print("Error: Missing input photos folder. \nSpecifica <--input> il path delle raw photos.")
+        print("Error: Missing input photos folder. Specifica:\n <--input> il path delle raw photos.")
         exit(1)
 
+    # check output folder
     if args.output:
         output_save_folder = args.output
+
+        # check output_folder exist
+        if not os.path.isdir(output_save_folder):
+            os.makedirs(output_save_folder, exist_ok=True)
+
     # check config and exec parameters
     if args.config and args.exec:
         print("Errore: non puoi specificare sia <--config> che <--exec>.")
@@ -106,7 +126,7 @@ if __name__ == "__main__":
     elif args.exec:
         steps_params_to_run = get_config_from_cli(args.exec)
     else:
-        print("Missing parameters. \nSpecifica <--config> per eseguire da un file di configurazione, o <--exec> per eseguire da linea di comando. \n<--help> per ulteriori informazioni.")
+        print("Missing parameters. Specifica \n<--config> per eseguire da un file di configurazione, o <--exec> per eseguire da linea di comando. \n<--output> saving project path \n<--help> per ulteriori informazioni.")
         exit(1)
 
     execute_steps(steps_params_to_run)
