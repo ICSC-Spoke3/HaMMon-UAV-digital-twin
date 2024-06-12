@@ -24,7 +24,7 @@ def execute_steps(steps_params_to_run: dict):
     if 'settings' in steps_params_to_run:
         # para input
         my_settings = Settings(steps_params_to_run['settings'])
-        my_settings.stampare()
+        #my_settings.stampare()
         
         """
         # Ottieni il valore di un setting
