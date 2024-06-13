@@ -2,25 +2,23 @@
 import Metashape
 from src.version_checker import check_version
 
-
 """
   Agisoft settings preference
 """
 
 class Settings:
     def __init__(self, input_values: dict = None):
-        # set default settings
         self.default_settings = {
-            'cpu_enable': True,
-            'gpu_mask': 'Default',
+            'cpu_enable': False,
+            'gpu_mask': None,   # all available GPUs
             'log': 'default',
-            'Default': 'Default'
+            'version': 'basic'
         }
 
         # set input settings
         if input_values is not None:
             for key, value in input_values.items():
-                if key in self.default_settings:
+                if key in self.default_settings:    # avoid unconventional key settings
                     self.default_settings[key] = value
 
         self.set_cpu(self.default_settings["cpu_enable"])
@@ -41,24 +39,23 @@ class Settings:
     enable GPUs from input gpu_mask or enable all available
     """
     def set_gpu_mask(self, gpu_mask: str) -> None:
+        # available GPUs
+        gpus = Metashape.app.enumGPUDevices()
+        num_gpus = len(gpus)
+        
         if gpu_mask:
-            # Convert binary string to int
-            print(gpu_mask)
             gpu_mask = int(gpu_mask, 2)
+            # Check if the number of requested GPUs exceeds the number of available GPUs
+            if gpu_mask > 2**num_gpus:
+                gpu_mask = 2**num_gpus - 1
+                print("--Requested number of GPUs exceeds the number of available GPUs. Setting mask to use all available GPUs:", num_gpus)
         else:
-            # enable all GPUs
-            gpuBinary = ""
-            gpus = Metashape.app.enumGPUDevices()
-            print(gpus)
-            for gpu in gpus:
-                gpuBinary += "1"
-            if gpuBinary == "": gpuBinary = "0"
-
-            # Convert binary string to int
-            gpu_mask = int(gpuBinary,2)
+            # Enable all GPUs
+            gpu_mask = 2**num_gpus - 1
 
         Metashape.app.gpu_mask = gpu_mask
-        print(Metashape.app.gpu_mask)
+        #print(Metashape.app.gpu_mask)
+
 
     
 
