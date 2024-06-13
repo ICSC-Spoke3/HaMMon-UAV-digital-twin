@@ -1,6 +1,5 @@
 # settings.py
 import Metashape
-from src.version_checker import check_version
 
 """
   Agisoft settings preference
