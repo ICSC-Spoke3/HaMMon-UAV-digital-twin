@@ -21,12 +21,25 @@ class Settings:
                 if key in self.default_settings:    # avoid unconventional key settings
                     self.default_settings[key] = value
 
+        self.check_version()
         self.set_cpu(self.default_settings["cpu_enable"])
         self.set_gpu_mask(self.default_settings["gpu_mask"])
 
     # TODO DEBUG 
     #def stampare(self):
     #    print(self.default_settings)
+    
+    def get_metashape_version(self):
+        return Metashape.app.version
+    
+    """
+    Checks if the current version of the application is compatible with the required version.
+    """
+    def check_version(self):
+        compatible_major_version = "2.1"
+        found_major_version = ".".join(Metashape.app.version.split('.')[:2])
+        if found_major_version != compatible_major_version:
+            raise Exception("Incompatible Metashape version: {} != {}".format(found_major_version, compatible_major_version))
 
     """
     set CPU when performing GPU accelerated processing
@@ -57,15 +70,6 @@ class Settings:
         #print(Metashape.app.gpu_mask)
 
 
-    
-
-
-"""
-set GPUs mask
-"""
-def gpu_mask():
-    pass
-
 def run(parameters):
     check_version()
     print("Step 1", parameters)
@@ -75,7 +79,4 @@ def run(parameters):
 set log file
 """
 
-"""
-check version
-"""
 
