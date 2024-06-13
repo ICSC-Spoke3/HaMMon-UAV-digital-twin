@@ -70,7 +70,6 @@ class Settings:
 
 
 def run(parameters):
-    check_version()
     print("Step 1", parameters)
 
 
