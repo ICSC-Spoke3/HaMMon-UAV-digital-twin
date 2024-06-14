@@ -24,11 +24,11 @@ def execute_steps(steps_params_to_run: dict):
         exit(1)
 
     if 'settings' in steps_params_to_run:
-        # para input
         my_settings = Settings(steps_params_to_run['settings'])
         if steps_params_to_run['settings']['log']:  # log
             my_settings.set_log(steps_params_to_run['settings']['log'])
-            
+    
+    
         # usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
         
         """

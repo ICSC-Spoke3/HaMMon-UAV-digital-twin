@@ -1,0 +1,12 @@
+{
+    "workflow": {
+        "step1": ["param1", "param2"],
+        "step2": ["param3", "param4", "param5"],
+        "step3": ["param4", "param34"],
+        "settings": {
+            "cpu_enable": true,
+            "gpu_mask": "11",
+            "log": "path/log/"
+        }
+    }
+}

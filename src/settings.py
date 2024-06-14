@@ -63,6 +63,7 @@ class Settings:
     """
     enable log file
     """
+    # TODO use the OS re-directing feature
     # TODO https://www.agisoft.com/forum/index.php?topic=11129.0
     # TODO https://www.agisoft.com/forum/index.php?topic=8927.msg42570#msg42570
     def set_log(self, path_log: str = ".") -> None:
