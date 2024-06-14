@@ -74,4 +74,7 @@ class Settings:
         # TODO stare attenti //
         print("--LOG STATUS", Metashape.app.settings.log_enable)
         print("--PATH", Metashape.app.settings.log_path)
+
+    
+    # TODO monitoraggio ?
         

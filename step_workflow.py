@@ -38,9 +38,7 @@ def execute_steps(steps_params_to_run: dict):
         # Imposta il valore di un setting
         my_settings.set_setting('setting3', 'value3')
         """
-    else:
-        #default
-        pass
+    
     if 'step1' in steps_params_to_run:
         step1.run(steps_params_to_run['step1'])
     if 'step2' in steps_params_to_run:
