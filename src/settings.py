@@ -68,7 +68,7 @@ class Settings:
         Metashape.app.gpu_mask = gpu_mask
         #print(Metashape.app.gpu_mask)
 
-
+# TODO da rimuovere
 def run(parameters):
     print("Step 1", parameters)
 

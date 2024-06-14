@@ -10,7 +10,9 @@ from src import step2
 
 valid_steps = ['step1', 'step2', 'step3', 'settings']
 
-""" core """
+""" 
+Core: esecuzione dei singoli steps scelti 
+"""
 def execute_steps(steps_params_to_run: dict):
     # check steps_params_to_run not empty
     if not steps_params_to_run:
@@ -63,7 +65,11 @@ def get_config_from_file(filename: str) -> dict:
         print(f"Errore: il file {filename} non è un file valido.")
         exit(1)
 
-""" In questo codice, prima divido l’input_config in base agli spazi, quindi per ogni elemento ottenuto, lo divido in base al carattere : per separare il nome del metodo dai parametri. Infine, divido i parametri in base alla virgola , per ottenere una lista di parametri."""
+"""
+Estrapolo i parametri presi in input a partire dalla command line
+Divido l’input_config in base agli spazi, quindi per ogni elemento ottenuto, lo divido in base al carattere: per separare il nome del metodo dai parametri. 
+Infine, divido i parametri in base alla virgola, per ottenere una lista di parametri.
+"""
 def get_config_from_cli(input_config: str)  -> dict:
     workflow = {}
     for config in input_config.split():
@@ -71,7 +77,9 @@ def get_config_from_cli(input_config: str)  -> dict:
         workflow[step] = params.split(',')
     return workflow
 
-"""Trova tutti i file con le estensioni specificate in una data cartella e ne ritorna la lista"""
+""" 
+Trova tutti i file con le estensioni specificate in una data cartella e ne ritorna la lista 
+"""
 def find_files(folder: str, types: list[str]) -> list[str]:
     files = []
     for entry in os.scandir(folder):
