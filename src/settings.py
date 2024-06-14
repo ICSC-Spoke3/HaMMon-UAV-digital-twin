@@ -10,8 +10,7 @@ class Settings:
         self.default_settings = {
             'cpu_enable': False,
             'gpu_mask': None,   # all available GPUs
-            'log': 'default',
-            'version': 'basic'
+            'log': '.'
         }
 
         # set input settings
@@ -23,18 +22,11 @@ class Settings:
         self.check_version()
         self.set_cpu(self.default_settings["cpu_enable"])
         self.set_gpu_mask(self.default_settings["gpu_mask"])
-
-    # TODO DEBUG 
-    #def stampare(self):
-    #    print(self.default_settings)
-    
-    def get_metashape_version(self):
-        return Metashape.app.version
     
     """
     Checks if the current version of the application is compatible with the required version.
     """
-    def check_version(self):
+    def check_version(self) -> None:
         compatible_major_version = "2.1"
         found_major_version = ".".join(Metashape.app.version.split('.')[:2])
         if found_major_version != compatible_major_version:
@@ -68,13 +60,17 @@ class Settings:
         Metashape.app.gpu_mask = gpu_mask
         #print(Metashape.app.gpu_mask)
 
-# TODO da rimuovere
-def run(parameters):
-    print("Step 1", parameters)
-
-
-"""
-set log file
-"""
-
-
+    """
+    enable log file
+    """
+    # TODO https://www.agisoft.com/forum/index.php?topic=11129.0
+    # TODO https://www.agisoft.com/forum/index.php?topic=8927.msg42570#msg42570
+    def set_log(self, path_log: str = ".") -> None:
+        if not isinstance(path_log, str):
+            raise ValueError("Error: specify a suitable path to save log file")
+        Metashape.Application.Settings.log_enable = True
+        Metashape.Application.Settings.log_path = path_log + 'log.txt'
+        # TODO stare attenti //
+        print("--LOG STATUS", Metashape.app.settings.log_enable)
+        print("--PATH", Metashape.app.settings.log_path)
+        

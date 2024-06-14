@@ -58,6 +58,16 @@ class TestSettings(unittest.TestCase):
         self.obj.set_gpu_mask(gpu_mask)
         self.assertEqual(Metashape.app.gpu_mask, 2**len(Metashape.app.enumGPUDevices()) - 1)
 
+    # set_log
+    def test_set_log(self):
+        path_log = "/test/path/log/"
+        self.obj.set_log(path_log)
+        self.assertEqual(Metashape.app.settings.log_path, path_log + "log.txt")
+        self.assertEqual(Metashape.app.settings.log_enable, True)
 
+    def test_set_log_invalid_value(self):
+        with self.assertRaises(ValueError):
+            self.obj.set_log(23)
+    
 if __name__ == '__main__':
     unittest.main()
