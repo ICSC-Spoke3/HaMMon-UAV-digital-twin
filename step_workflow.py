@@ -52,9 +52,9 @@ def get_config_from_file(filename: str) -> dict:
     try:
         with open(filename, 'r') as f:
             if filename.endswith('.json'):
-                config = json.load(f)
+                config = json.load(f)   # from json to dict
             elif filename.endswith('.yaml') or filename.endswith('.yml'):
-                config = yaml.safe_load(f)
+                config = yaml.safe_load(f)  # from yaml to dict
             else:
                 print(f"Errore: il file {filename} non è in un formato supportato. [YAML/JSON]")
                 exit(1)
@@ -115,8 +115,7 @@ if __name__ == "__main__":
         if len(image_files) < 2:
             raise ValueError("Not enough images to process in the path.")
     else:
-        print("Error: Missing input photos folder. Specifica:\n <--input> il path delle raw photos.")
-        exit(1)
+        raise Exception("Missing input photos folder. Specifica:\n <--input> il path delle raw photos.")
 
     # check output folder
     if args.output:
@@ -128,14 +127,12 @@ if __name__ == "__main__":
 
     # check config and exec parameters
     if args.config and args.exec:
-        print("Errore: non puoi specificare sia <--config> che <--exec>.")
-        exit(1)
+        raise Exception("Error: you cannot specify both <–config> and <–exec>.")
     elif args.config:
         steps_params_to_run = get_config_from_file(args.config)
     elif args.exec:
         steps_params_to_run = get_config_from_cli(args.exec)
     else:
-        print("Missing parameters. Specifica \n<--config> per eseguire da un file di configurazione, o <--exec> per eseguire da linea di comando. \n<--output> saving project path \n<--help> per ulteriori informazioni.")
-        exit(1)
+        raise Exception("Missing parameters. Specify \n<–config> to run from a configuration file, or <–exec> to run from the command line. \n<–output> saving project path \n<–help> for more information.")
 
     execute_steps(steps_params_to_run)
