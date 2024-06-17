@@ -73,7 +73,7 @@ class Settings:
             raise ValueError("Error: specify a suitable path to save log file")
         if not os.path.exists(path_log):
             os.makedirs(path_log)
-            print("-- '{path_log}' percorso creato")
+            print(f"-- {path_log} percorso creato")
         if not os.path.exists(path_log + 'log.txt'):
             with open(path_log + 'log.txt', 'w'):
                 pass
