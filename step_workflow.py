@@ -37,10 +37,12 @@ def execute_steps(steps_params_to_run: dict):
         my_settings.set_setting('setting3', 'value3')
         """
     
+    """
     if 'step1' in steps_params_to_run:
         step1.run(steps_params_to_run['step1'])
     if 'step2' in steps_params_to_run:
         step2.run(steps_params_to_run['step2'])
+    """
 
     
 """
