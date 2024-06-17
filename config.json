@@ -6,7 +6,7 @@
         "settings": {
             "cpu_enable": true,
             "gpu_mask": "11",
-            "log": "path/log/"
+            "log": "./path/log/"
         }
     }
 }

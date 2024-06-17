@@ -1,5 +1,6 @@
 # settings.py
 import Metashape
+import os
 
 """
   Agisoft settings preference
@@ -67,8 +68,16 @@ class Settings:
     # TODO https://www.agisoft.com/forum/index.php?topic=11129.0
     # TODO https://www.agisoft.com/forum/index.php?topic=8927.msg42570#msg42570
     def set_log(self, path_log: str = ".") -> None:
+        # check path and log file
         if not isinstance(path_log, str):
             raise ValueError("Error: specify a suitable path to save log file")
+        if not os.path.exists(path_log):
+            os.mkdir(path_log)
+            print("-- '{path_log}' percorso creato")
+        if not os.path.exists(path_log + 'log.txt'):
+            with open(path_log + 'log.txt', 'w'):
+                pass
+
         Metashape.Application.Settings.log_enable = True
         Metashape.Application.Settings.log_path = path_log + 'log.txt'
         # TODO stare attenti //
