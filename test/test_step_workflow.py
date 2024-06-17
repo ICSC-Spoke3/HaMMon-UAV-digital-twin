@@ -134,7 +134,7 @@ class TestStepWorkflow(unittest.TestCase):
         mock_step1.run.assert_not_called()
         mock_step2.run.assert_not_called()
 
-    @patch('step_workflow.step1', autospec=True)
+    @patch('step_workflow.settings', autospec=True)
     def test_execute_steps_empty(self, mock_step):
         steps_params_input = {}
         with self.assertRaises(SystemExit):
