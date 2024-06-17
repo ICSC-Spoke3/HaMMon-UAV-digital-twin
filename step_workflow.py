@@ -4,8 +4,6 @@ import json
 import yaml
 import os
 from src.settings import Settings
-from src import step1
-from src import step2
 
 
 valid_steps = ['step1', 'step2', 'step3', 'settings']
