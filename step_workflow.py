@@ -3,8 +3,10 @@ import argparse
 import json
 import yaml
 import os
+from progress_printer import ProgressPrinter
 from src.settings import Settings
 from src.project import Project
+from src.photoprocessor import PhotoProcessor
 
 
 valid_steps = ['settings', 'project', 'PhotoProcessor']
@@ -32,7 +34,7 @@ def execute_steps(steps_params_to_run: dict):
     if 'project' in steps_params_to_run:
         if not isinstance(steps_params_to_run['project']['path'], str):
             raise ValueError("Error: specify a suitable path to project file")
-        prj = Project(steps_params_to_run['project']['path'])
+        prj = Project(project_path=steps_params_to_run['project']['path'])
 
         # path con file .psx o .psz
         if os.path.isfile(steps_params_to_run['project']['path']):
@@ -52,7 +54,8 @@ def execute_steps(steps_params_to_run: dict):
 
     # TODO: commentare
     if 'PhotoProcessor' in steps_params_to_run:
-        pass
+        photoprocess = PhotoProcessor(photos_path=image_files)
+        photoprocess.addPhotos(progress_printer=ProgressPrinter("addPhotos"))
 
     
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371

@@ -7,7 +7,7 @@ import os
 """
 
 class Settings:
-    def __init__(self, input_values: dict = None):
+    def __init__(self, input_values: dict = None) -> None:
         self.default_settings = {
             'cpu_enable': False,
             'gpu_mask': None,   # all available GPUs

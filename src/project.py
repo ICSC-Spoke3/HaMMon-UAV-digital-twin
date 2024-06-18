@@ -8,13 +8,19 @@ class SingletonMeta(type):
         if cls not in cls._instances:
             instance = super().__call__(*args, **kwargs)
             cls._instances[cls] = instance
+            # TODO: se non va
+            # cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
     
 class Project(metaclass=SingletonMeta):
-    def __init__(self, project_path: str):
+    def __init__(self, project_path: str = None):
         self.project_path = project_path
         self.doc = None
         self.chunk = None
+
+    @classmethod
+    def get_project(cls):
+        return cls()
 
     def load_project(self):
         self.doc = Metashape.app.Document
