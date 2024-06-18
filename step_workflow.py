@@ -7,9 +7,9 @@ from src.settings import Settings
 from src.project import Project
 
 
-valid_steps = ['settings', 'project']
+valid_steps = ['settings', 'project', 'PhotoProcessor']
 
-""" 
+"""
 Core: esecuzione dei singoli steps scelti 
 """
 def execute_steps(steps_params_to_run: dict):
@@ -22,6 +22,7 @@ def execute_steps(steps_params_to_run: dict):
         print("Errore: uno o più processi specificati non sono validi.")
         exit(1)
 
+    # Preferences
     if 'settings' in steps_params_to_run:
         my_settings = Settings(steps_params_to_run['settings'])
         if steps_params_to_run['settings']['log']:  # log
@@ -29,29 +30,32 @@ def execute_steps(steps_params_to_run: dict):
 
     # Loading/New project
     if 'project' in steps_params_to_run:
-        if not isinstance(steps_params_to_run['project']['name'], str):
+        if not isinstance(steps_params_to_run['project']['path'], str):
             raise ValueError("Error: specify a suitable path to project file")
-        prj = Project(steps_params_to_run['project']['name'])
+        prj = Project(steps_params_to_run['project']['path'])
 
-        if os.path.isfile(steps_params_to_run['project']['name']):
-            prj.load_project()
-        else: #if os.path.exists(steps_params_to_run['project']['name']):
-            prj.new_project()
-#TODO: capire e gestire se nuovo progetto o open project
-
-
-        
-        
-
+        # path con file .psx o .psz
+        if os.path.isfile(steps_params_to_run['project']['path']):
+            _, extension = os.path.splitext(steps_params_to_run['project']['path'])
+            if extension.lower() in ['.psx', '.psz']:
+                prj.load_project()
+        else: 
+        # solo path di salvataggio
+            # TODO: capire se Metashape gestisce input di path non esistenti, nella creazione di un nuovo progetto
+            if os.path.exists(steps_params_to_run['project']['path']):
+                prj.new_project()
 
         #TODO: DEBUGGING
         print("--DEGUB: lista di chunck ", prj.doc.chunks)
         print("--DEGUB: meta ", prj.doc.meta)
         print("--path: ", prj.doc.path)
 
+    # TODO: commentare
+    if 'PhotoProcessor' in steps_params_to_run:
+        pass
 
     
-        # usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
+    # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
         
         """
         # Ottieni il valore di un setting

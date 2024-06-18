@@ -18,7 +18,7 @@ class Project(metaclass=SingletonMeta):
 
     def load_project(self):
         self.doc = Metashape.app.Document
-        self.doc.open(path=self.project_path, read_only=False) # "project.psz"
+        self.doc.open(path=self.project_path, read_only=False)
         self.chunk = self.doc.chunk
         # chunk.matchPhotos
         # chunk.alignCameras
@@ -35,7 +35,7 @@ class Project(metaclass=SingletonMeta):
 
     # project version to save
     def save_project(self, version: str):
-        self.doc.save(path=self.project_path, version=version) # output_folder + "project.psx"
+        self.doc.save(path=self.project_path, version=version)
 
     def quit_project(self):
         Metashape.app.quit()
