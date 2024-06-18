@@ -7,6 +7,9 @@
             "cpu_enable": true,
             "gpu_mask": "11",
             "log": "./path/log/"
+        },
+        "project":{
+            "name": "project.psx"
         }
     }
 }

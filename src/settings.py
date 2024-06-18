@@ -64,12 +64,12 @@ class Settings:
     """
     enable log file
     """
-    # TODO use the OS re-directing feature
+    # TODO use the OS re-directing feature to save log from bash
     # TODO https://www.agisoft.com/forum/index.php?topic=11129.0
     # TODO https://www.agisoft.com/forum/index.php?topic=8927.msg42570#msg42570
     def set_log(self, path_log: str = ".") -> None:
         # check path and log file
-        if not isinstance(path_log, str):
+        if not isinstance(path_log, str):   # check str format
             raise ValueError("Error: specify a suitable path to save log file")
         if not os.path.exists(path_log):
             os.makedirs(path_log)

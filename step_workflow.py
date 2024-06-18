@@ -4,9 +4,10 @@ import json
 import yaml
 import os
 from src.settings import Settings
+from src.project import Project
 
 
-valid_steps = ['step1', 'step2', 'step3', 'settings']
+valid_steps = ['settings', 'project']
 
 """ 
 Core: esecuzione dei singoli steps scelti 
@@ -25,7 +26,30 @@ def execute_steps(steps_params_to_run: dict):
         my_settings = Settings(steps_params_to_run['settings'])
         if steps_params_to_run['settings']['log']:  # log
             my_settings.set_log(steps_params_to_run['settings']['log'])
-    
+
+    # Loading/New project
+    if 'project' in steps_params_to_run:
+        if not isinstance(steps_params_to_run['project']['name'], str):
+            raise ValueError("Error: specify a suitable path to project file")
+        prj = Project(steps_params_to_run['project']['name'])
+
+        if os.path.isfile(steps_params_to_run['project']['name']):
+            prj.load_project()
+        else: #if os.path.exists(steps_params_to_run['project']['name']):
+            prj.new_project()
+#TODO: capire e gestire se nuovo progetto o open project
+
+
+        
+        
+
+
+        #TODO: DEBUGGING
+        print("--DEGUB: lista di chunck ", prj.doc.chunks)
+        print("--DEGUB: meta ", prj.doc.meta)
+        print("--path: ", prj.doc.path)
+
+
     
         # usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
         
@@ -36,13 +60,6 @@ def execute_steps(steps_params_to_run: dict):
         # Imposta il valore di un setting
         my_settings.set_setting('setting3', 'value3')
         """
-    
-    """
-    if 'step1' in steps_params_to_run:
-        step1.run(steps_params_to_run['step1'])
-    if 'step2' in steps_params_to_run:
-        step2.run(steps_params_to_run['step2'])
-    """
 
     
 """
@@ -97,6 +114,9 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--config', help='Path configuration file JSON/YAML')
     parser.add_argument('-i', '--input', help='Path project photos')
     parser.add_argument('-o', '--output', help='Saving path project files')
+    parser.add_argument('-p', '--project', help='Save/Open project path name')
+
+    #TODO: integrare -p negli obligatori e nei CLI
     
     input_images_folder = ""
     output_save_folder = "."
