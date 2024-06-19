@@ -53,10 +53,7 @@ def execute_steps(steps_params_to_run: dict):
         else: 
         # new project file.psx
             # define name_project.psx
-            if abs_path[-1] == "/":
-                prj = Project(project_path=abs_path + os.path.basename(abs_path) +".psx")
-            else:
-                prj = Project(project_path=abs_path + "/"+ os.path.basename(abs_path) +".psx")
+            prj = Project(project_path=abs_path.rstrip('/') + "/"+ os.path.basename(abs_path) +".psx")
             prj.new_project()
 
         """#TODO: DEBUGGING
