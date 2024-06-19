@@ -32,6 +32,7 @@ class Settings:
         found_major_version = ".".join(Metashape.app.version.split('.')[:2])
         if found_major_version != compatible_major_version:
             raise Exception("Incompatible Metashape version: {} != {}".format(found_major_version, compatible_major_version))
+        print("-- Versione Metashape compatibile")
 
     """
     set CPU when performing GPU accelerated processing
@@ -59,7 +60,7 @@ class Settings:
             gpu_mask = 2**num_gpus - 1
 
         Metashape.app.gpu_mask = gpu_mask
-        #print(Metashape.app.gpu_mask)
+        print("-- maschera utilizzata:", Metashape.app.gpu_mask)
 
     """
     enable log file
