@@ -6,7 +6,7 @@
             "log": "./path/log/"
         },
         "project":{
-            "path": "/home/metashape/UAV-digital-twin/new_project/"
+            "path": "../new_project/"
         },
         "PhotoProcessor":{
 

@@ -32,7 +32,7 @@ def execute_steps(steps_params_to_run: dict):
 
     # Loading/New project
     if 'project' in steps_params_to_run:
-        if not isinstance(steps_params_to_run['project']['path'], str) or os.path.normpath(steps_params_to_run['project']['path']):
+        if not isinstance(steps_params_to_run['project']['path'], str) or not os.path.normpath(steps_params_to_run['project']['path']):
             raise ValueError("Error: specify a suitable path to project file")
         prj = Project(project_path=steps_params_to_run['project']['path'])
 
