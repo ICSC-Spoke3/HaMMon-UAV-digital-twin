@@ -26,6 +26,7 @@ class Project(metaclass=SingletonMeta):
         self.doc = Metashape.app.Document
         self.doc.open(path=self.project_path, read_only=False)
         self.chunk = self.doc.chunk
+        print("--Load Project", self.doc.path)
         # chunk.matchPhotos
         # chunk.alignCameras
         # buildDepthMaps
@@ -38,6 +39,7 @@ class Project(metaclass=SingletonMeta):
         self.doc = Metashape.Document()
         self.save_project(version="New project")
         self.chunk = self.doc.addChunk()
+        print("--New Project", self.doc.path)
 
     # project version to save
     def save_project(self, version: str):

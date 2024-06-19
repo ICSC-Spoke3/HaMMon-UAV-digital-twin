@@ -30,6 +30,8 @@ def execute_steps(steps_params_to_run: dict):
         if steps_params_to_run['settings']['log']:  # log
             my_settings.set_log(steps_params_to_run['settings']['log'])
 
+    print("=============================")
+
     # Loading/New project
     if 'project' in steps_params_to_run:
         if not isinstance(steps_params_to_run['project']['path'], str):
