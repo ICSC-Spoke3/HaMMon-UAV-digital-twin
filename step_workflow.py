@@ -34,8 +34,15 @@ def execute_steps(steps_params_to_run: dict):
     if 'project' in steps_params_to_run:
         if not isinstance(steps_params_to_run['project']['path'], str) or not os.path.normpath(steps_params_to_run['project']['path']):
             raise ValueError("Error: specify a suitable path to project file")
-        prj = Project(project_path=steps_params_to_run['project']['path'])
-
+        
+        abs_path = "" 
+        # check absolute/relative project path
+        if os.path.isabs(steps_params_to_run['project']['path']):
+            abs_path = steps_params_to_run['project']['path']
+        else:
+            abs_path = os.path.abspath(steps_params_to_run['project']['path'])
+        
+        prj = Project(project_path=abs_path)
         print("-- DEBUG: prj.path: ", prj.project_path)
 
         # path con file .psx o .psz
@@ -43,14 +50,20 @@ def execute_steps(steps_params_to_run: dict):
             _, extension = os.path.splitext(steps_params_to_run['project']['path'])
             if extension.lower() in ['.psx', '.psz']:
                 prj.load_project()
+            else:
+                raise TypeError("Estenzione file non conforme a .psx/.psz di Metashape")
         else: 
-        # solo path di salvataggio
+        # new save path
+            if not os.path.exists(abs_path):
+                os.makedirs(abs_path)
             prj.new_project()
 
         """#TODO: DEBUGGING
         print("--DEGUB: lista di chunck ", prj.doc.chunks)
         print("--DEGUB: meta ", prj.doc.meta)
         print("--path: ", prj.doc.path)"""
+    else:
+        raise Exception("Non è stato specificato un save path o load project")
     """
     # TODO: commentare
     if 'PhotoProcessor' in steps_params_to_run:

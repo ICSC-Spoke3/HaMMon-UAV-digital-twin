@@ -15,13 +15,7 @@ class SingletonMeta(type):
     
 class Project(metaclass=SingletonMeta):
     def __init__(self, project_path: str = None):
-        # check absolute/relative project path
-        if os.path.isabs(project_path):
-            self.project_path = project_path
-        else:
-            self.project_path = os.path.abspath(project_path) + "/"
-        print("--DEBUG: path finale? ", self.project_path)
-        #self.project_path = project_path
+        self.project_path = project_path
         self.doc = None
         self.chunk = None
 
