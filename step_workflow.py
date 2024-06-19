@@ -39,30 +39,26 @@ def execute_steps(steps_params_to_run: dict):
         if not isinstance(steps_params_to_run['project']['path'], str) or not os.path.normpath(steps_params_to_run['project']['path']):
             raise ValueError("Error: specify a suitable path to project file")
         
-        abs_path = "" 
-        # check absolute/relative project path
+        # set absolute project path
         abs_path = os.path.abspath(steps_params_to_run['project']['path'])
         
-        print("--DEBUG è completo? ", abs_path)
         # path con file .psx o .psz
         if is_file_path(steps_params_to_run['project']['path']):
             _, extension = os.path.splitext(steps_params_to_run['project']['path'])
             if extension.lower() in ['.psx', '.psz']:
-                print("--DEBUG è nel formato giusto ",abs_path)
                 prj = Project(project_path=abs_path)
                 prj.load_project()
             else:
                 raise TypeError("Estenzione file non conforme a .psx/.psz di Metashape")
         else: 
-        # new project file.psx
-            # define name_project.psx
+        # define new project name_project.psx
             prj = Project(project_path=abs_path.rstrip('/') + "/"+ os.path.basename(abs_path.rstrip('/')) +".psx")
             prj.new_project()
 
-        """#TODO: DEBUGGING
+        #TODO: DEBUGGING
         print("--DEGUB: lista di chunck ", prj.doc.chunks)
         print("--DEGUB: meta ", prj.doc.meta)
-        print("--path: ", prj.doc.path)"""
+        print("--path: ", prj.doc.path)
     else:
         raise Exception("Non è stato specificato un save path o load project")
     """
