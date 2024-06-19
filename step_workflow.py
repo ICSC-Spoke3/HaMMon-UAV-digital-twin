@@ -47,10 +47,10 @@ def execute_steps(steps_params_to_run: dict):
             if os.path.exists(steps_params_to_run['project']['path']):
                 prj.new_project()
 
-        #TODO: DEBUGGING
+        """#TODO: DEBUGGING
         print("--DEGUB: lista di chunck ", prj.doc.chunks)
         print("--DEGUB: meta ", prj.doc.meta)
-        print("--path: ", prj.doc.path)
+        print("--path: ", prj.doc.path)"""
     """
     # TODO: commentare
     if 'PhotoProcessor' in steps_params_to_run:
