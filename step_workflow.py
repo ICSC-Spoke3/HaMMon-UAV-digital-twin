@@ -11,7 +11,7 @@ from src.photoprocessor import PhotoProcessor
 
 valid_steps = ['settings', 'project', 'PhotoProcessor']
 
-# path con specificato un file o meno
+# return if file in path
 def is_file_path(path):
     return os.path.splitext(path)[1] != ''
 
@@ -41,10 +41,7 @@ def execute_steps(steps_params_to_run: dict):
         
         abs_path = "" 
         # check absolute/relative project path
-        if os.path.isabs(steps_params_to_run['project']['path']):
-            abs_path = steps_params_to_run['project']['path']
-        else:
-            abs_path = os.path.abspath(steps_params_to_run['project']['path'])
+        abs_path = os.path.abspath(steps_params_to_run['project']['path'])
         
         print("--DEBUG è completo? ", abs_path)
         # path con file .psx o .psz
