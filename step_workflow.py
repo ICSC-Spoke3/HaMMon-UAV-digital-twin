@@ -52,12 +52,11 @@ def execute_steps(steps_params_to_run: dict):
                 raise TypeError("Estenzione file non conforme a .psx/.psz di Metashape")
         else: 
         # new project file.psx
-            """
-            if not os.path.exists(abs_path):
-                os.makedirs(abs_path)
-            """
-            print(abs_path + "/"+ os.path.basename(abs_path) +".psx") 
-            prj = Project(project_path=abs_path + "/"+ os.path.basename(abs_path) +".psx")
+            # define name_project.psx
+            if abs_path[-1] == "/":
+                prj = Project(project_path=abs_path + os.path.basename(abs_path) +".psx")
+            else:
+                prj = Project(project_path=abs_path + "/"+ os.path.basename(abs_path) +".psx")
             prj.new_project()
 
         """#TODO: DEBUGGING
