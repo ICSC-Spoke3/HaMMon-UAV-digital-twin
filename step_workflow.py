@@ -35,18 +35,12 @@ def execute_steps(steps_params_to_run: dict):
         if not isinstance(steps_params_to_run['project']['path'], str) or not os.path.normpath(steps_params_to_run['project']['path']):
             raise ValueError("Error: specify a suitable path to project file")
         
-        abs_path = "" 
-        # check absolute/relative project path
-        if os.path.isabs(steps_params_to_run['project']['path']):
-            abs_path = steps_params_to_run['project']['path']
-        else:
-            abs_path = os.path.abspath(steps_params_to_run['project']['path'])
+        prj = Project(project_path=steps_params_to_run['project']['path'])
         
         # path con file .psx o .psz
         if os.path.isfile(steps_params_to_run['project']['path']):
             _, extension = os.path.splitext(steps_params_to_run['project']['path'])
             if extension.lower() in ['.psx', '.psz']:
-                prj = Project(project_path=abs_path)
                 prj.load_project()
             else:
                 raise TypeError("Estenzione file non conforme a .psx/.psz di Metashape")
@@ -56,8 +50,6 @@ def execute_steps(steps_params_to_run: dict):
             if not os.path.exists(abs_path):
                 os.makedirs(abs_path)
             """
-            print(abs_path + "/"+ os.path.basename(abs_path) +".psx") 
-            prj = Project(project_path=abs_path + "/"+ os.path.basename(abs_path) +".psx")
             prj.new_project()
 
         """#TODO: DEBUGGING
