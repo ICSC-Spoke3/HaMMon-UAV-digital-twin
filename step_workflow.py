@@ -55,7 +55,6 @@ def execute_steps(steps_params_to_run: dict):
             prj = Project(project_path=abs_path.rstrip('/') + "/"+ os.path.basename(abs_path.rstrip('/')) +".psx")
             prj.new_project()
 
-        #TODO: DEBUGGING
         print("--DEGUB: lista di chunck ", prj.doc.chunks)
         print("--DEGUB: meta ", prj.doc.meta)
         print("--path: ", prj.doc.path)
