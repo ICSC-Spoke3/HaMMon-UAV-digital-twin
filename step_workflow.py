@@ -17,12 +17,10 @@ Core: esecuzione dei singoli steps scelti
 def execute_steps(steps_params_to_run: dict):
     # check steps_params_to_run not empty
     if not steps_params_to_run:
-        print("Errore: non ci sono processi da eseguire.")
-        exit(1)
+        raise Exception("Errore: non ci sono processi da eseguire.")
     # check steps_to_run are valid steps
     if any(step not in valid_steps for step in steps_params_to_run):
-        print("Errore: uno o più processi specificati non sono validi.")
-        exit(1)
+        raise Exception("Errore: uno o più processi specificati non sono validi.")
 
     # Preferences
     if 'settings' in steps_params_to_run:
