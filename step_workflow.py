@@ -11,6 +11,10 @@ from src.photoprocessor import PhotoProcessor
 
 valid_steps = ['settings', 'project', 'PhotoProcessor']
 
+# path con specificato un file o meno
+def is_file_path(path):
+    return os.path.splitext(path)[1] != ''
+
 """
 Core: esecuzione dei singoli steps scelti 
 """
@@ -42,12 +46,12 @@ def execute_steps(steps_params_to_run: dict):
         else:
             abs_path = os.path.abspath(steps_params_to_run['project']['path'])
         
-        print("è completo? ",abs_path)
+        print("--DEBUG è completo? ", abs_path)
         # path con file .psx o .psz
-        if os.path.isfile(steps_params_to_run['project']['path']):
+        if is_file_path(steps_params_to_run['project']['path']):
             _, extension = os.path.splitext(steps_params_to_run['project']['path'])
             if extension.lower() in ['.psx', '.psz']:
-                print("è nel formato giusto ",abs_path)
+                print("--DEBUG è nel formato giusto ",abs_path)
                 prj = Project(project_path=abs_path)
                 prj.load_project()
             else:
