@@ -36,6 +36,8 @@ def execute_steps(steps_params_to_run: dict):
             raise ValueError("Error: specify a suitable path to project file")
         prj = Project(project_path=steps_params_to_run['project']['path'])
 
+        print("-- DEBUG: prj.path: ", prj.project_path)
+
         # path con file .psx o .psz
         if os.path.isfile(steps_params_to_run['project']['path']):
             _, extension = os.path.splitext(steps_params_to_run['project']['path'])
