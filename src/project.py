@@ -24,7 +24,7 @@ class Project(metaclass=SingletonMeta):
         return cls()
 
     def load_project(self):
-        self.doc = Metashape.app.Document
+        self.doc = Metashape.app.document
         self.doc.open(path=self.project_path, read_only=False)
         self.chunk = self.doc.chunk
         print("--Load Project", self.doc.path)
