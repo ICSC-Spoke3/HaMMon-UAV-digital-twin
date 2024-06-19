@@ -5,7 +5,7 @@ import yaml
 import os
 from progress_printer import ProgressPrinter
 from src.settings import Settings
-from src.project import Project
+#from src.project import Project
 from src.photoprocessor import PhotoProcessor
 
 
@@ -51,22 +51,23 @@ def execute_steps(steps_params_to_run: dict):
         print("--DEGUB: lista di chunck ", prj.doc.chunks)
         print("--DEGUB: meta ", prj.doc.meta)
         print("--path: ", prj.doc.path)
-
+    """
     # TODO: commentare
     if 'PhotoProcessor' in steps_params_to_run:
         photoprocess = PhotoProcessor(photos_path=image_files)
         photoprocess.addPhotos(progress_printer=ProgressPrinter("addPhotos"))
+    """
 
     
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
         
-        """
-        # Ottieni il valore di un setting
-        print(my_settings.get_setting('setting1'))  # Stampa 'value1'
+    """
+    # Ottieni il valore di un setting
+    print(my_settings.get_setting('setting1'))  # Stampa 'value1'
 
-        # Imposta il valore di un setting
-        my_settings.set_setting('setting3', 'value3')
-        """
+    # Imposta il valore di un setting
+    my_settings.set_setting('setting3', 'value3')
+    """
 
     
 """
