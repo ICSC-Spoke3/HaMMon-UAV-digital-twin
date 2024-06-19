@@ -1,6 +1,6 @@
 # photoprocessor.py
 import Metashape
-from project import Project
+from src.project import Project
 
 """
 Esegue l'inserimento delle foto, il filtro qualità, il match delle foto e l'allineamento di queste per poi creare la nuvola sparsa di punti
