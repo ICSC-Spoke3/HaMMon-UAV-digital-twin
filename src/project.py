@@ -1,5 +1,6 @@
 # project.py
 import Metashape
+import os
 
 class SingletonMeta(type):
     _instances = {}
@@ -14,7 +15,12 @@ class SingletonMeta(type):
     
 class Project(metaclass=SingletonMeta):
     def __init__(self, project_path: str = None):
-        self.project_path = project_path
+        # check absolute/relative project path
+        if os.path.isabs(project_path):
+            self.project_path = project_path
+        else:
+            self.project_path = os.path.abspath(project_path)
+        #self.project_path = project_path
         self.doc = None
         self.chunk = None
 

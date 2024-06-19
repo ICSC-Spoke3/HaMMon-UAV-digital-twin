@@ -45,7 +45,6 @@ def execute_steps(steps_params_to_run: dict):
                 prj.load_project()
         else: 
         # solo path di salvataggio
-            # TODO: capire se Metashape gestisce input di path non esistenti, nella creazione di un nuovo progetto
             prj.new_project()
 
         """#TODO: DEBUGGING
