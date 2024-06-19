@@ -59,7 +59,7 @@ def execute_steps(steps_params_to_run: dict):
             print(abs_path)
 
             print(os.path.basename(abs_path))
-            print(abs_path+ "/"+ os.path.basename(abs_path))  # Restituisce l'ultimo folder o file nel percorso
+            print(abs_path + "/"+ os.path.basename(abs_path) +".psx")  # Restituisce l'ultimo folder o file nel percorso
             #prj = Project(project_path=abs_path)
             #prj.new_project()
 
