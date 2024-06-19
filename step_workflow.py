@@ -32,7 +32,7 @@ def execute_steps(steps_params_to_run: dict):
 
     # Loading/New project
     if 'project' in steps_params_to_run:
-        if not isinstance(steps_params_to_run['project']['path'], str):
+        if not isinstance(steps_params_to_run['project']['path'], str) or os.path.normpath(steps_params_to_run['project']['path']):
             raise ValueError("Error: specify a suitable path to project file")
         prj = Project(project_path=steps_params_to_run['project']['path'])
 
@@ -46,8 +46,7 @@ def execute_steps(steps_params_to_run: dict):
         else: 
         # solo path di salvataggio
             # TODO: capire se Metashape gestisce input di path non esistenti, nella creazione di un nuovo progetto
-            if os.path.exists(steps_params_to_run['project']['path']):
-                prj.new_project()
+            prj.new_project()
 
         """#TODO: DEBUGGING
         print("--DEGUB: lista di chunck ", prj.doc.chunks)
