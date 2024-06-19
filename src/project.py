@@ -19,7 +19,7 @@ class Project(metaclass=SingletonMeta):
         if os.path.isabs(project_path):
             self.project_path = project_path
         else:
-            self.project_path = os.path.abspath(project_path)
+            self.project_path = os.path.abspath(project_path) + "/"
         print("--DEBUG: path finale? ", self.project_path)
         #self.project_path = project_path
         self.doc = None
