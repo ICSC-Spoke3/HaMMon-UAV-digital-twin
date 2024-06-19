@@ -53,7 +53,7 @@ def execute_steps(steps_params_to_run: dict):
         else: 
         # new project file.psx
             # define name_project.psx
-            prj = Project(project_path=abs_path.rstrip('/') + "/"+ os.path.basename(abs_path) +".psx")
+            prj = Project(project_path=abs_path.rstrip('/') + "/"+ os.path.basename(abs_path.rstrip('/')) +".psx")
             prj.new_project()
 
         """#TODO: DEBUGGING
