@@ -5,7 +5,7 @@ import yaml
 import os
 from progress_printer import ProgressPrinter
 from src.settings import Settings
-#from src.project import Project
+from src.project import Project
 from src.photoprocessor import PhotoProcessor
 
 

@@ -17,9 +17,6 @@ class PhotoProcessor:
                                      progress=progress_printer)
         self.project.save_project(version="addPhotos")
         print("-- "+ str(len(self.project.chunk.cameras)) + " images loaded")
-
-    # TODO: analize image
-    # TODO: optimize camera
     
     def filterImageQuality(self):
         num_disenable_photos = 0
@@ -31,6 +28,6 @@ class PhotoProcessor:
         self.project.save_project(version="filterImageQuality")
         print("-- "+ str(len(self.project.chunk.cameras)- num_disenable_photos) + " images filtered")
 
-
+    # TODO: optimize camera
 
     
