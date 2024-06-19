@@ -56,12 +56,9 @@ def execute_steps(steps_params_to_run: dict):
             if not os.path.exists(abs_path):
                 os.makedirs(abs_path)
             """
-            print(abs_path)
-
-            print(os.path.basename(abs_path))
-            print(abs_path + "/"+ os.path.basename(abs_path) +".psx")  # Restituisce l'ultimo folder o file nel percorso
-            #prj = Project(project_path=abs_path)
-            #prj.new_project()
+            print(abs_path + "/"+ os.path.basename(abs_path) +".psx") 
+            prj = Project(project_path=abs_path + "/"+ os.path.basename(abs_path) +".psx")
+            prj.new_project()
 
         """#TODO: DEBUGGING
         print("--DEGUB: lista di chunck ", prj.doc.chunks)
