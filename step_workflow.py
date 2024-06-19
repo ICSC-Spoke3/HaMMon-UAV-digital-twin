@@ -40,7 +40,7 @@ def execute_steps(steps_params_to_run: dict):
         if os.path.isabs(steps_params_to_run['project']['path']):
             abs_path = steps_params_to_run['project']['path']
         else:
-            abs_path = os.path.abspath(steps_params_to_run['project']['path'])
+            abs_path = os.path.abspath(steps_params_to_run['project']['path']) + "/"
         
         prj = Project(project_path=abs_path)
         print("-- DEBUG: prj.path: ", prj.project_path)
