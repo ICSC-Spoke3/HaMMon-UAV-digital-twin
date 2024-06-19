@@ -42,21 +42,24 @@ def execute_steps(steps_params_to_run: dict):
         else:
             abs_path = os.path.abspath(steps_params_to_run['project']['path']) + "/"
         
-        prj = Project(project_path=abs_path)
-        print("-- DEBUG: prj.path: ", prj.project_path)
-
         # path con file .psx o .psz
         if os.path.isfile(steps_params_to_run['project']['path']):
             _, extension = os.path.splitext(steps_params_to_run['project']['path'])
             if extension.lower() in ['.psx', '.psz']:
+                prj = Project(project_path=abs_path)
                 prj.load_project()
             else:
                 raise TypeError("Estenzione file non conforme a .psx/.psz di Metashape")
         else: 
-        # new save path
+        # new project file.psx
+            """
             if not os.path.exists(abs_path):
                 os.makedirs(abs_path)
-            prj.new_project()
+            """
+            print(abs_path)
+            #os.path.basename(abs_path)  # Restituisce l'ultimo folder o file nel percorso
+            #prj = Project(project_path=abs_path)
+            #prj.new_project()
 
         """#TODO: DEBUGGING
         print("--DEGUB: lista di chunck ", prj.doc.chunks)
