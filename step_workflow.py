@@ -40,7 +40,7 @@ def execute_steps(steps_params_to_run: dict):
         if os.path.isabs(steps_params_to_run['project']['path']):
             abs_path = steps_params_to_run['project']['path']
         else:
-            abs_path = os.path.abspath(steps_params_to_run['project']['path']) + "/"
+            abs_path = os.path.abspath(steps_params_to_run['project']['path'])
         
         # path con file .psx o .psz
         if os.path.isfile(steps_params_to_run['project']['path']):
@@ -57,7 +57,9 @@ def execute_steps(steps_params_to_run: dict):
                 os.makedirs(abs_path)
             """
             print(abs_path)
-            #os.path.basename(abs_path)  # Restituisce l'ultimo folder o file nel percorso
+
+            print(os.path.basename(abs_path))
+            print(abs_path+ "/"+ os.path.basename(abs_path))  # Restituisce l'ultimo folder o file nel percorso
             #prj = Project(project_path=abs_path)
             #prj.new_project()
 
