@@ -6,7 +6,7 @@
             "log": "./path/log/"
         },
         "project":{
-            "path": "/path/to/load/project.psx"
+            "path": "/new_project/"
         },
         "PhotoProcessor":{
 
