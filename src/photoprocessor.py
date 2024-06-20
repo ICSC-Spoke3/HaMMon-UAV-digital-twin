@@ -34,10 +34,9 @@ class PhotoProcessor:
     def filterNuovo(self, progress_printer: str):
         self.project.chunk.analyzeImages(cameras=self.project.chunk.cameras, progress=progress_printer)
         print()
-        print(self.project.chunk.cameras[0].meta.keys(), 
-              self.project.chunk.cameras[0].meta.values())
+        #print(self.project.chunk.cameras[0].meta.keys(), self.project.chunk.cameras[0].meta.values())
         for camera in self.project.chunk.cameras:
-            print(camera.photo.meta['Image/Quality'])
+            print(camera.meta['Image/Quality'])
         """
         num_disable_photos = 0
         for camera in self.project.chunk.cameras:
