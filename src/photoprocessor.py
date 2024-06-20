@@ -22,16 +22,6 @@ class PhotoProcessor:
     Estimate the image quality. Cameras with a quality less than 0.5 are considered blurred and it’s recommended to disable them.
     """
     def filterImageQuality(self, progress_printer: str):
-        num_disable_photos = 0
-        for camera in self.project.chunk.cameras:
-            self.project.chunk.analyzeImages(camera)
-            if float(camera.photo.meta['Image/Quality']) < 0.5:
-                camera.enabled = False
-                num_disable_photos += 1
-        print("-- "+ str(len(self.project.chunk.cameras)- num_disable_photos) + " images filtered")
-        self.project.save_project(version="filterImageQuality")
-
-    def filterNuovo(self, progress_printer: str):
         self.project.chunk.analyzeImages(cameras=self.project.chunk.cameras, progress=progress_printer)
         print()
         num_disable_photos = 0
