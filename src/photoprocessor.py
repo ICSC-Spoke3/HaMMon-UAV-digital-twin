@@ -15,7 +15,7 @@ class PhotoProcessor:
     """
     Add a list of photos to the chunk.
     """
-    def addPhotos(self, progress_printer: str):
+    def addPhotos(self, progress_printer: str) -> None:
         self.project.chunk.addPhotos(filenames=self.photos_path,
                                      progress=progress_printer)
         self.project.save_project(version="addPhotos")
@@ -24,7 +24,7 @@ class PhotoProcessor:
     """
     Estimate the image quality. Cameras with a quality less than 0.5 are considered blurred and it’s recommended to disable them.
     """
-    def filterImageQuality(self, progress_printer: str):
+    def filterImageQuality(self, progress_printer: str) -> None:
         self.project.chunk.analyzeImages(cameras=self.project.chunk.cameras,
                                          progress=progress_printer)
         print()
@@ -35,6 +35,29 @@ class PhotoProcessor:
                 num_disable_photos += 1
         print("-- DEBUG: "+ str(num_disable_photos) + " images filtered")
         self.project.save_project(version="filterImageQuality")
+
+
+    """
+    Perform image matching
+    """
+    def matchPhotos(self, progress_printer: str, **kwargs) -> None:
+        default_params = {
+            'downscale': 1,
+            'keypoint_limit': 40000,
+            'tiepoint_limit': 10000,
+            'generic_preselection': True,
+            'reference_preselection': False,
+            'filter_stationary_points': True,
+            'guided_matching': False,
+            'subdivide_task': True
+        }
+        # update default params with the input
+        default_params.update(kwargs)
+        self.project.chunk.matchPhotos(progress=progress_printer, **default_params)
+        self.project.save_project(version="matchPhotos")
+
+    def alignCameras(self):
+        pass
         
     def optimizeCameras(self, progress_printer: str, **kwargs):
         default_params = {
