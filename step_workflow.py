@@ -100,6 +100,8 @@ def execute_steps(steps_params_to_run: dict):
                 pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"))
             if steps_params_to_run['PointCloudProcessor']['colorizePointCloud']:
                 pointcloudprocess.colorizePointCloud(progress_printer=ProgressPrinter("colorizePointCloud"), **steps_params_to_run['PointCloudProcessor']['colorizePointCloud'])
+            else:
+                pointcloudprocess.colorizePointCloud(progress_printer=ProgressPrinter("colorizePointCloud"))
     
     
     """

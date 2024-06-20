@@ -57,6 +57,7 @@ class PointCloudProcessor:
         self.project.chunk.colorizePointCloud(progress=progress_printer, **default_params)
         self.project.save_project(version="colorizePointCloud")
 
+# TODO: filter point cloud
 
     
 
