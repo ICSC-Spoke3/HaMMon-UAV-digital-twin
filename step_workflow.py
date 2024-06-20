@@ -67,6 +67,15 @@ def execute_steps(steps_params_to_run: dict):
         photoprocess.addPhotos(progress_printer=ProgressPrinter("addPhotos"))
     """
 
+    """
+    # chunk.matchPhotos
+        # chunk.alignCameras
+        # buildDepthMaps
+        # buildModel
+        # buildUV
+        # buildTexture
+        # save()
+    """
     
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
         

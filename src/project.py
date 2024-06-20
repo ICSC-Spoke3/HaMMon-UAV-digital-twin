@@ -28,13 +28,6 @@ class Project(metaclass=SingletonMeta):
         self.doc.open(path=self.project_path, read_only=False)
         self.chunk = self.doc.chunk
         print("--Load Project", self.doc.path)
-        # chunk.matchPhotos
-        # chunk.alignCameras
-        # buildDepthMaps
-        # buildModel
-        # buildUV
-        # buildTexture
-        # save()
 
     def new_project(self):
         self.doc = Metashape.Document()
