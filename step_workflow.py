@@ -67,7 +67,8 @@ def execute_steps(steps_params_to_run: dict):
         photoprocess = PhotoProcessor(photos_path=image_files)
         photoprocess.addPhotos(progress_printer=ProgressPrinter("addPhotos"))
         photoprocess.filterImageQuality(progress_printer=ProgressPrinter("filterPhotos"))
-        photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"))
+        if steps_params_to_run['PhotoProcessor']['optimizeCameras']:
+            photoprocess.optimizeCameras(steps_params_to_run['PhotoProcessor']['optimizeCameras'], progress_printer=ProgressPrinter("optimizeCameras"))
     
 
     """
