@@ -32,7 +32,7 @@ def execute_steps(steps_params_to_run: dict):
         if steps_params_to_run['settings']['log']:  # log
             my_settings.set_log(steps_params_to_run['settings']['log'])
 
-    print("============SETTINGS===============")
+    print("== == == == == SETTINGS == == == == ==")
 
     # Loading/New project
     if 'project' in steps_params_to_run:
@@ -61,14 +61,17 @@ def execute_steps(steps_params_to_run: dict):
     else:
         raise Exception("Non è stato specificato un save path o load project")
     
-    print("============Loading/NewProject===============")
+    print(" == == == Loading/NewProject == == ==")
 
     if 'PhotoProcessor' in steps_params_to_run:
         photoprocess = PhotoProcessor(photos_path=image_files)
         photoprocess.addPhotos(progress_printer=ProgressPrinter("addPhotos"))
         photoprocess.filterImageQuality(progress_printer=ProgressPrinter("filterPhotos"))
         if steps_params_to_run['PhotoProcessor']['matchPhotos']:
+            photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"), **steps_params_to_run['PhotoProcessor']['matchPhotos'])
+        else: # do it by default
             photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"))
+
         
         # TODO dopo align camera
         if steps_params_to_run['PhotoProcessor']['optimizeCameras']:
