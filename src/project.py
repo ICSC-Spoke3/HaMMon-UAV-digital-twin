@@ -31,13 +31,13 @@ class Project(metaclass=SingletonMeta):
 
     def new_project(self):
         self.doc = Metashape.Document()
-        self.save_project(version="New project")
+        self.save_project(path=self.project_path, version="New project")
         self.chunk = self.doc.addChunk()
         print("--New Project", self.doc.path)
 
     # project version to save
-    def save_project(self, version: str):
-        self.doc.save(path=self.project_path, version=version)
+    def save_project(self, version: str, path: str = None):
+        self.doc.save(path=path, version=version)
 
     def quit_project(self):
         Metashape.app.quit()
