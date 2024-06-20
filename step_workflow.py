@@ -94,10 +94,12 @@ def execute_steps(steps_params_to_run: dict):
         if (pointcloudprocess.project.chunk.transform.scale and 
             pointcloudprocess.project.chunk.transform.rotation and 
             pointcloudprocess.project.chunk.transform.translation):
-            pass
+            if steps_params_to_run['PointCloudProcessor']['buildPointCloud']:
+                pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"), **steps_params_to_run['PointCloudProcessor']['buildPointCloud'])
+            else:
+                pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"))
 
     """
-        # buildDepthMaps
         # buildModel
         # buildUV
         # buildTexture

@@ -27,6 +27,23 @@ class PointCloudProcessor:
         self.project.chunk.buildDepthMaps(progress=progress_printer, **default_params)
         self.project.save_project(version="buildDepthMaps")
 
+    """
+    Build dense point cloud
+    """
+    def buildPointCloud(self, progress_printer: str, **kwargs) -> None:
+        default_params = {
+            'source_data': Metashape.DepthMapsData,
+            'point_colors': True,
+            'point_confidence': True,
+            'keep_depth': True,
+            'subdivide_task': True
+        }
+        # update default params with the input
+        default_params.update(kwargs)
+        self.project.chunk.buildPointCloud(progress=progress_printer, **default_params)
+        self.project.save_project(version="buildPointCloud")
+
+
     
 
 

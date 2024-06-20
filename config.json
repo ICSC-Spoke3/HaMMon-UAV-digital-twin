@@ -22,6 +22,9 @@
         "PointCloudProcessor":{
             "buildDepthMaps":{
 
+            },
+            "buildPointCloud":{
+                
             }
 
         }
