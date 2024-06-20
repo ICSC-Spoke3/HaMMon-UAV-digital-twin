@@ -75,8 +75,8 @@ def execute_steps(steps_params_to_run: dict):
             photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"), **steps_params_to_run['PhotoProcessor']['alignCameras'])
         else: # do it by default
             photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"))
-        #if steps_params_to_run['PhotoProcessor']['optimizeCameras']:
-        #    photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
+        if steps_params_to_run['PhotoProcessor']['optimizeCameras']:
+            photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
     
 
     """
