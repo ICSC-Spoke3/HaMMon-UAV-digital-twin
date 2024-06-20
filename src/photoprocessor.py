@@ -36,7 +36,26 @@ class PhotoProcessor:
         print("-- DEBUG: "+ str(num_disable_photos) + " images filtered")
         self.project.save_project(version="filterImageQuality")
         
+    def optimizeCameras(self, progress_printer: str, **kwargs):
+        default_params = {
+            'fit_f': True, 
+            'fit_cx': True, 
+            'fit_cy': True, 
+            'fit_b1': False, 
+            'fit_b2': False, 
+            'fit_k1': True,
+            'fit_k2': True, 
+            'fit_k3': True, 
+            'fit_k4': False, 
+            'fit_p1': True, 
+            'fit_p2': True, 
+            'fit_corrections': False,
+            'adaptive_fitting': False, 
+            'tiepoint_covariance': False
+        }
+        # Aggiorna i parametri predefiniti con quelli forniti
+        default_params.update(kwargs)
+        self.project.chunk.optimizeCameras(progress=progress_printer, **default_params)
 
-    # TODO: optimize camera
 
     
