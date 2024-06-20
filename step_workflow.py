@@ -72,12 +72,11 @@ def execute_steps(steps_params_to_run: dict):
         else: # do it by default
             photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"))
         if steps_params_to_run['PhotoProcessor']['alignCameras']:
-            photoprocess.matchPhotos(progress_printer=ProgressPrinter("alignCameras"), **steps_params_to_run['PhotoProcessor']['alignCameras'])
+            photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"), **steps_params_to_run['PhotoProcessor']['alignCameras'])
         else: # do it by default
-            photoprocess.matchPhotos(progress_printer=ProgressPrinter("alignCameras"))
-
-        #if steps_params_to_run['PhotoProcessor']['optimizeCameras']:
-        #    photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
+            photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"))
+        if steps_params_to_run['PhotoProcessor']['optimizeCameras']:
+            photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
     
 
     """
