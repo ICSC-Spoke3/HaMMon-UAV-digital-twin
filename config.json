@@ -1,7 +1,7 @@
 {
     "workflow": {
         "settings": {
-            "cpu_enable": true,
+            "cpu_enable": false,
             "gpu_mask": "11",
             "log": "./path/log/"
         },
@@ -21,7 +21,7 @@
         },
         "PointCloudProcessor":{
             "buildDepthMaps":{
-                
+
             }
 
         }
