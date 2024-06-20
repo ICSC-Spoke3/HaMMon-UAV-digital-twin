@@ -37,7 +37,11 @@ class Project(metaclass=SingletonMeta):
 
     # project version to save
     def save_project(self, version: str, path: str = None):
-        self.doc.save(path=path, version=version)
+        if path == None:
+            self.doc.save(version=version)
+        else:
+            # init project case
+            self.doc.save(path=path, version=version)
 
     def quit_project(self):
         Metashape.app.quit()

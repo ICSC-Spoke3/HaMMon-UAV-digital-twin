@@ -15,8 +15,8 @@ class PhotoProcessor:
     def addPhotos(self, progress_printer: str):
         self.project.chunk.addPhotos(filenames=self.photos_path,
                                      progress=progress_printer)
-        print("-- "+ str(len(self.project.chunk.cameras)) + " images loaded")
         self.project.save_project(version="addPhotos")
+        print("-- "+ str(len(self.project.chunk.cameras)) + " images loaded")
     
     def filterImageQuality(self):
         num_disable_photos = 0
