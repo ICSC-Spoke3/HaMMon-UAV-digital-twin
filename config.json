@@ -12,6 +12,9 @@
             "matchPhotos":{
                 "downscale": 2
             },
+            "alignCameras":{
+
+            },
             "optimizeCameras":{
                 "fit_f": true
             }

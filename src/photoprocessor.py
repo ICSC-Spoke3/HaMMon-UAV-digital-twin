@@ -3,7 +3,8 @@ import Metashape
 from src.project import Project
 
 """
-Esegue l'inserimento delle foto, il filtro qualità, il match delle foto e l'allineamento di queste per poi creare la nuvola sparsa di punti
+Esegue l'inserimento delle foto, il filtro qualità, il match delle foto e l'allineamento di queste, 
+possibile anche l'ottimizzazione della posizione delle camere e per poi creare la nuvola sparsa di punti
 """
 
 class PhotoProcessor:
@@ -55,11 +56,25 @@ class PhotoProcessor:
         default_params.update(kwargs)
         self.project.chunk.matchPhotos(progress=progress_printer, **default_params)
         self.project.save_project(version="matchPhotos")
+    
+    """
+    Perform photo alignment
+    """
+    def alignCameras(self, progress_printer: str, **kwargs) -> None:
+        default_params = {
+            'adaptive_fitting': False,
+            'reset_alignment': False,
+            'subdivide_task': True
+        }
+        # update default params with the input
+        default_params.update(kwargs)
+        self.project.chunk.alignCameras(progress=progress_printer, **default_params)
+        self.project.save_project(version="alignCameras")
 
-    def alignCameras(self):
-        pass
-        
-    def optimizeCameras(self, progress_printer: str, **kwargs):
+    """
+    Perform optimization of tie points / camera parameters
+    """
+    def optimizeCameras(self, progress_printer: str, **kwargs) -> None:
         default_params = {
             'fit_f': True, 
             'fit_cx': True, 
@@ -76,9 +91,10 @@ class PhotoProcessor:
             'adaptive_fitting': False, 
             'tiepoint_covariance': False
         }
-        # Aggiorna i parametri predefiniti con quelli forniti
+        # update default params with the input
         default_params.update(kwargs)
         self.project.chunk.optimizeCameras(progress=progress_printer, **default_params)
+        self.project.save_project(version="optimizeCameras")
 
 
     
