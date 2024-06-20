@@ -67,11 +67,12 @@ def execute_steps(steps_params_to_run: dict):
         photoprocess = PhotoProcessor(photos_path=image_files)
         photoprocess.addPhotos(progress_printer=ProgressPrinter("addPhotos"))
         photoprocess.filterImageQuality(progress_printer=ProgressPrinter("filterPhotos"))
-        photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"))
+        if steps_params_to_run['PhotoProcessor']['matchPhotos']:
+            photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"))
         
         # TODO dopo align camera
-        #if steps_params_to_run['PhotoProcessor']['optimizeCameras']:
-        #    photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
+        if steps_params_to_run['PhotoProcessor']['optimizeCameras']:
+            photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
     
 
     """

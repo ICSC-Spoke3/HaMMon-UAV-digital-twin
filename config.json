@@ -9,6 +9,9 @@
             "path": "../new_project/"
         },
         "PhotoProcessor":{
+            "matchPhotos":{
+                "downscale": 2
+            },
             "optimizeCameras":{
                 "fit_f": true
             }
