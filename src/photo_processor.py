@@ -1,5 +1,4 @@
-# photoprocessor.py
-import Metashape
+# photo_processor.py
 from src.project import Project
 
 """

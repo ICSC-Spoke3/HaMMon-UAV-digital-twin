@@ -6,10 +6,11 @@ import os
 from src.progress_printer import ProgressPrinter
 from src.settings import Settings
 from src.project import Project
-from src.photoprocessor import PhotoProcessor
+from src.photo_processor import PhotoProcessor
+from src.point_cloud_processor import PointCloudProcessor
 
 
-valid_steps = ['settings', 'project', 'PhotoProcessor']
+valid_steps = ['settings', 'project', 'PhotoProcessor', 'PointCloudProcessor']
 
 # return if file in path
 def is_file_path(path):
@@ -78,10 +79,24 @@ def execute_steps(steps_params_to_run: dict):
         if steps_params_to_run['PhotoProcessor']['optimizeCameras']:
             photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
     
+    print(" == == == PhotoProcessor == == ==")
+
+    if 'PointCloudProcessor' in steps_params_to_run:
+        pointcloudprocess = PointCloudProcessor()
+        if steps_params_to_run['PointCloudProcessor']['buildDepthMaps']:
+            pointcloudprocess.buildDepthMaps(progress_printer=ProgressPrinter("buildDepthMaps"), **steps_params_to_run['PointCloudProcessor']['buildDepthMaps'])
+        else: # do it by default
+            pointcloudprocess.buildDepthMaps(progress_printer=ProgressPrinter("buildDepthMaps"))
+
+        """
+        check chunk location in the world coordinate system: scale component, rotation component, translation component
+        """
+        if (pointcloudprocess.project.chunk.transform.scale and 
+            pointcloudprocess.project.chunk.transform.rotation and 
+            pointcloudprocess.project.chunk.transform.translation):
+            pass
 
     """
-    # chunk.matchPhotos
-        # chunk.alignCameras
         # buildDepthMaps
         # buildModel
         # buildUV
