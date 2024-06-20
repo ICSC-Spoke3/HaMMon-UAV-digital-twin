@@ -60,12 +60,13 @@ def execute_steps(steps_params_to_run: dict):
         print("--path: ", prj.doc.path)
     else:
         raise Exception("Non è stato specificato un save path o load project")
-    """
-    # TODO: commentare
+    
+    print("============Loading/NewProject===============")
+
     if 'PhotoProcessor' in steps_params_to_run:
         photoprocess = PhotoProcessor(photos_path=image_files)
         photoprocess.addPhotos(progress_printer=ProgressPrinter("addPhotos"))
-    """
+    
 
     """
     # chunk.matchPhotos

@@ -15,18 +15,19 @@ class PhotoProcessor:
     def addPhotos(self, progress_printer: str):
         self.project.chunk.addPhotos(filenames=self.photos_path,
                                      progress=progress_printer)
-        self.project.save_project(version="addPhotos")
         print("-- "+ str(len(self.project.chunk.cameras)) + " images loaded")
+        self.project.save_project(version="addPhotos")
     
     def filterImageQuality(self):
-        num_disenable_photos = 0
+        num_disable_photos = 0
         for camera in self.project.chunk.cameras:
             self.project.chunk.analyzePhotos(camera)
             if float(camera.photo.meta['Image/Quality']) < 0.5:
                 camera.enabled = False
-                num_disenable_photos += 1
+                num_disable_photos += 1
+        print("-- "+ str(len(self.project.chunk.cameras)- num_disable_photos) + " images filtered")
         self.project.save_project(version="filterImageQuality")
-        print("-- "+ str(len(self.project.chunk.cameras)- num_disenable_photos) + " images filtered")
+        
 
     # TODO: optimize camera
 
