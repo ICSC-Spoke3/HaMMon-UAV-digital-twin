@@ -3,7 +3,7 @@ import argparse
 import json
 import yaml
 import os
-from progress_printer import ProgressPrinter
+from src.progress_printer import ProgressPrinter
 from src.settings import Settings
 from src.project import Project
 from src.photoprocessor import PhotoProcessor
@@ -55,9 +55,9 @@ def execute_steps(steps_params_to_run: dict):
             prj = Project(project_path=abs_path.rstrip('/') + "/"+ os.path.basename(abs_path.rstrip('/')) +".psx")
             prj.new_project()
 
-        print("--DEGUB: lista di chunck ", prj.doc.chunks)
-        print("--DEGUB: meta ", prj.doc.meta)
-        print("--path: ", prj.doc.path)
+        #print("--DEGUB: lista di chunck ", prj.doc.chunks)
+        #print("--DEGUB: meta ", prj.doc.meta)
+        #print("--path: ", prj.doc.path)
     else:
         raise Exception("Non è stato specificato un save path o load project")
     
@@ -66,7 +66,7 @@ def execute_steps(steps_params_to_run: dict):
     if 'PhotoProcessor' in steps_params_to_run:
         photoprocess = PhotoProcessor(photos_path=image_files)
         photoprocess.addPhotos(progress_printer=ProgressPrinter("addPhotos"))
-        photoprocess.filterNuovo(progress_printer=ProgressPrinter("filterPhotos"))
+        photoprocess.filterImageQuality(progress_printer=ProgressPrinter("filterPhotos"))
     
 
     """

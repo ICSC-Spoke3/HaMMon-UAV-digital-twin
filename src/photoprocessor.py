@@ -12,6 +12,9 @@ class PhotoProcessor:
         self.project = Project.get_project()
         self.photos_path = photos_path
 
+    """
+    Add a list of photos to the chunk.
+    """
     def addPhotos(self, progress_printer: str):
         self.project.chunk.addPhotos(filenames=self.photos_path,
                                      progress=progress_printer)
@@ -22,14 +25,15 @@ class PhotoProcessor:
     Estimate the image quality. Cameras with a quality less than 0.5 are considered blurred and it’s recommended to disable them.
     """
     def filterImageQuality(self, progress_printer: str):
-        self.project.chunk.analyzeImages(cameras=self.project.chunk.cameras, progress=progress_printer)
+        self.project.chunk.analyzeImages(cameras=self.project.chunk.cameras,
+                                         progress=progress_printer)
         print()
         num_disable_photos = 0
         for camera in self.project.chunk.cameras:
             if float(camera.meta['Image/Quality']) < 0.5:
                 camera.enabled = False
                 num_disable_photos += 1
-        print("-- "+ str(len(self.project.chunk.cameras)- num_disable_photos) + " images filtered")
+        print("-- DEBUG:"+ str(num_disable_photos) + " images filtered")
         self.project.save_project(version="filterImageQuality")
         
 
