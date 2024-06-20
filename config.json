@@ -18,6 +18,12 @@
             "optimizeCameras":{
                 "fit_f": true
             }
+        },
+        "PointCloudProcessor":{
+            "buildDepthMaps":{
+                
+            }
+
         }
     }
 }
