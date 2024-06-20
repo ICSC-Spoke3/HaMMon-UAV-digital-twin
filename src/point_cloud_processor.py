@@ -43,6 +43,19 @@ class PointCloudProcessor:
         self.project.chunk.buildPointCloud(progress=progress_printer, **default_params)
         self.project.save_project(version="buildPointCloud")
 
+    """
+    Calculate point colors for the point cloud
+    """
+    def colorizePointCloud(self, progress_printer: str, **kwargs) -> None:
+        default_params = {
+            'source_data': Metashape.ImagesData,
+            'subdivide_task': True
+        }
+        # update default params with the input
+        default_params.update(kwargs)
+        self.project.chunk.colorizePointCloud(progress=progress_printer, **default_params)
+        self.project.save_project(version="colorizePointCloud")
+
 
     
 
