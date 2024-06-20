@@ -19,7 +19,7 @@ class PhotoProcessor:
         self.project.chunk.addPhotos(filenames=self.photos_path,
                                      progress=progress_printer)
         self.project.save_project(version="addPhotos")
-        print("-- "+ str(len(self.project.chunk.cameras)) + " images loaded")
+        print("-- DEBUG: "+ str(len(self.project.chunk.cameras)) + " images loaded")
     
     """
     Estimate the image quality. Cameras with a quality less than 0.5 are considered blurred and it’s recommended to disable them.
@@ -33,7 +33,7 @@ class PhotoProcessor:
             if float(camera.meta['Image/Quality']) < 0.5:
                 camera.enabled = False
                 num_disable_photos += 1
-        print("-- DEBUG:"+ str(num_disable_photos) + " images filtered")
+        print("-- DEBUG: "+ str(num_disable_photos) + " images filtered")
         self.project.save_project(version="filterImageQuality")
         
 
