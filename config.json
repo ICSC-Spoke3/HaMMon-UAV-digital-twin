@@ -6,7 +6,7 @@
             "log": "./path/log/"
         },
         "project":{
-            "path": "../new_project/new_project.psx"
+            "path": "../new_project/"
         },
         "PhotoProcessor":{
             "matchPhotos":{
