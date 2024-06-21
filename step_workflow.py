@@ -138,7 +138,9 @@ def execute_steps(steps_params_to_run: dict) -> None:
 
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
 
+    prj.chunk.exportReport(path="./report.pdf", title="Final report")
 
+    
 """
 dato un json o yaml ritorna il dict={step: param}
 """
