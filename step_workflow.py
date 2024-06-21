@@ -12,7 +12,7 @@ from src.mesh_processor import MeshProcessor
 from src.geographic_projection import GeographicProjection
 
 
-valid_steps = ['settings', 'project', 'PhotoProcessor', 'PointCloudProcessor', "3DModelProcessor"]
+valid_steps = ['settings', 'project', 'PhotoProcessor', 'PointCloudProcessor', "3DModelProcessor", "OrthoAndDEMCreation"]
 
 # return if any file.ext in path
 def is_file_path(path) -> bool:
