@@ -105,7 +105,7 @@ def execute_steps(steps_params_to_run: dict):
 
     if "3DModelProcessor" in steps_params_to_run:
         meshprocess = MeshProcessor()
-        if steps_params_to_run['3DModelProcessor']['buildDepthMaps']:
+        if steps_params_to_run['3DModelProcessor']['buildModel']:
             meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"), **steps_params_to_run['3DModelProcessor']['buildModel'])
         else: # do it by default
             meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"))
