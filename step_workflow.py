@@ -9,6 +9,7 @@ from src.project import Project
 from src.photo_processor import PhotoProcessor
 from src.point_cloud_processor import PointCloudProcessor
 from src.mesh_processor import MeshProcessor
+from src.geographic_projection import GeographicProjection
 
 
 valid_steps = ['settings', 'project', 'PhotoProcessor', 'PointCloudProcessor', "3DModelProcessor"]
@@ -123,6 +124,16 @@ def execute_steps(steps_params_to_run: dict) -> None:
             meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"))
 
         print(" == == == 3DModelProcessor == == ==")
+
+    if "OrthoAndDEMCreation" in steps_params_to_run:
+        orthodemprocess = GeographicProjection()
+        if (orthodemprocess.project.chunk.transform.scale and 
+            orthodemprocess.project.chunk.transform.rotation and 
+            orthodemprocess.project.chunk.transform.translation):
+            if 'buildDem' in steps_params_to_run['OrthoAndDEMCreation']:
+                orthodemprocess.buildDem(progress_printer=ProgressPrinter("buildDem"))
+            if 'buildOrtho' in steps_params_to_run['OrthoAndDEMCreation']:
+                orthodemprocess.buildOrthomosaic(progress_printer=ProgressPrinter("buildOrtho"))
 
 
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371

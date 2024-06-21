@@ -6,7 +6,7 @@
             "log": "./path/log/"
         },
         "project":{
-            "path": "../new_project/"
+            "path": "../new_project/new_project.psx"
         },
         "PhotoProcessor":{
             "matchPhotos":{
@@ -38,6 +38,15 @@
             "buildTexture":{
                 
             }
+        },
+        "OrthoAndDEMCreation":{
+            "buildDem":{
+
+            },
+            "buildOrtho":{
+                
+            }
         }
+
     }
 }
