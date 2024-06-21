@@ -60,31 +60,30 @@ def execute_steps(steps_params_to_run: dict):
         #print("--DEGUB: lista di chunck ", prj.doc.chunks)
         #print("--DEGUB: meta ", prj.doc.meta)
         #print("--path: ", prj.doc.path)
+        print(" == == == Loading/NewProject == == ==")
     else:
         raise Exception("Non è stato specificato un save path o load project")
-    
-        print(" == == == Loading/NewProject == == ==")
 
     if 'PhotoProcessor' in steps_params_to_run:
         photoprocess = PhotoProcessor(photos_path=image_files)
         photoprocess.addPhotos(progress_printer=ProgressPrinter("addPhotos"))
         photoprocess.filterImageQuality(progress_printer=ProgressPrinter("filterPhotos"))
-        if steps_params_to_run['PhotoProcessor']['matchPhotos']:
+        if 'matchPhotos' in steps_params_to_run['PhotoProcessor']:
             photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"), **steps_params_to_run['PhotoProcessor']['matchPhotos'])
         else: # do it by default
             photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"))
-        if steps_params_to_run['PhotoProcessor']['alignCameras']:
+        if 'alignCameras' in steps_params_to_run['PhotoProcessor']:
             photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"), **steps_params_to_run['PhotoProcessor']['alignCameras'])
         else: # do it by default
             photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"))
-        if steps_params_to_run['PhotoProcessor']['optimizeCameras']:
+        if 'optimizeCameras' in steps_params_to_run['PhotoProcessor']:
             photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
     
-        print(" == == == PhotoProcessor == == ==")
+        print(" == == == Loading/NewProject == == ==")
 
     if 'PointCloudProcessor' in steps_params_to_run:
         pointcloudprocess = PointCloudProcessor()
-        if steps_params_to_run['PointCloudProcessor']['buildDepthMaps']:
+        if 'buildDepthMaps' in steps_params_to_run['PointCloudProcessor']:
             pointcloudprocess.buildDepthMaps(progress_printer=ProgressPrinter("buildDepthMaps"), **steps_params_to_run['PointCloudProcessor']['buildDepthMaps'])
         else: # do it by default
             pointcloudprocess.buildDepthMaps(progress_printer=ProgressPrinter("buildDepthMaps"))
@@ -95,7 +94,7 @@ def execute_steps(steps_params_to_run: dict):
         if (pointcloudprocess.project.chunk.transform.scale and 
             pointcloudprocess.project.chunk.transform.rotation and 
             pointcloudprocess.project.chunk.transform.translation):
-            if steps_params_to_run['PointCloudProcessor']['buildPointCloud']:
+            if 'buildPointCloud' in steps_params_to_run['PointCloudProcessor']:
                 pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"), **steps_params_to_run['PointCloudProcessor']['buildPointCloud'])
             else:
                 pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"))
@@ -105,35 +104,26 @@ def execute_steps(steps_params_to_run: dict):
 
     if "3DModelProcessor" in steps_params_to_run:
         meshprocess = MeshProcessor()
-        if steps_params_to_run['3DModelProcessor']['buildModel']:
+        if 'buildModel' in steps_params_to_run['3DModelProcessor']:
             meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"), **steps_params_to_run['3DModelProcessor']['buildModel'])
         else: # do it by default
             meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"))
         meshprocess.colorizeModel(progress_printer=ProgressPrinter("colorizeModel"))
-        if steps_params_to_run['3DModelProcessor']['buildUV']:
+        if 'buildUV' in steps_params_to_run['3DModelProcessor']:
             meshprocess.buildUV(progress_printer=ProgressPrinter("buildUV"), **steps_params_to_run['3DModelProcessor']['buildUV'])
         else: # do it by default
             meshprocess.buildUV(progress_printer=ProgressPrinter("buildUV"))
-
+        if 'buildTexture' in steps_params_to_run['3DModelProcessor']:
+            meshprocess.buildTexture(progress_printer=ProgressPrinter("buildTexture"), **steps_params_to_run['3DModelProcessor']['buildTexture'])
+        else: # do it by default
+            meshprocess.buildTexture(progress_printer=ProgressPrinter("buildTexture"))
 
         print(" == == == 3DModelProcessor == == ==")
-    """
 
-        # buildTexture
-        # save()
-    """
-    
+
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
-        
-    """
-    # Ottieni il valore di un setting
-    print(my_settings.get_setting('setting1'))  # Stampa 'value1'
 
-    # Imposta il valore di un setting
-    my_settings.set_setting('setting3', 'value3')
-    """
 
-    
 """
 dato un json o yaml ritorna il dict {step: param}
 """
