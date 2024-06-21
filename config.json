@@ -8,37 +8,6 @@
         "project":{
             "path": "../new_project/new_project.psx"
         },
-        "PhotoProcessor":{
-            "matchPhotos":{
-                "downscale": 2
-            },
-            "alignCameras":{
-
-            },
-            "optimizeCameras":{
-                "fit_f": true
-            }
-        },
-        "PointCloudProcessor":{
-            "buildDepthMaps":{
-
-            },
-            "buildPointCloud":{
-
-            },
-            "colorizePointCloud":{
-                
-            }
-
-        },
-        "3DModelProcessor":{
-            "buildModel":{
-
-            },
-            "buildTexture":{
-                
-            }
-        },
         "OrthoAndDEMCreation":{
             "buildDem":{
 
