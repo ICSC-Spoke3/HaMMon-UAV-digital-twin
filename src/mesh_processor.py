@@ -36,6 +36,7 @@ class MeshProcessor:
     """
     def colorizeModel(self, progress_printer: str) -> None:
         self.project.chunk.colorizeModel(source_data=Metashape.ImagesData, progress=progress_printer)
+        print("--FUNZIONA?????????????")
         self.project.save_project(version="colorizeModel")
 
 

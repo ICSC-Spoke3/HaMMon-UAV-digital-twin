@@ -110,7 +110,8 @@ def execute_steps(steps_params_to_run: dict):
         else: # do it by default
             meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"))
         meshprocess.colorizeModel(progress_printer=ProgressPrinter("colorizeModel"))
-    
+
+        print(" == == == 3DModelProcessor == == ==")
     """
         # buildUV
         # buildTexture
