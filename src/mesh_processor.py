@@ -36,7 +36,21 @@ class MeshProcessor:
     """
     def colorizeModel(self, progress_printer: str) -> None:
         self.project.chunk.colorizeModel(source_data=Metashape.ImagesData, progress=progress_printer)
-        print("--FUNZIONA?????????????")
         self.project.save_project(version="colorizeModel")
+
+    """
+    Generate uv mapping for the model
+    """
+    def buildUV(self, progress_printer: str, **kwargs) -> None:
+        default_params = {
+            'mapping_mode': Metashape.GenericMapping,
+            'page_count': 1,
+            'texture_size': 8192
+        }
+        # update default params with the input
+        default_params.update(kwargs)
+        self.project.chunk.buildUV(progress=progress_printer, **default_params)
+        self.project.save_project(version="buildUV")
+
 
 
