@@ -20,6 +20,7 @@ class Settings:
                 if key in self.default_settings:    # avoid unconventional key settings
                     self.default_settings[key] = value
 
+        self.check_license()
         self.check_version()
         self.set_cpu(self.default_settings["cpu_enable"])
         self.set_gpu_mask(self.default_settings["gpu_mask"])
@@ -33,6 +34,15 @@ class Settings:
         if found_major_version != compatible_major_version:
             raise Exception("Incompatible Metashape version: {} != {}".format(found_major_version, compatible_major_version))
         print("-- Versione Metashape compatibile", Metashape.app.version)
+
+    """
+    Check if Metashape license is activated
+    """
+    def check_license(self) -> None:
+        if Metashape.app.activated:
+            print("-- Metashape is activated: ", Metashape.app.activated)
+        else:
+            raise Exception("No license found.")
 
     """
     set CPU when performing GPU accelerated processing
