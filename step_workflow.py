@@ -8,9 +8,10 @@ from src.settings import Settings
 from src.project import Project
 from src.photo_processor import PhotoProcessor
 from src.point_cloud_processor import PointCloudProcessor
+from src.mesh_processor import MeshProcessor
 
 
-valid_steps = ['settings', 'project', 'PhotoProcessor', 'PointCloudProcessor']
+valid_steps = ['settings', 'project', 'PhotoProcessor', 'PointCloudProcessor', "3DModelProcessor"]
 
 # return if file in path
 def is_file_path(path):
@@ -33,7 +34,7 @@ def execute_steps(steps_params_to_run: dict):
         if steps_params_to_run['settings']['log']:  # log
             my_settings.set_log(steps_params_to_run['settings']['log'])
 
-    print("== == == == == SETTINGS == == == == ==")
+        print("== == == == == SETTINGS == == == == ==")
 
     # Loading/New project
     if 'project' in steps_params_to_run:
@@ -62,7 +63,7 @@ def execute_steps(steps_params_to_run: dict):
     else:
         raise Exception("Non è stato specificato un save path o load project")
     
-    print(" == == == Loading/NewProject == == ==")
+        print(" == == == Loading/NewProject == == ==")
 
     if 'PhotoProcessor' in steps_params_to_run:
         photoprocess = PhotoProcessor(photos_path=image_files)
@@ -79,7 +80,7 @@ def execute_steps(steps_params_to_run: dict):
         if steps_params_to_run['PhotoProcessor']['optimizeCameras']:
             photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
     
-    print(" == == == PhotoProcessor == == ==")
+        print(" == == == PhotoProcessor == == ==")
 
     if 'PointCloudProcessor' in steps_params_to_run:
         pointcloudprocess = PointCloudProcessor()
@@ -100,6 +101,15 @@ def execute_steps(steps_params_to_run: dict):
                 pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"))
             pointcloudprocess.colorizePointCloud(progress_printer=ProgressPrinter("colorizePointCloud"))
     
+        print(" == == == PointCloudProcessor == == ==")
+
+    if "3DModelProcessor" in steps_params_to_run:
+        meshprocess = MeshProcessor()
+        if steps_params_to_run['3DModelProcessor']['buildDepthMaps']:
+            meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"), **steps_params_to_run['3DModelProcessor']['buildModel'])
+        else: # do it by default
+            meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"))
+
     
     """
         # buildModel

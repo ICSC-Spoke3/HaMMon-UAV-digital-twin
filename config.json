@@ -30,6 +30,11 @@
                 
             }
 
+        },
+        "3DModelProcessor":{
+            "buildModel":{
+                
+            }
         }
     }
 }

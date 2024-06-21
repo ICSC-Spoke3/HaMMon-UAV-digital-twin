@@ -39,7 +39,7 @@ class Settings:
     """
     def set_cpu(self, cpu_status: bool = False) -> None:
         Metashape.app.cpu_enable = cpu_status
-        print("--CPU STATUS:", Metashape.app.cpu_enable)
+        print("-- CPU STATUS:", Metashape.app.cpu_enable)
 
     """
     enable GPUs from input gpu_mask or enable all available

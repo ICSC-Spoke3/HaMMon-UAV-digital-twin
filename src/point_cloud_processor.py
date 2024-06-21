@@ -51,13 +51,13 @@ class PointCloudProcessor:
             'source_data': Metashape.ImagesData,
             'subdivide_task': True
         }
-        print("--DEBUG: coloro")
+
         # update default params with the input
         default_params.update(kwargs)
         self.project.chunk.colorizePointCloud(progress=progress_printer, **default_params)
         self.project.save_project(version="colorizePointCloud")
 
-# TODO: filter point cloud
+# TODO: filterPointCloud
 
     
 
