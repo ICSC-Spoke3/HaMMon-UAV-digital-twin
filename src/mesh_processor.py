@@ -52,5 +52,20 @@ class MeshProcessor:
         self.project.chunk.buildUV(progress=progress_printer, **default_params)
         self.project.save_project(version="buildUV")
 
+    """
+    Generate texture mesh
+    """
+    def buildTexture(self, progress_printer: str, **kwargs) -> None:
+        default_params = {
+            'blending_mode': Metashape.MosaicBlending,
+            'texture_size': 8192,
+            'fill_holes': True,
+            'ghosting_filter': True
+        }
+        # update default params with the input
+        default_params.update(kwargs)
+        self.project.chunk.buildTexture(progress=progress_printer, **default_params)
+        self.project.save_project(version="buildTexture")
+
 
 
