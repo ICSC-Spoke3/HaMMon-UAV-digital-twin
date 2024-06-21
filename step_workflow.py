@@ -13,14 +13,14 @@ from src.mesh_processor import MeshProcessor
 
 valid_steps = ['settings', 'project', 'PhotoProcessor', 'PointCloudProcessor', "3DModelProcessor"]
 
-# return if file in path
-def is_file_path(path):
+# return if any file.ext in path
+def is_file_path(path) -> bool:
     return os.path.splitext(path)[1] != ''
 
 """
 Core: esecuzione dei singoli steps scelti 
 """
-def execute_steps(steps_params_to_run: dict):
+def execute_steps(steps_params_to_run: dict) -> None:
     # check steps_params_to_run not empty
     if not steps_params_to_run:
         raise Exception("Errore: non ci sono processi da eseguire.")
@@ -129,7 +129,7 @@ def execute_steps(steps_params_to_run: dict):
 
 
 """
-dato un json o yaml ritorna il dict {step: param}
+dato un json o yaml ritorna il dict={step: param}
 """
 def get_config_from_file(filename: str) -> dict:
     try:
@@ -139,15 +139,13 @@ def get_config_from_file(filename: str) -> dict:
             elif filename.endswith('.yaml') or filename.endswith('.yml'):
                 config = yaml.safe_load(f)  # from yaml to dict
             else:
-                print(f"Errore: il file {filename} non è in un formato supportato. [YAML/JSON]")
-                exit(1)
+                raise PermissionError(f"Errore: il file {filename} non è in un formato supportato. [YAML/JSON]")
         return config['workflow']
     except FileNotFoundError:
-        print(f"Errore: il file {filename} non è stato trovato.")
-        exit(1)
+        raise FileNotFoundError(f"Errore: il file {filename} non è stato trovato.")
     except (json.JSONDecodeError, yaml.YAMLError, EOFError):
-        print(f"Errore: il file {filename} non è un file valido.")
-        exit(1)
+        raise PermissionError(f"Errore: il file {filename} non è un file valido.")
+
 
 """
 Estrapolo i parametri presi in input a partire dalla command line
