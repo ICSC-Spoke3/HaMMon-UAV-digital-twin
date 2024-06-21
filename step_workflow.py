@@ -117,6 +117,10 @@ def execute_steps(steps_params_to_run: dict):
             meshprocess.buildTexture(progress_printer=ProgressPrinter("buildTexture"), **steps_params_to_run['3DModelProcessor']['buildTexture'])
         else: # do it by default
             meshprocess.buildTexture(progress_printer=ProgressPrinter("buildTexture"))
+        if 'buildTiledModel' in steps_params_to_run['3DModelProcessor']:
+            meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"), **steps_params_to_run['3DModelProcessor']['buildTiledModel'])
+        else: # do it by default
+            meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"))
 
         print(" == == == 3DModelProcessor == == ==")
 

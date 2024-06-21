@@ -53,7 +53,7 @@ class MeshProcessor:
         self.project.save_project(version="buildUV")
 
     """
-    Generate texture mesh
+    Generate texture layer
     """
     def buildTexture(self, progress_printer: str, **kwargs) -> None:
         default_params = {
@@ -67,5 +67,24 @@ class MeshProcessor:
         self.project.chunk.buildTexture(progress=progress_printer, **default_params)
         self.project.save_project(version="buildTexture")
 
-
-
+    # TODO: detectMarkers
+        
+    # TODO: buildTiledModel: https://www.agisoft.com/forum/index.php?topic=13206.0
+    """
+    Build tiled model
+    """
+    def buildTiledModel(self, progress_printer: str, **kwargs) -> None:
+        default_params = {
+            'pixel_size': 0,
+            'tile_size': 256,
+            'source_data': Metashape.DataSource.DepthMapsData,
+            'face_count': 20000,
+            'ghosting_filter': False,
+            'transfer_texture': False,
+            'keep_depth': True,
+            'subdivide_task': True
+        }
+        # update default params with the input
+        default_params.update(kwargs)
+        self.project.chunk.buildTiledModel(progress=progress_printer, **default_params)
+        self.project.save_project(version="buildTiledModel")
