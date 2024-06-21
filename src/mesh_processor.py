@@ -12,7 +12,7 @@ class MeshProcessor:
         self.project = Project.get_project()
 
     """
-    Build model
+    Build 3D model 
     """
     def buildModel(self, progress_printer: str, **kwargs) -> None:
         default_params = {
@@ -30,4 +30,12 @@ class MeshProcessor:
         default_params.update(kwargs)
         self.project.chunk.buildModel(progress=progress_printer, **default_params)
         self.project.save_project(version="buildModel")
+
+    """
+    Colorize 3D model
+    """
+    def colorizeModel(self, progress_printer: str) -> None:
+        self.project.chunk.colorizeModel(source_data=Metashape.ImagesData, progress=progress_printer)
+        self.project.save_project(version="colorizeModel")
+
 
