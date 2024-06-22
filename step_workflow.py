@@ -134,6 +134,8 @@ def execute_steps(steps_params_to_run: dict) -> None:
                 orthodemprocess.buildDem(progress_printer=ProgressPrinter("buildDem"))
             if 'buildOrtho' in steps_params_to_run['OrthoAndDEMCreation']:
                 orthodemprocess.buildOrthomosaic(progress_printer=ProgressPrinter("buildOrtho"))
+            if 'exportDem' in steps_params_to_run['OrthoAndDEMCreation']:
+                orthodemprocess.exportDEM(progress_printer=ProgressPrinter("exportDEM"), path=output_save_folder)
 
 
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371

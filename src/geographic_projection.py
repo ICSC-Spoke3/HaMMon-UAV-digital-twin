@@ -26,6 +26,21 @@ class GeographicProjection:
         self.project.save_project(version="buildDem")
 
     """
+    Export Digital Elevation Model
+    """
+    def exportDEM(self, progress_printer: str, path: str, **kwargs) -> None:
+        if self.project.chunk.elevation:
+            default_params = {
+                "image_format": Metashape.ImageFormatTIFF,
+                "source_data": Metashape.ElevationData
+            }
+            # update default params with the input
+            default_params.update(kwargs)
+            self.project.chunk.exportRaster(path=path+"/dem.tif", progress= progress_printer, **default_params)
+            # TODO: save
+
+
+    """
     Build Orthomosaic
     """
     def buildOrthomosaic(self, progress_printer: str, **kwargs) -> None:
