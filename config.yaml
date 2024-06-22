@@ -6,7 +6,9 @@ workflow:
   project:
     path: '../new_project/new_project.psx'
   OrthoAndDEMCreation:
-    exportDem:
+  exportResults:
+    exportDEM:
+    
     exportOrtho:
     exportModel:
     exportPointCloud:

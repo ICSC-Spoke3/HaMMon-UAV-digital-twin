@@ -100,7 +100,9 @@ def execute_steps(steps_params_to_run: dict) -> None:
             else:
                 pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"))
             pointcloudprocess.colorizePointCloud(progress_printer=ProgressPrinter("colorizePointCloud"))
-    
+            if 'exportPointCloud' in steps_params_to_run['PointCloudProcessor']:
+                pointcloudprocess.exportPointCloud(progress_printer=ProgressPrinter("exportPointCloud"), path=output_save_folder,  **steps_params_to_run['PointCloudProcessor']['exportPointCloud'])
+
         print(" == == == PointCloudProcessor == == ==")
 
     if "3DModelProcessor" in steps_params_to_run:
@@ -132,19 +134,27 @@ def execute_steps(steps_params_to_run: dict) -> None:
             orthodemprocess.project.chunk.transform.translation):
             if 'buildDem' in steps_params_to_run['OrthoAndDEMCreation']:
                 orthodemprocess.buildDem(progress_printer=ProgressPrinter("buildDem"))
+                if 'exportDEM' in steps_params_to_run['OrthoAndDEMCreation']:
+                    orthodemprocess.exportDEM(progress_printer=ProgressPrinter("exportDEM"), path=output_save_folder, **steps_params_to_run['OrthoAndDEMCreation']['exportDEM'])
             if 'buildOrtho' in steps_params_to_run['OrthoAndDEMCreation']:
                 orthodemprocess.buildOrthomosaic(progress_printer=ProgressPrinter("buildOrtho"))
-            if 'exportDem' in steps_params_to_run['OrthoAndDEMCreation']:
-                pass
-                #orthodemprocess.exportDEM(progress_printer=ProgressPrinter("exportDEM"), path=output_save_folder)
-            if 'exportOrtho' in steps_params_to_run['OrthoAndDEMCreation']:
-                pass
-                #orthodemprocess.exportOrtho(progress_printer=ProgressPrinter("exportOrtho"), path=output_save_folder)
-            if 'exportModel' in steps_params_to_run['OrthoAndDEMCreation']:
-                orthodemprocess.exportModel(progress_printer=ProgressPrinter("exportModel"), path=output_save_folder)
-            if 'exportPointCloud' in steps_params_to_run['OrthoAndDEMCreation']:
-                orthodemprocess.exportPointCloud(progress_printer=ProgressPrinter("exportPointCloud"), path=output_save_folder)
+                if 'exportOrtho' in steps_params_to_run['OrthoAndDEMCreation']:
+                    orthodemprocess.exportOrtho(progress_printer=ProgressPrinter("exportOrtho"), path=output_save_folder,  **steps_params_to_run['OrthoAndDEMCreation']['exportOrtho'])
 
+
+    if 'exportResults' in steps_params_to_run:
+        orthodemprocess = GeographicProjection()
+        meshprocess = MeshProcessor()
+        if 'exportDEM' in steps_params_to_run['exportResults']:
+            orthodemprocess.exportDEM(progress_printer=ProgressPrinter("exportDEM"), path=output_save_folder, **steps_params_to_run['exportResults']['exportDEM'])
+        if 'exportOrtho' in steps_params_to_run['exportResults']:
+            orthodemprocess.exportOrtho(progress_printer=ProgressPrinter("exportOrtho"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportOrtho'])
+        if 'exportModel' in steps_params_to_run['exportResults']:
+            meshprocess.exportModel(progress_printer=ProgressPrinter("exportModel"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportModel'])
+        if 'exportPointCloud' in steps_params_to_run['exportResults']:
+                orthodemprocess.exportPointCloud(progress_printer=ProgressPrinter("exportPointCloud"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportPointCloud'])
+
+# TODO: export tiled model
     # TODO: fix export in concomitanza della creazione del modello
                 #TODO fix if and else annidato non annidato, visto che posso esportarlo a piacere, con le casistiche che voglio io
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371

@@ -88,3 +88,24 @@ class MeshProcessor:
         default_params.update(kwargs)
         self.project.chunk.buildTiledModel(progress=progress_printer, **default_params)
         self.project.save_project(version="buildTiledModel")
+
+    """
+    Export Model
+    """
+    def exportModel(self, progress_printer: str, path: str, **kwargs) -> None:
+        if self.project.chunk.model:
+            default_params = {
+                "texture_format": Metashape.ImageFormat.ImageFormatTIFF,
+                "save_texture": True,
+                "save_uv": True,
+                "save_normals": True,
+                "save_colors": True,
+                "save_confidence": True,
+                "save_cameras": True,
+                "save_markers": True,
+                "embed_texture": True,
+                "format": Metashape.ModelFormat.ModelFormatOBJ
+            }
+            # update default params with the input
+            default_params.update(kwargs)
+            self.project.chunk.exportModel(path=path+'/model/model.obj', progress= progress_printer, **default_params)
