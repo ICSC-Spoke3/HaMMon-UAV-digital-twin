@@ -227,10 +227,11 @@ if __name__ == "__main__":
     if args.output:
         output_save_folder = args.output
 
-        # check output_folder exist
+        # check output_folder exist and every subfolder
         if not os.path.isdir(output_save_folder):
             os.makedirs(output_save_folder, exist_ok=True)
-            
+        if not os.path.isdir(output_save_folder+ "/point_cloud/"):
+            os.makedirs(output_save_folder+ "/point_cloud/", exist_ok=True)
 
     # check config and exec parameters
     if args.config and args.exec:
