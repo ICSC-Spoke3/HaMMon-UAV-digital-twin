@@ -230,6 +230,7 @@ if __name__ == "__main__":
         # check output_folder exist
         if not os.path.isdir(output_save_folder):
             os.makedirs(output_save_folder, exist_ok=True)
+            
 
     # check config and exec parameters
     if args.config and args.exec:
