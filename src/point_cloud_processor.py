@@ -83,7 +83,7 @@ class PointCloudProcessor:
                         # "tileset_version": "1.1",
                         # "screen_space_error" (float) – Target screen space error (Cesium format only).
                         # "folder_depth" (int) – Tileset subdivision depth (Cesium format only)
-                #"subdivide_task": True
+                "subdivide_task": True
             }
             # update default params with the input
             default_params.update(kwargs)
