@@ -140,8 +140,11 @@ def execute_steps(steps_params_to_run: dict) -> None:
                 orthodemprocess.exportOrtho(progress_printer=ProgressPrinter("exportOrtho"), path=output_save_folder)
             if 'exportModel' in steps_params_to_run['OrthoAndDEMCreation']:
                 orthodemprocess.exportModel(progress_printer=ProgressPrinter("exportModel"), path=output_save_folder)
+            if 'exportPointCloud' in steps_params_to_run['OrthoAndDEMCreation']:
+                orthodemprocess.exportPointCloud(progress_printer=ProgressPrinter("exportPointCloud"), path=output_save_folder, **steps_params_to_run['OrthoAndDEMCreation']['exportPointCloud'])
 
     # TODO: fix export in concomitanza della creazione del modello
+                #TODO fix if and else annidato non annidato, visto che posso esportarlo a piacere
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
 
     prj.chunk.exportReport(path="./report.pdf", title="Final report")
