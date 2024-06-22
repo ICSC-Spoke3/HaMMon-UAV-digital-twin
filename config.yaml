@@ -8,4 +8,5 @@ workflow:
   OrthoAndDEMCreation:
     exportDem:
     exportOrtho:
+    exportModel:
     

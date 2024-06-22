@@ -66,6 +66,27 @@ class GeographicProjection:
             default_params.update(kwargs)
             self.project.chunk.exportRaster(path=path+"/orthomosaic.tif", progress= progress_printer, **default_params)
 
+    # TODO: detect and filter point cloud confidence
 
+    """
+    Export Model
+    """
+    def exportModel(self, progress_printer: str, path: str, **kwargs) -> None:
+        if self.project.chunk.model:
+            default_params = {
+                "texture_format": Metashape.ImageFormat.ImageFormatTIFF,
+                "save_texture": True,
+                "save_uv": True,
+                "save_normals": True,
+                "save_colors": True,
+                "save_confidence": True,
+                "save_cameras": True,
+                "save_markers": True,
+                "embed_texture": True,
+                "format": Metashape.ModelFormat.ModelFormatOBJ
+            }
+            # update default params with the input
+            default_params.update(kwargs)
+            self.project.chunk.exportModel(path=path+'/model.obj', progress= progress_printer, **default_params)
 
 

@@ -138,8 +138,10 @@ def execute_steps(steps_params_to_run: dict) -> None:
                 orthodemprocess.exportDEM(progress_printer=ProgressPrinter("exportDEM"), path=output_save_folder)
             if 'exportOrtho' in steps_params_to_run['OrthoAndDEMCreation']:
                 orthodemprocess.exportOrtho(progress_printer=ProgressPrinter("exportOrtho"), path=output_save_folder)
+            if 'exportModel' in steps_params_to_run['OrthoAndDEMCreation']:
+                orthodemprocess.exportModel(progress_printer=ProgressPrinter("exportModel"), path=output_save_folder)
 
-
+    # TODO: fix export in concomitanza della creazione del modello
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
 
     prj.chunk.exportReport(path="./report.pdf", title="Final report")
