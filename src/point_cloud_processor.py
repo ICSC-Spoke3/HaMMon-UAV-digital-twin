@@ -73,9 +73,9 @@ class PointCloudProcessor:
                 "save_point_confidence": True,
                 "save_point_source_id": True,
                 "save_point_index": True,
-                #"format": Metashape.PointCloudFormat.PointCloudFormatLAS,
+                "format": Metashape.PointCloudFormat.PointCloudFormatLAS,
                         # format Metashape.PointCloudFormat.Cesium
-                #"image_format": Metashape.ImageFormat.ImageFormatTIFF,
+                "image_format": Metashape.ImageFormat.ImageFormatTIFF,
                 #"split_in_blocks": False,
                             #"classes" (list[int]) – List of point classes to be exported,
                 #"save_images": True,
