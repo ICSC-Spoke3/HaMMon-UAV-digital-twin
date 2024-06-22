@@ -1,6 +1,5 @@
 # project.py
 import Metashape
-import os
 
 class SingletonMeta(type):
     _instances = {}
@@ -9,8 +8,6 @@ class SingletonMeta(type):
         if cls not in cls._instances:
             instance = super().__call__(*args, **kwargs)
             cls._instances[cls] = instance
-            # TODO: se non va
-            # cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
     
 class Project(metaclass=SingletonMeta):
@@ -45,9 +42,3 @@ class Project(metaclass=SingletonMeta):
 
     def quit_project(self):
         Metashape.app.quit()
-
-
-
-
-
-

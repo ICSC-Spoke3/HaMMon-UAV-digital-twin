@@ -90,11 +90,4 @@ class PointCloudProcessor:
             self.project.chunk.exportPointCloud(path=path+'/point_cloud/point_cloud.las', progress=progress_printer,  **default_params)
 
 
-
-
-
-    
-
-
-
     

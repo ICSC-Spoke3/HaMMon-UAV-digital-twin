@@ -37,7 +37,6 @@ def execute_steps(steps_params_to_run: dict) -> None:
 
         print("== == == == == SETTINGS == == == == ==")
 
-    # Loading/New project
     if 'project' in steps_params_to_run:
         if not isinstance(steps_params_to_run['project']['path'], str) or not os.path.normpath(steps_params_to_run['project']['path']):
             raise ValueError("Error: specify a suitable path to project file")
@@ -73,21 +72,21 @@ def execute_steps(steps_params_to_run: dict) -> None:
             photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"), **steps_params_to_run['PhotoProcessor']['matchPhotos'])
         else: # do it by default
             photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"))
-        if 'alignCameras' in steps_params_to_run['PhotoProcessor']:
-            photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"), **steps_params_to_run['PhotoProcessor']['alignCameras'])
-        else: # do it by default
-            photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"))
-        if 'optimizeCameras' in steps_params_to_run['PhotoProcessor']:
-            photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
+        #if 'alignCameras' in steps_params_to_run['PhotoProcessor']:
+        photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"), **steps_params_to_run['PhotoProcessor']['alignCameras'])
+        #else: # do it by default
+        #    photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"))
+        #if 'optimizeCameras' in steps_params_to_run['PhotoProcessor']:
+        photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
     
         print(" == == == Loading/NewProject == == ==")
 
     if 'PointCloudProcessor' in steps_params_to_run:
         pointcloudprocess = PointCloudProcessor()
-        if 'buildDepthMaps' in steps_params_to_run['PointCloudProcessor']:
-            pointcloudprocess.buildDepthMaps(progress_printer=ProgressPrinter("buildDepthMaps"), **steps_params_to_run['PointCloudProcessor']['buildDepthMaps'])
-        else: # do it by default
-            pointcloudprocess.buildDepthMaps(progress_printer=ProgressPrinter("buildDepthMaps"))
+        #if 'buildDepthMaps' in steps_params_to_run['PointCloudProcessor']:
+        pointcloudprocess.buildDepthMaps(progress_printer=ProgressPrinter("buildDepthMaps"), **steps_params_to_run['PointCloudProcessor']['buildDepthMaps'])
+        #else: # do it by default
+        #    pointcloudprocess.buildDepthMaps(progress_printer=ProgressPrinter("buildDepthMaps"))
 
         """
         check chunk location in the world coordinate system: scale component, rotation component, translation component
@@ -95,10 +94,10 @@ def execute_steps(steps_params_to_run: dict) -> None:
         if (pointcloudprocess.project.chunk.transform.scale and 
             pointcloudprocess.project.chunk.transform.rotation and 
             pointcloudprocess.project.chunk.transform.translation):
-            if 'buildPointCloud' in steps_params_to_run['PointCloudProcessor']:
-                pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"), **steps_params_to_run['PointCloudProcessor']['buildPointCloud'])
-            else:
-                pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"))
+            #if 'buildPointCloud' in steps_params_to_run['PointCloudProcessor']:
+            pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"), **steps_params_to_run['PointCloudProcessor']['buildPointCloud'])
+            #else:
+            #    pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"))
             pointcloudprocess.colorizePointCloud(progress_printer=ProgressPrinter("colorizePointCloud"))
             if 'exportPointCloud' in steps_params_to_run['PointCloudProcessor']:
                 pointcloudprocess.exportPointCloud(progress_printer=ProgressPrinter("exportPointCloud"), path=output_save_folder,  **steps_params_to_run['PointCloudProcessor']['exportPointCloud'])
@@ -107,23 +106,23 @@ def execute_steps(steps_params_to_run: dict) -> None:
 
     if "3DModelProcessor" in steps_params_to_run:
         meshprocess = MeshProcessor()
-        if 'buildModel' in steps_params_to_run['3DModelProcessor']:
-            meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"), **steps_params_to_run['3DModelProcessor']['buildModel'])
-        else: # do it by default
-            meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"))
+        #if 'buildModel' in steps_params_to_run['3DModelProcessor']:
+        meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"), **steps_params_to_run['3DModelProcessor']['buildModel'])
+        #else: # do it by default
+        #    meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"))
         meshprocess.colorizeModel(progress_printer=ProgressPrinter("colorizeModel"))
-        if 'buildUV' in steps_params_to_run['3DModelProcessor']:
-            meshprocess.buildUV(progress_printer=ProgressPrinter("buildUV"), **steps_params_to_run['3DModelProcessor']['buildUV'])
-        else: # do it by default
-            meshprocess.buildUV(progress_printer=ProgressPrinter("buildUV"))
-        if 'buildTexture' in steps_params_to_run['3DModelProcessor']:
-            meshprocess.buildTexture(progress_printer=ProgressPrinter("buildTexture"), **steps_params_to_run['3DModelProcessor']['buildTexture'])
-        else: # do it by default
-            meshprocess.buildTexture(progress_printer=ProgressPrinter("buildTexture"))
-        if 'buildTiledModel' in steps_params_to_run['3DModelProcessor']:
-            meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"), **steps_params_to_run['3DModelProcessor']['buildTiledModel'])
-        else: # do it by default
-            meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"))
+        #if 'buildUV' in steps_params_to_run['3DModelProcessor']:
+        meshprocess.buildUV(progress_printer=ProgressPrinter("buildUV"), **steps_params_to_run['3DModelProcessor']['buildUV'])
+        #else: # do it by default
+        #    meshprocess.buildUV(progress_printer=ProgressPrinter("buildUV"))
+        #if 'buildTexture' in steps_params_to_run['3DModelProcessor']:
+        meshprocess.buildTexture(progress_printer=ProgressPrinter("buildTexture"), **steps_params_to_run['3DModelProcessor']['buildTexture'])
+        #else: # do it by default
+        #    meshprocess.buildTexture(progress_printer=ProgressPrinter("buildTexture"))
+        #if 'buildTiledModel' in steps_params_to_run['3DModelProcessor']:
+        meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"), **steps_params_to_run['3DModelProcessor']['buildTiledModel'])
+        #else: # do it by default
+        #    meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"))
         if 'exportTiledModel' in steps_params_to_run['3DModelProcessor']:
             meshprocess.exportTiledModel(progress_printer=ProgressPrinter('exportTiledModel'), path=output_save_folder,  **steps_params_to_run['3DModelProcessor']['exportTiledModel'])
         if 'exportModel' in steps_params_to_run['3DModelProcessor']:
@@ -167,7 +166,7 @@ def execute_steps(steps_params_to_run: dict) -> None:
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
 
     prj.chunk.exportReport(path=output_save_folder +"/report.pdf", title="Final report")
-
+    prj.quit_project()
     
 """
 dato un json o yaml ritorna il dict={step: param}
@@ -187,7 +186,6 @@ def get_config_from_file(filename: str) -> dict:
     except (json.JSONDecodeError, yaml.YAMLError, EOFError):
         raise PermissionError(f"Errore: il file {filename} non è un file valido.")
 
-
 """
 Estrapolo i parametri presi in input a partire dalla command line
 Divido l’input_config in base agli spazi, quindi per ogni elemento ottenuto, lo divido in base al carattere: per separare il nome del metodo dai parametri. 
@@ -203,7 +201,7 @@ def get_config_from_cli(input_config: str)  -> dict:
 """ 
 Trova tutti i file con le estensioni specificate in una data cartella e ne ritorna la lista 
 """
-def find_files(folder: str, types: list[str]) -> list[str]:
+def find_photo_files(folder: str, types: list[str]) -> list[str]:
     files = []
     for entry in os.scandir(folder):
         if entry.is_file():
@@ -236,7 +234,7 @@ if __name__ == "__main__":
             raise FileNotFoundError(f"{input_images_folder} does not exit")
         
         # check number of images    # TODO lista delle estensioni da aggiornare
-        image_files = find_files(input_images_folder, [".jpg", ".jpeg", ".tif", ".tiff", ".png", ".bmp", ".dng"])
+        image_files = find_photo_files(input_images_folder, [".jpg", ".jpeg", ".tif", ".tiff", ".png", ".bmp", ".dng"])
         if len(image_files) < 2:
             raise ValueError("Not enough images to process in the path.")
     else:

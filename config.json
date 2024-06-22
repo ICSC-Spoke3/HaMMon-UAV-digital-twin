@@ -6,7 +6,7 @@
             "log": "./path/log/"
         },
         "project":{
-            "path": "../new_project/"
+            "path": "../all_workflow_project/"
         },
         "PhotoProcessor":{
             "matchPhotos":{
@@ -16,7 +16,7 @@
 
             },
             "optimizeCameras":{
-                "fit_f": true
+                
             }
         },
         "PointCloudProcessor":{
@@ -28,6 +28,9 @@
             },
             "colorizePointCloud":{
                 
+            },
+            "exportPointCloud":{
+
             }
 
         },
@@ -46,6 +49,13 @@
             "buildOrtho":{
                 
             }
+        },
+        "exportResults":{
+            "exportDEM":{},
+            "exportOrtho": {},
+            "exportModel":{},
+            "exportPointCloud":{},
+            "exportTiledModel":{}
         }
 
     }
