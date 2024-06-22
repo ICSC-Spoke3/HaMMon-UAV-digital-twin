@@ -135,9 +135,11 @@ def execute_steps(steps_params_to_run: dict) -> None:
             if 'buildOrtho' in steps_params_to_run['OrthoAndDEMCreation']:
                 orthodemprocess.buildOrthomosaic(progress_printer=ProgressPrinter("buildOrtho"))
             if 'exportDem' in steps_params_to_run['OrthoAndDEMCreation']:
-                orthodemprocess.exportDEM(progress_printer=ProgressPrinter("exportDEM"), path=output_save_folder)
+                pass
+                #orthodemprocess.exportDEM(progress_printer=ProgressPrinter("exportDEM"), path=output_save_folder)
             if 'exportOrtho' in steps_params_to_run['OrthoAndDEMCreation']:
-                orthodemprocess.exportOrtho(progress_printer=ProgressPrinter("exportOrtho"), path=output_save_folder)
+                pass
+                #orthodemprocess.exportOrtho(progress_printer=ProgressPrinter("exportOrtho"), path=output_save_folder)
             if 'exportModel' in steps_params_to_run['OrthoAndDEMCreation']:
                 orthodemprocess.exportModel(progress_printer=ProgressPrinter("exportModel"), path=output_save_folder)
             if 'exportPointCloud' in steps_params_to_run['OrthoAndDEMCreation']:
