@@ -71,8 +71,8 @@ class PointCloudProcessor:
                 "save_point_intensity": True,
                 "save_point_classification": True, 
                 "save_point_confidence": True,
-                #"save_point_source_id": True,
-                #"save_point_index": True,
+                "save_point_source_id": True,
+                "save_point_index": True,
                 #"format": Metashape.PointCloudFormat.PointCloudFormatLAS,
                         # format Metashape.PointCloudFormat.Cesium
                 #"image_format": Metashape.ImageFormat.ImageFormatTIFF,
