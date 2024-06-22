@@ -7,5 +7,5 @@ workflow:
     path: '../new_project/new_project.psx'
   OrthoAndDEMCreation:
     exportDem:
-      
+    exportOrtho:
     

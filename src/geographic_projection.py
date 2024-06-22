@@ -37,8 +37,6 @@ class GeographicProjection:
             # update default params with the input
             default_params.update(kwargs)
             self.project.chunk.exportRaster(path=path+"/dem.tif", progress= progress_printer, **default_params)
-            # TODO: save
-
 
     """
     Build Orthomosaic
@@ -53,4 +51,21 @@ class GeographicProjection:
         default_params.update(kwargs)
         self.project.chunk.buildOrthomosaic(progress=progress_printer, **default_params)
         self.project.save_project(version="buildOrthomosaic")
+
+    """
+    Export Orthomosaic
+    """
+    def exportOrtho(self, progress_printer: str, path: str, **kwargs) -> None:
+        if self.project.chunk.orthomosaic:
+            default_params = {
+                "image_format": Metashape.ImageFormatTIFF,
+                "source_data": Metashape.OrthomosaicData,
+                "split_in_blocks": True
+            }
+            # update default params with the input
+            default_params.update(kwargs)
+            self.project.chunk.exportRaster(path=path+"/orthomosaic.tif", progress= progress_printer, **default_params)
+
+
+
 
