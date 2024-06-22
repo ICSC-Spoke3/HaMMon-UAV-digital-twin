@@ -76,9 +76,9 @@ class PointCloudProcessor:
                 "format": Metashape.PointCloudFormat.PointCloudFormatLAS,
                         # format Metashape.PointCloudFormat.Cesium
                 "image_format": Metashape.ImageFormat.ImageFormatTIFF,
-                #"split_in_blocks": False,
+                "split_in_blocks": False,
                             #"classes" (list[int]) – List of point classes to be exported,
-                #"save_images": True,
+                "save_images": True,
                         # "compression": True,               
                         # "tileset_version": "1.1",
                         # "screen_space_error" (float) – Target screen space error (Cesium format only).
