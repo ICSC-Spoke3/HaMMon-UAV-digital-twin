@@ -119,7 +119,7 @@ class GeographicProjection:
             }
             # update default params with the input
             default_params.update(kwargs)
-            self.project.chunk.exportPointCloud(path=path+'/point_cloud/point_cloud.las', progress=progress_printer,  **default_params)
+            self.project.chunk.exportPointCloud(path=path+'/point_cloud/point_cloud.las', progress=progress_printer)#,  **default_params)
 
 
 
