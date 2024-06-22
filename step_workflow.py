@@ -145,6 +145,7 @@ def execute_steps(steps_params_to_run: dict) -> None:
     if 'exportResults' in steps_params_to_run:
         orthodemprocess = GeographicProjection()
         meshprocess = MeshProcessor()
+        pointcloudprocess = PointCloudProcessor()
         if 'exportDEM' in steps_params_to_run['exportResults']:
             orthodemprocess.exportDEM(progress_printer=ProgressPrinter("exportDEM"), path=output_save_folder, **steps_params_to_run['exportResults']['exportDEM'])
         if 'exportOrtho' in steps_params_to_run['exportResults']:
@@ -152,11 +153,11 @@ def execute_steps(steps_params_to_run: dict) -> None:
         if 'exportModel' in steps_params_to_run['exportResults']:
             meshprocess.exportModel(progress_printer=ProgressPrinter("exportModel"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportModel'])
         if 'exportPointCloud' in steps_params_to_run['exportResults']:
-                orthodemprocess.exportPointCloud(progress_printer=ProgressPrinter("exportPointCloud"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportPointCloud'])
+            pointcloudprocess.exportPointCloud(progress_printer=ProgressPrinter("exportPointCloud"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportPointCloud'])
 
 # TODO: export tiled model
     # TODO: fix export in concomitanza della creazione del modello
-                #TODO fix if and else annidato non annidato, visto che posso esportarlo a piacere, con le casistiche che voglio io
+  #TODO fix if and else annidato non annidato, visto che posso esportarlo a piacere, con le casistiche che voglio io
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
 
     prj.chunk.exportReport(path="./report.pdf", title="Final report")
