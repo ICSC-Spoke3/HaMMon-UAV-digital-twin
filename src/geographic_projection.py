@@ -87,7 +87,7 @@ class GeographicProjection:
             }
             # update default params with the input
             default_params.update(kwargs)
-            self.project.chunk.exportModel(path=path+'/model.obj', progress= progress_printer, **default_params)
+            self.project.chunk.exportModel(path=path+'/model/model.obj', progress= progress_printer, **default_params)
 
     """
     export dense point cloud
