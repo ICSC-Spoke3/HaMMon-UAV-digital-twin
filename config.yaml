@@ -5,11 +5,9 @@ workflow:
     log: './path/log/'
   project:
     path: '../new_project/new_project.psx'
-  OrthoAndDEMCreation:
+  OrthoAndDEMCreation: {}
   exportResults:
-    exportDEM:
-    
-    exportOrtho:
-    exportModel:
-    exportPointCloud:
-    
+    exportDEM: {}
+    exportOrtho: {}
+    exportModel: {}
+    exportPointCloud: {}
