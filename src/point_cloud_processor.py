@@ -68,7 +68,7 @@ class PointCloudProcessor:
                 "source_data": Metashape.DataSource.PointCloudData,
                 "save_point_color": True,
                 "save_point_normal": True, 
-                #"save_point_intensity": True,
+                "save_point_intensity": True,
                 #"save_point_classification": True, 
                 #"save_point_confidence": True,
                 #"save_point_source_id": True,
