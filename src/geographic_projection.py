@@ -95,6 +95,7 @@ class GeographicProjection:
     def exportPointCloud(self, progress_printer: str, path: str, **kwargs) -> None:
         if self.project.chunk.point_cloud:
             default_params = {
+                """
                 "source_data": Metashape.DataSource.PointCloudData,
                 "save_point_color": True,
                 "save_point_normal": True, 
@@ -114,11 +115,11 @@ class GeographicProjection:
                 # "screen_space_error" (float) – Target screen space error (Cesium format only).
                 # "folder_depth" (int) – Tileset subdivision depth (Cesium format only)
                 "subdivide_task": True
-
+                """
             }
             # update default params with the input
             default_params.update(kwargs)
-            self.project.chunk.exportPointCloud(path=path+'/point_cloud.las', progress=progress_printer,  **default_params)
+            self.project.chunk.exportPointCloud(path=path+'/point_cloud/point_cloud.las', progress=progress_printer,  **default_params)
 
 
 
