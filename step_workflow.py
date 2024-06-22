@@ -163,9 +163,7 @@ def execute_steps(steps_params_to_run: dict) -> None:
             meshprocess.exportTiledModel(progress_printer=ProgressPrinter('exportTiledModel'), path=output_save_folder,  **steps_params_to_run['exportResults']['exportTiledModel'])
 
         print(" == == == exportResults == == ==")
-# TODO: export tiled model
-    # TODO: fix export in concomitanza della creazione del modello
-  #TODO fix if and else annidato non annidato, visto che posso esportarlo a piacere, con le casistiche che voglio io
+
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
 
     prj.chunk.exportReport(path=output_save_folder +"/report.pdf", title="Final report")
