@@ -124,7 +124,11 @@ def execute_steps(steps_params_to_run: dict) -> None:
             meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"), **steps_params_to_run['3DModelProcessor']['buildTiledModel'])
         else: # do it by default
             meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"))
-
+        if 'exportTiledModel' in steps_params_to_run['3DModelProcessor']:
+            meshprocess.exportTiledModel(progress_printer=ProgressPrinter('exportTiledModel'), path=output_save_folder,  **steps_params_to_run['3DModelProcessor']['exportTiledModel'])
+        if 'exportModel' in steps_params_to_run['3DModelProcessor']:
+            meshprocess.exportModel(progress_printer=ProgressPrinter("exportModel"), path=output_save_folder,  **steps_params_to_run['3DModelProcessor']['exportModel'])
+        
         print(" == == == 3DModelProcessor == == ==")
 
     if "OrthoAndDEMCreation" in steps_params_to_run:
@@ -140,7 +144,8 @@ def execute_steps(steps_params_to_run: dict) -> None:
                 orthodemprocess.buildOrthomosaic(progress_printer=ProgressPrinter("buildOrtho"))
                 if 'exportOrtho' in steps_params_to_run['OrthoAndDEMCreation']:
                     orthodemprocess.exportOrtho(progress_printer=ProgressPrinter("exportOrtho"), path=output_save_folder,  **steps_params_to_run['OrthoAndDEMCreation']['exportOrtho'])
-
+                
+        print(" == == == OrthoAndDEMCreation == == ==")
 
     if 'exportResults' in steps_params_to_run:
         orthodemprocess = GeographicProjection()
@@ -154,13 +159,16 @@ def execute_steps(steps_params_to_run: dict) -> None:
             meshprocess.exportModel(progress_printer=ProgressPrinter("exportModel"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportModel'])
         if 'exportPointCloud' in steps_params_to_run['exportResults']:
             pointcloudprocess.exportPointCloud(progress_printer=ProgressPrinter("exportPointCloud"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportPointCloud'])
+        if 'exportTiledModel' in steps_params_to_run['exportResults']:
+            meshprocess.exportTiledModel(progress_printer=ProgressPrinter('exportTiledModel'), path=output_save_folder,  **steps_params_to_run['exportResults']['exportTiledModel'])
 
+        print(" == == == exportResults == == ==")
 # TODO: export tiled model
     # TODO: fix export in concomitanza della creazione del modello
   #TODO fix if and else annidato non annidato, visto che posso esportarlo a piacere, con le casistiche che voglio io
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
 
-    prj.chunk.exportReport(path="./report.pdf", title="Final report")
+    prj.chunk.exportReport(path=output_save_folder +"/report.pdf", title="Final report")
 
     
 """

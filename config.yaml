@@ -11,3 +11,4 @@ workflow:
     exportOrtho: {}
     exportModel: {}
     exportPointCloud: {}
+    exportTiledModel: {}

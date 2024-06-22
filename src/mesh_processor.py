@@ -109,3 +109,21 @@ class MeshProcessor:
             # update default params with the input
             default_params.update(kwargs)
             self.project.chunk.exportModel(path=path+'/model/model.obj', progress= progress_printer, **default_params)
+
+    """
+    Export TiledModel
+    """
+    def exportTiledModel(self, progress_printer: str, path: str, **kwargs) -> None:
+        if self.project.chunk.tiled_model:
+            default_params = {
+                "format": Metashape.TiledModelFormat.TiledModelFormatCesium,
+                "model_format" : Metashape.ModelFormat.ModelFormatCOLLADA,
+                "texture_format": Metashape.ImageFormat.ImageFormatJPEG,
+                "model_compression": True,
+                "tileset_version": '1.1',
+                "use_tileset_transform": True,
+                "folder_depth": 5
+            }
+            # update default params with the input
+            default_params.update(kwargs)
+            self.project.chunk.exportTiledModel(path=path+'/tiled/tiled.zip', progress= progress_printer, **default_params)
