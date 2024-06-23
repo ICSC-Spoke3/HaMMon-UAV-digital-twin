@@ -70,21 +70,21 @@ def execute_steps(steps_params_to_run: dict) -> None:
         photoprocess.filterImageQuality(progress_printer=ProgressPrinter("filterPhotos"))
         if 'matchPhotos' in steps_params_to_run['PhotoProcessor']:
             photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"), **steps_params_to_run['PhotoProcessor']['matchPhotos'])
-        else: # do it by default
-            photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"))
-        #if 'alignCameras' in steps_params_to_run['PhotoProcessor']:
-        photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"), **steps_params_to_run['PhotoProcessor']['alignCameras'])
+        #else: # do it by default
+        #    photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"))
+        if 'alignCameras' in steps_params_to_run['PhotoProcessor']:
+            photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"), **steps_params_to_run['PhotoProcessor']['alignCameras'])
         #else: # do it by default
         #    photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"))
-        #if 'optimizeCameras' in steps_params_to_run['PhotoProcessor']:
-        photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
+        if 'optimizeCameras' in steps_params_to_run['PhotoProcessor']:
+            photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
     
         print(" == == == Loading/NewProject == == ==")
 
     if 'PointCloudProcessor' in steps_params_to_run:
         pointcloudprocess = PointCloudProcessor()
-        #if 'buildDepthMaps' in steps_params_to_run['PointCloudProcessor']:
-        pointcloudprocess.buildDepthMaps(progress_printer=ProgressPrinter("buildDepthMaps"), **steps_params_to_run['PointCloudProcessor']['buildDepthMaps'])
+        if 'buildDepthMaps' in steps_params_to_run['PointCloudProcessor']:
+            pointcloudprocess.buildDepthMaps(progress_printer=ProgressPrinter("buildDepthMaps"), **steps_params_to_run['PointCloudProcessor']['buildDepthMaps'])
         #else: # do it by default
         #    pointcloudprocess.buildDepthMaps(progress_printer=ProgressPrinter("buildDepthMaps"))
 
@@ -94,8 +94,8 @@ def execute_steps(steps_params_to_run: dict) -> None:
         if (pointcloudprocess.project.chunk.transform.scale and 
             pointcloudprocess.project.chunk.transform.rotation and 
             pointcloudprocess.project.chunk.transform.translation):
-            #if 'buildPointCloud' in steps_params_to_run['PointCloudProcessor']:
-            pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"), **steps_params_to_run['PointCloudProcessor']['buildPointCloud'])
+            if 'buildPointCloud' in steps_params_to_run['PointCloudProcessor']:
+                pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"), **steps_params_to_run['PointCloudProcessor']['buildPointCloud'])
             #else:
             #    pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"))
             pointcloudprocess.colorizePointCloud(progress_printer=ProgressPrinter("colorizePointCloud"))
@@ -106,21 +106,21 @@ def execute_steps(steps_params_to_run: dict) -> None:
 
     if "3DModelProcessor" in steps_params_to_run:
         meshprocess = MeshProcessor()
-        #if 'buildModel' in steps_params_to_run['3DModelProcessor']:
-        meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"), **steps_params_to_run['3DModelProcessor']['buildModel'])
+        if 'buildModel' in steps_params_to_run['3DModelProcessor']:
+            meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"), **steps_params_to_run['3DModelProcessor']['buildModel'])
         #else: # do it by default
         #    meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"))
         meshprocess.colorizeModel(progress_printer=ProgressPrinter("colorizeModel"))
-        #if 'buildUV' in steps_params_to_run['3DModelProcessor']:
-        meshprocess.buildUV(progress_printer=ProgressPrinter("buildUV"), **steps_params_to_run['3DModelProcessor']['buildUV'])
+        if 'buildUV' in steps_params_to_run['3DModelProcessor']:
+            meshprocess.buildUV(progress_printer=ProgressPrinter("buildUV"), **steps_params_to_run['3DModelProcessor']['buildUV'])
         #else: # do it by default
         #    meshprocess.buildUV(progress_printer=ProgressPrinter("buildUV"))
-        #if 'buildTexture' in steps_params_to_run['3DModelProcessor']:
-        meshprocess.buildTexture(progress_printer=ProgressPrinter("buildTexture"), **steps_params_to_run['3DModelProcessor']['buildTexture'])
+        if 'buildTexture' in steps_params_to_run['3DModelProcessor']:
+            meshprocess.buildTexture(progress_printer=ProgressPrinter("buildTexture"), **steps_params_to_run['3DModelProcessor']['buildTexture'])
         #else: # do it by default
         #    meshprocess.buildTexture(progress_printer=ProgressPrinter("buildTexture"))
-        #if 'buildTiledModel' in steps_params_to_run['3DModelProcessor']:
-        meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"), **steps_params_to_run['3DModelProcessor']['buildTiledModel'])
+        if 'buildTiledModel' in steps_params_to_run['3DModelProcessor']:
+            meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"), **steps_params_to_run['3DModelProcessor']['buildTiledModel'])
         #else: # do it by default
         #    meshprocess.buildTiledModel(progress_printer=ProgressPrinter("buildTiledModel"))
         if 'exportTiledModel' in steps_params_to_run['3DModelProcessor']:

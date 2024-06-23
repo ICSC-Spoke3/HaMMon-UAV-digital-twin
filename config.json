@@ -40,7 +40,8 @@
             },
             "buildTexture":{
                 
-            }
+            },
+            "buildUV":{}
         },
         "OrthoAndDEMCreation":{
             "buildDem":{
