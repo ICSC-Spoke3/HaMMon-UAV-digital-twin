@@ -102,7 +102,7 @@ class PointCloudProcessor:
 
      
     def filterPointCloud(self, maxconf: int = 3) -> None:
-        for chunk in self.project.chunk.chunks:
+        for chunk in self.project.doc.chunks:
             chunk.point_cloud.setConfidenceFilter(0, maxconf) # configuring point cloud filter so that only point with low-confidence currently active
             all_points_classes = list(range(128))
             chunk.point_cloud.removePoints(all_points_classes)  # removes all active points of the point cloud, i.e. removing all low-confidence points
