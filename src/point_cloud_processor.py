@@ -2,6 +2,13 @@
 from src.project import Project
 import Metashape
 
+
+def update_existing_keys(dict1, dict2):
+    for k in dict1.keys():
+        if k in dict2:
+            dict1[k] = dict2[k]
+    return dict1
+
 """
 Determina il calcolo delle mappe di profondità dal quale sarà possibile determinare 
 la nuvola densa di punti
@@ -23,7 +30,8 @@ class PointCloudProcessor:
             'subdivide_task': True
         }
         # update default params with the input
-        default_params.update(kwargs)
+        #default_params.update(kwargs)
+        default_params = update_existing_keys(default_params, kwargs)
         self.project.chunk.buildDepthMaps(progress=progress_printer, **default_params)
         self.project.save_project(version="buildDepthMaps")
 
@@ -39,7 +47,8 @@ class PointCloudProcessor:
             'subdivide_task': True
         }
         # update default params with the input
-        default_params.update(kwargs)
+        #default_params.update(kwargs)
+        default_params = update_existing_keys(default_params, kwargs)
         self.project.chunk.buildPointCloud(progress=progress_printer, **default_params)
         self.project.save_project(version="buildPointCloud")
 
@@ -53,7 +62,8 @@ class PointCloudProcessor:
         }
 
         # update default params with the input
-        default_params.update(kwargs)
+        #default_params.update(kwargs)
+        default_params = update_existing_keys(default_params, kwargs)
         self.project.chunk.colorizePointCloud(progress=progress_printer, **default_params)
         self.project.save_project(version="colorizePointCloud")
 
@@ -85,7 +95,8 @@ class PointCloudProcessor:
                 "subdivide_task": True
             }
             # update default params with the input
-            default_params.update(kwargs)
+            #default_params.update(kwargs)
+            default_params = update_existing_keys(default_params, kwargs)
             self.project.chunk.exportPointCloud(path=path+'/point_cloud/point_cloud.las', progress=progress_printer,  **default_params)
 
 
