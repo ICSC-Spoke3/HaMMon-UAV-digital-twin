@@ -65,5 +65,4 @@ class GeographicProjection:
             # update default params with the input
             default_params.update(kwargs)
             self.project.chunk.exportRaster(path=path+"/orthomosaic/orthomosaic.tif", progress= progress_printer, **default_params)
-
-    # TODO: detect and filter point cloud confidence
+            

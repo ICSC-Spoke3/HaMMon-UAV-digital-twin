@@ -57,7 +57,6 @@ class PointCloudProcessor:
         self.project.chunk.colorizePointCloud(progress=progress_printer, **default_params)
         self.project.save_project(version="colorizePointCloud")
 
-# TODO: filterPointCloud
         
     """
     export dense point cloud
@@ -90,4 +89,15 @@ class PointCloudProcessor:
             self.project.chunk.exportPointCloud(path=path+'/point_cloud/point_cloud.las', progress=progress_printer,  **default_params)
 
 
-    
+     
+    def filterPointCloud(self, maxconf: int = 3) -> None:
+        for chunk in self.project.chunk.chunks:
+            chunk.point_cloud.setConfidenceFilter(0, maxconf) # configuring point cloud filter so that only point with low-confidence currently active
+            all_points_classes = list(range(128))
+            chunk.point_cloud.removePoints(all_points_classes)  # removes all active points of the point cloud, i.e. removing all low-confidence points
+            chunk.point_cloud.resetFilters()  # resetting filter, so that all other points (i.e. high-confidence points) are now active
+
+
+# TODO: detect and filter point cloud confidence
+# https://www.agisoft.com/forum/index.php?topic=11331.msg51735#msg51735 spiegazione
+# https://www.agisoft.com/forum/index.php?topic=11817.0

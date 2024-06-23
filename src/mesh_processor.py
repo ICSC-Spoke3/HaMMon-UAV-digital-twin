@@ -69,7 +69,7 @@ class MeshProcessor:
 
     # TODO: detectMarkers
         
-    # TODO: buildTiledModel: https://www.agisoft.com/forum/index.php?topic=13206.0
+    # buildTiledModel: https://www.agisoft.com/forum/index.php?topic=13206.0
     """
     Build tiled model
     """

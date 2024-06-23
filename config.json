@@ -24,6 +24,7 @@
 
             },
             "buildPointCloud":{
+                "maxconf": 3
 
             },
             "colorizePointCloud":{

@@ -98,6 +98,8 @@ def execute_steps(steps_params_to_run: dict) -> None:
                 pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"), **steps_params_to_run['PointCloudProcessor']['buildPointCloud'])
             #else:
             #    pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"))
+                if 'maxconf' in steps_params_to_run['PointCloudProcessor']['buildPointCloud']:
+                    pointcloudprocess.filterPointCloud(steps_params_to_run['PointCloudProcessor']['buildPointCloud']['maxconf'])
             pointcloudprocess.colorizePointCloud(progress_printer=ProgressPrinter("colorizePointCloud"))
             if 'exportPointCloud' in steps_params_to_run['PointCloudProcessor']:
                 pointcloudprocess.exportPointCloud(progress_printer=ProgressPrinter("exportPointCloud"), path=output_save_folder,  **steps_params_to_run['PointCloudProcessor']['exportPointCloud'])
@@ -217,10 +219,7 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--config', help='Path configuration file JSON/YAML')
     parser.add_argument('-i', '--input', help='Path project photos')
     parser.add_argument('-o', '--output', help='Saving path project files')
-    parser.add_argument('-p', '--project', help='Save/Open project path name')
-
-    #TODO: integrare -p negli obligatori e nei CLI
-    
+        
     input_images_folder = ""
     output_save_folder = "."
     
