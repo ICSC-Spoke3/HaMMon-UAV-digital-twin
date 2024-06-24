@@ -50,7 +50,7 @@ class SystemMonitor:
         # Convert in GB and exclude the decimal part
         ram_memory = ram_memory / (1024 * 1024 * 1024)
         return ram_memory
-    
+
     def parse_gpustat(self, gpustat_output):
         lines = gpustat_output.split('\n')
         stats = []
@@ -83,7 +83,7 @@ class SystemMonitor:
         ram_active = self.parese_dataram(psutil.virtual_memory().active)
         ram_used = self.parese_dataram(psutil.virtual_memory().used)
         return ram_usage, ram_total, ram_available, ram_active, ram_used
-        
+
     def log_gpu(self):
         result = subprocess.run(['gpustat'], stdout=subprocess.PIPE)
         stats_str = result.stdout.decode('utf-8')

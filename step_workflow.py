@@ -11,10 +11,11 @@ from src.point_cloud_processor import PointCloudProcessor
 from src.mesh_processor import MeshProcessor
 from src.geographic_projection import GeographicProjection
 
-# TODO: gestire la loro sovrascrittura global variables
+
 input_images_folder = ""
 output_save_folder = "."
 image_files = []
+flag_monitoring = False
 
 valid_steps = ['settings', 'project', 'PhotoProcessor', 'PointCloudProcessor', "3DModelProcessor", "OrthoAndDEMCreation", "exportResults"]
 
@@ -233,6 +234,7 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--config', help='Path configuration file JSON/YAML')
     parser.add_argument('-i', '--input', help='Path project photos')
     parser.add_argument('-o', '--output', help='Saving path project files')
+    parser.add_argument('-m', '--monitoring', help="Enable monitoring")
     
     args = parser.parse_args()
     # check input folder
@@ -268,4 +270,8 @@ if __name__ == "__main__":
     else:
         raise Exception("Missing parameters. Specify \n<–config> to run from a configuration file, or <–exec> to run from the command line. \n<–output> saving project path \n<–help> for more information.")
 
+    # check monitoring flag
+    if args.monitor:
+        flag_monitoring = True
+        
     execute_steps(steps_params_to_run)
