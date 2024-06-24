@@ -1,7 +1,7 @@
 # project.py
 import Metashape
-from singleton_meta import SingletonMeta
-from system_monitor import SystemMonitor
+from src.singleton_meta import SingletonMeta
+from src.system_monitor import SystemMonitor
     
 class Project(metaclass=SingletonMeta):
     def __init__(self, project_path: str = None, enable_monitoring: bool = False):

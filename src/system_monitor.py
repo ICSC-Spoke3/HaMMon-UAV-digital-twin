@@ -4,7 +4,7 @@ import csv
 import time
 import threading
 import subprocess
-from singleton_meta import SingletonMeta
+from src.singleton_meta import SingletonMeta
 
 """
 Sistema per il monitoraggio dei task svolti.
