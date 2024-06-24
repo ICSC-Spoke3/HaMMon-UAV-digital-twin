@@ -273,5 +273,6 @@ if __name__ == "__main__":
     # check monitoring flag
     if args.monitoring:
         flag_monitoring = True
+        print("-- DEBUG: set monitoring")
 
     execute_steps(steps_params_to_run)
