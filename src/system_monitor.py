@@ -21,8 +21,9 @@ class SystemMonitor:
 
         self.create_csv()
 
-    def start(self, module_name: str) -> None:
+    def start(self, module_name) -> None:
         self.running = True
+        print(type(module_name))
         self.logger = module_name
         while self.running:
             cpu_usage, cpu_core_usage = self.log_cpu()
