@@ -21,10 +21,9 @@ class SystemMonitor:
 
         self.create_csv()
 
-    def start(self, module_name) -> None:
+    def start(self, module_name: str) -> None:
         self.running = True
-        print(type(module_name))
-        self.logger = module_name
+        self.logger = logging.getLogger(module_name)
         while self.running:
             cpu_usage, cpu_core_usage = self.log_cpu()
             ram_usage, ram_total, ram_available, ram_active, ram_used = self.log_ram()
