@@ -1,6 +1,7 @@
 # point_cloud_processor.py
 from src.project import Project
 import Metashape
+import threading
 
 
 def update_existing_keys(dict1, dict2):
@@ -32,7 +33,12 @@ class PointCloudProcessor:
         # update default params with the input
         #default_params.update(kwargs)
         default_params = update_existing_keys(default_params, kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('buildDepthMaps',))
+            thread.start()
         self.project.chunk.buildDepthMaps(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="buildDepthMaps")
 
     """
@@ -49,7 +55,12 @@ class PointCloudProcessor:
         # update default params with the input
         #default_params.update(kwargs)
         default_params = update_existing_keys(default_params, kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('buildPointCloud',))
+            thread.start()
         self.project.chunk.buildPointCloud(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="buildPointCloud")
 
     """
@@ -64,7 +75,12 @@ class PointCloudProcessor:
         # update default params with the input
         #default_params.update(kwargs)
         default_params = update_existing_keys(default_params, kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('colorizePointCloud',))
+            thread.start()
         self.project.chunk.colorizePointCloud(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="colorizePointCloud")
 
         
@@ -97,16 +113,25 @@ class PointCloudProcessor:
             # update default params with the input
             #default_params.update(kwargs)
             default_params = update_existing_keys(default_params, kwargs)
+            if self.project.monitoring is not None:
+                thread = threading.Thread(target=self.project.monitoring.start, args=('exportPointCloud',))
+                thread.start()
             self.project.chunk.exportPointCloud(path=path+'/point_cloud/point_cloud.las', progress=progress_printer,  **default_params)
-
+            if self.project.monitoring is not None:
+                self.project.monitoring.stop()
 
      
     def filterPointCloud(self, maxconf: int = 3) -> None:
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('filterPointCloud',))
+            thread.start()
         for chunk in self.project.doc.chunks:
             chunk.point_cloud.setConfidenceFilter(0, maxconf) # configuring point cloud filter so that only point with low-confidence currently active
             all_points_classes = list(range(128))
             chunk.point_cloud.removePoints(all_points_classes)  # removes all active points of the point cloud, i.e. removing all low-confidence points
             chunk.point_cloud.resetFilters()  # resetting filter, so that all other points (i.e. high-confidence points) are now active
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
 
 
 # TODO: detect and filter point cloud confidence

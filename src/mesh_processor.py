@@ -1,6 +1,7 @@
 # mesh_processor.py
 from src.project import Project
 import Metashape
+import threading
 
 """
 Determina la creazione della mesh del modello, la texture a partire dalle foto e il tiled model
@@ -28,7 +29,12 @@ class MeshProcessor:
         }
         # update default params with the input
         default_params.update(kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('buildModel',))
+            thread.start()
         self.project.chunk.buildModel(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="buildModel")
 
     """

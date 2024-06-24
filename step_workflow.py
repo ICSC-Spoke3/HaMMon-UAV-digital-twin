@@ -152,7 +152,7 @@ def execute_steps(steps_params_to_run: dict) -> None:
                 orthodemprocess.buildOrthomosaic(progress_printer=ProgressPrinter("buildOrtho"))
                 if 'exportOrthomosaic' in steps_params_to_run['OrthoAndDEMCreation']:
                     orthodemprocess.exportOrthomosaic(progress_printer=ProgressPrinter("exportOrthomosaic"), path=output_save_folder,  **steps_params_to_run['OrthoAndDEMCreation']['exportOrthomosaic'])
-                if 'exportOrthophotos' in steps_params_to_run['exportResults']:
+                if 'exportOrthophotos' in steps_params_to_run['OrthoAndDEMCreation']:
                     orthodemprocess.exportOrthophotos(progress_printer=ProgressPrinter('exportOrthophotos'), path= output_save_folder, **steps_params_to_run['exportResults']['exportOrthophotos'])
 
         print(" == == == OrthoAndDEMCreation == == ==")
