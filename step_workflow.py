@@ -234,7 +234,7 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--config', help='Path configuration file JSON/YAML')
     parser.add_argument('-i', '--input', help='Path project photos')
     parser.add_argument('-o', '--output', help='Saving path project files')
-    parser.add_argument('-m', '--monitoring', help="Enable monitoring")
+    parser.add_argument('-m', '--monitoring', help="Enable monitoring", action='store_true')
     
     args = parser.parse_args()
     # check input folder
