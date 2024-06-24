@@ -55,7 +55,7 @@ class GeographicProjection:
     """
     Export Orthomosaic
     """
-    def exportOrtho(self, progress_printer: str, path: str, **kwargs) -> None:
+    def exportOrthomosaic(self, progress_printer: str, path: str, **kwargs) -> None:
         if self.project.chunk.orthomosaic:
             default_params = {
                 "image_format": Metashape.ImageFormatTIFF,

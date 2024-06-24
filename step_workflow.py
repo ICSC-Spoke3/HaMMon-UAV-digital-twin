@@ -149,8 +149,8 @@ def execute_steps(steps_params_to_run: dict) -> None:
                     orthodemprocess.exportDEM(progress_printer=ProgressPrinter("exportDEM"), path=output_save_folder, **steps_params_to_run['OrthoAndDEMCreation']['exportDEM'])
             if 'buildOrtho' in steps_params_to_run['OrthoAndDEMCreation']:
                 orthodemprocess.buildOrthomosaic(progress_printer=ProgressPrinter("buildOrtho"))
-                if 'exportOrtho' in steps_params_to_run['OrthoAndDEMCreation']:
-                    orthodemprocess.exportOrtho(progress_printer=ProgressPrinter("exportOrtho"), path=output_save_folder,  **steps_params_to_run['OrthoAndDEMCreation']['exportOrtho'])
+                if 'exportOrthomosaic' in steps_params_to_run['OrthoAndDEMCreation']:
+                    orthodemprocess.exportOrthomosaicmosaic(progress_printer=ProgressPrinter("exportOrthomosaic"), path=output_save_folder,  **steps_params_to_run['OrthoAndDEMCreation']['exportOrthomosaic'])
                 
         print(" == == == OrthoAndDEMCreation == == ==")
 
@@ -160,8 +160,8 @@ def execute_steps(steps_params_to_run: dict) -> None:
         pointcloudprocess = PointCloudProcessor()
         if 'exportDEM' in steps_params_to_run['exportResults']:
             orthodemprocess.exportDEM(progress_printer=ProgressPrinter("exportDEM"), path=output_save_folder, **steps_params_to_run['exportResults']['exportDEM'])
-        if 'exportOrtho' in steps_params_to_run['exportResults']:
-            orthodemprocess.exportOrtho(progress_printer=ProgressPrinter("exportOrtho"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportOrtho'])
+        if 'exportOrthomosaic' in steps_params_to_run['exportResults']:
+            orthodemprocess.exportOrthomosaicmosaic(progress_printer=ProgressPrinter("exportOrthomosaic"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportOrthomosaic'])
         if 'exportModel' in steps_params_to_run['exportResults']:
             meshprocess.exportModel(progress_printer=ProgressPrinter("exportModel"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportModel'])
         if 'exportPointCloud' in steps_params_to_run['exportResults']:
