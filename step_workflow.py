@@ -11,6 +11,10 @@ from src.point_cloud_processor import PointCloudProcessor
 from src.mesh_processor import MeshProcessor
 from src.geographic_projection import GeographicProjection
 
+# TODO: gestire la loro sovrascrittura global variables
+input_images_folder = ""
+output_save_folder = "."
+image_files = []
 
 valid_steps = ['settings', 'project', 'PhotoProcessor', 'PointCloudProcessor', "3DModelProcessor", "OrthoAndDEMCreation", "exportResults"]
 
@@ -129,7 +133,9 @@ def execute_steps(steps_params_to_run: dict) -> None:
             meshprocess.exportTiledModel(progress_printer=ProgressPrinter('exportTiledModel'), path=output_save_folder,  **steps_params_to_run['3DModelProcessor']['exportTiledModel'])
         if 'exportModel' in steps_params_to_run['3DModelProcessor']:
             meshprocess.exportModel(progress_printer=ProgressPrinter("exportModel"), path=output_save_folder,  **steps_params_to_run['3DModelProcessor']['exportModel'])
-        
+        if 'exportTexture' in steps_params_to_run['3DModelProcessor']:
+            meshprocess.exportTexture(progress_printer=ProgressPrinter('exportTexture'), path=output_save_folder,  **steps_params_to_run['3DModelProcessor']['exportTexture'])
+
         print(" == == == 3DModelProcessor == == ==")
 
     if "OrthoAndDEMCreation" in steps_params_to_run:
@@ -162,12 +168,15 @@ def execute_steps(steps_params_to_run: dict) -> None:
             pointcloudprocess.exportPointCloud(progress_printer=ProgressPrinter("exportPointCloud"), path=output_save_folder,  **steps_params_to_run['exportResults']['exportPointCloud'])
         if 'exportTiledModel' in steps_params_to_run['exportResults']:
             meshprocess.exportTiledModel(progress_printer=ProgressPrinter('exportTiledModel'), path=output_save_folder,  **steps_params_to_run['exportResults']['exportTiledModel'])
-
+        if 'exportTexture' in steps_params_to_run['exportResults']:
+            meshprocess.exportTexture(progress_printer=ProgressPrinter('exportTexture'), path=output_save_folder,  **steps_params_to_run['exportResults']['exportTexture'])
+        
         print(" == == == exportResults == == ==")
 
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
 
     prj.chunk.exportReport(path=output_save_folder +"/report.pdf", title="Final report")
+    print('Processing finished, results saved to ' + output_save_folder + '.')
     prj.quit_project()
     
 """
@@ -219,9 +228,6 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--config', help='Path configuration file JSON/YAML')
     parser.add_argument('-i', '--input', help='Path project photos')
     parser.add_argument('-o', '--output', help='Saving path project files')
-        
-    input_images_folder = ""
-    output_save_folder = "."
     
     args = parser.parse_args()
     # check input folder
@@ -232,7 +238,7 @@ if __name__ == "__main__":
         if not os.path.isdir(input_images_folder):
             raise FileNotFoundError(f"{input_images_folder} does not exit")
         
-        # check number of images    # TODO lista delle estensioni da aggiornare
+        # check number of images   
         image_files = find_photo_files(input_images_folder, [".jpg", ".jpeg", ".tif", ".tiff", ".png", ".bmp", ".dng"])
         if len(image_files) < 2:
             raise ValueError("Not enough images to process in the path.")
@@ -246,8 +252,6 @@ if __name__ == "__main__":
         # check output_folder exist and every subfolder
         if not os.path.isdir(output_save_folder):
             os.makedirs(output_save_folder, exist_ok=True)
-        if not os.path.isdir(output_save_folder+ "/point_cloud/"):
-            os.makedirs(output_save_folder+ "/point_cloud/", exist_ok=True)
 
     # check config and exec parameters
     if args.config and args.exec:

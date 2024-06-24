@@ -12,3 +12,4 @@ workflow:
     exportModel: {}
     exportPointCloud: {}
     exportTiledModel: {}
+    exportTexture: {}

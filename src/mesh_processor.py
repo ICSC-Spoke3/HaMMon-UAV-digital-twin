@@ -127,3 +127,16 @@ class MeshProcessor:
             # update default params with the input
             default_params.update(kwargs)
             self.project.chunk.exportTiledModel(path=path+'/tiled/tiled.zip', progress= progress_printer, **default_params)
+
+    """
+    Export model texture to file
+    """
+    def exportTexture(self, progress_printer: str, path: str, **kwargs):
+        if self.project.chunk.model.textures:
+            default_params = {
+                "texture_type":  Metashape.Model.TextureType.DiffuseMap,
+                "raster_transform": Metashape.RasterTransformType.RasterTransformNone,
+                "save_alpha": False
+            }
+            default_params.update(kwargs)
+            self.project.chunk.exportTexture(path=path+'/texture/texture.jpg', progress= progress_printer, **default_params)    # png o tiff
