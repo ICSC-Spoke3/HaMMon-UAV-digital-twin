@@ -53,13 +53,13 @@ def execute_steps(steps_params_to_run: dict) -> None:
         if is_file_path(steps_params_to_run['project']['path']):
             _, extension = os.path.splitext(steps_params_to_run['project']['path'])
             if extension.lower() in ['.psx', '.psz']:
-                prj = Project(project_path=abs_path)
+                prj = Project(project_path=abs_path, enable_monitoring=flag_monitoring)
                 prj.load_project()
             else:
                 raise TypeError("Estenzione file non conforme a .psx/.psz di Metashape")
         else: 
         # define new project name_project.psx
-            prj = Project(project_path=abs_path.rstrip('/') + "/"+ os.path.basename(abs_path.rstrip('/')) +".psx")
+            prj = Project(project_path=abs_path.rstrip('/') + "/"+ os.path.basename(abs_path.rstrip('/')) +".psx", enable_monitoring=flag_monitoring)
             prj.new_project()
 
         #print("--DEGUB: lista di chunck ", prj.doc.chunks)
@@ -273,5 +273,5 @@ if __name__ == "__main__":
     # check monitoring flag
     if args.monitor:
         flag_monitoring = True
-        
+
     execute_steps(steps_params_to_run)
