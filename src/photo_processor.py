@@ -1,4 +1,5 @@
 # photo_processor.py
+import threading
 from src.project import Project
 
 """
@@ -16,8 +17,13 @@ class PhotoProcessor:
     Add a list of photos to the chunk.
     """
     def addPhotos(self, progress_printer: str) -> None:
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('addPhotos',))
+            thread.start()
         self.project.chunk.addPhotos(filenames=self.photos_path,
                                      progress=progress_printer)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="addPhotos")
         print("-- DEBUG: "+ str(len(self.project.chunk.cameras)) + " images loaded")
     
@@ -25,6 +31,9 @@ class PhotoProcessor:
     Estimate the image quality. Cameras with a quality less than 0.5 are considered blurred and it’s recommended to disable them.
     """
     def filterImageQuality(self, progress_printer: str) -> None:
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('filterImageQuality',))
+            thread.start()
         self.project.chunk.analyzeImages(cameras=self.project.chunk.cameras,
                                          progress=progress_printer)
         print()
@@ -33,6 +42,9 @@ class PhotoProcessor:
             if float(camera.meta['Image/Quality']) < 0.5:
                 camera.enabled = False
                 num_disable_photos += 1
+
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         print("-- DEBUG: "+ str(num_disable_photos) + " images filtered")
         self.project.save_project(version="filterImageQuality")
 
@@ -53,7 +65,12 @@ class PhotoProcessor:
         }
         # update default params with the input
         default_params.update(kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('matchPhotos',))
+            thread.start()
         self.project.chunk.matchPhotos(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="matchPhotos")
     
     """
@@ -67,7 +84,12 @@ class PhotoProcessor:
         }
         # update default params with the input
         default_params.update(kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('alignCameras',))
+            thread.start()
         self.project.chunk.alignCameras(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="alignCameras")
 
     """
@@ -92,7 +114,12 @@ class PhotoProcessor:
         }
         # update default params with the input
         default_params.update(kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('optimizeCameras',))
+            thread.start()
         self.project.chunk.optimizeCameras(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="optimizeCameras")
 
     

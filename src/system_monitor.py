@@ -4,12 +4,13 @@ import csv
 import time
 import threading
 import subprocess
+from singleton_meta import SingletonMeta
 
 """
 Sistema per il monitoraggio dei task svolti.
 """
 
-class SystemMonitor:
+class SystemMonitor(metaclass=SingletonMeta):
     # log_file: file csv 
     # time: sec 
     def __init__(self, log_file: str, time: int = 30) -> None:

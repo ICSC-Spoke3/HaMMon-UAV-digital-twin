@@ -1,20 +1,17 @@
 # project.py
 import Metashape
-
-class SingletonMeta(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            instance = super().__call__(*args, **kwargs)
-            cls._instances[cls] = instance
-        return cls._instances[cls]
+from singleton_meta import SingletonMeta
+from system_monitor import SystemMonitor
     
 class Project(metaclass=SingletonMeta):
-    def __init__(self, project_path: str = None):
+    def __init__(self, project_path: str = None, enable_monitoring: bool = False):
         self.project_path = project_path
         self.doc = None
         self.chunk = None
+        self.monitoring = None
+        
+        if enable_monitoring:
+            self.monitoring = SystemMonitor(project_path + "/monitor.csv")
 
     @classmethod
     def get_project(cls):
