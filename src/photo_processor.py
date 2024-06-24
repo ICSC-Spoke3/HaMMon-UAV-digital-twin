@@ -95,5 +95,4 @@ class PhotoProcessor:
         self.project.chunk.optimizeCameras(progress=progress_printer, **default_params)
         self.project.save_project(version="optimizeCameras")
 
-
     
