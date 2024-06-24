@@ -1,6 +1,7 @@
 # geographic_projection.py
 from src.project import Project
 import Metashape
+import threading
 
 """
 Determina la creazione dell'orthomosaico e del DEM
@@ -22,7 +23,12 @@ class GeographicProjection:
         }
         # update default params with the input
         default_params.update(kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('buildDem',))
+            thread.start()
         self.project.chunk.buildDem(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="buildDem")
 
     """
@@ -36,7 +42,12 @@ class GeographicProjection:
             }
             # update default params with the input
             default_params.update(kwargs)
+            if self.project.monitoring is not None:
+                thread = threading.Thread(target=self.project.monitoring.start, args=('exportDEM',))
+                thread.start()
             self.project.chunk.exportRaster(path=path+"/dem/dem.tif", progress= progress_printer, **default_params)
+            if self.project.monitoring is not None:
+                self.project.monitoring.stop()
 
     """
     Build Orthomosaic
@@ -49,7 +60,12 @@ class GeographicProjection:
         }
         # update default params with the input
         default_params.update(kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('buildOrthomosaic',))
+            thread.start()
         self.project.chunk.buildOrthomosaic(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="buildOrthomosaic")
 
     """
@@ -64,7 +80,12 @@ class GeographicProjection:
             }
             # update default params with the input
             default_params.update(kwargs)
+            if self.project.monitoring is not None:
+                thread = threading.Thread(target=self.project.monitoring.start, args=('exportOrthomosaic',))
+                thread.start()
             self.project.chunk.exportRaster(path=path+"/orthomosaic/orthomosaic.tif", progress= progress_printer, **default_params)
+            if self.project.monitoring is not None:
+                self.project.monitoring.stop()
 
     """
     Export Orthophoto
@@ -85,4 +106,9 @@ class GeographicProjection:
             }
             # update default params with the input
             default_params.update(kwargs)
-            self.project.chunk.exportOrthophotos(path=path+"/orthophotos/orthophoto.tif", progress= progress_printer, **default_params)            
+            if self.project.monitoring is not None:
+                thread = threading.Thread(target=self.project.monitoring.start, args=('exportOrthophotos',))
+                thread.start()
+            self.project.chunk.exportOrthophotos(path=path+"/orthophotos/orthophoto.tif", progress= progress_printer, **default_params)
+            if self.project.monitoring is not None:
+                self.project.monitoring.stop()           

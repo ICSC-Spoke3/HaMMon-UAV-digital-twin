@@ -41,7 +41,12 @@ class MeshProcessor:
     Colorize 3D model
     """
     def colorizeModel(self, progress_printer: str) -> None:
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('colorizeModel',))
+            thread.start()
         self.project.chunk.colorizeModel(source_data=Metashape.ImagesData, progress=progress_printer)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="colorizeModel")
 
     """
@@ -55,7 +60,12 @@ class MeshProcessor:
         }
         # update default params with the input
         default_params.update(kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('buildUV',))
+            thread.start()
         self.project.chunk.buildUV(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="buildUV")
 
     """
@@ -70,10 +80,14 @@ class MeshProcessor:
         }
         # update default params with the input
         default_params.update(kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('buildTexture',))
+            thread.start()
         self.project.chunk.buildTexture(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="buildTexture")
 
-    # TODO: detectMarkers
         
     # buildTiledModel: https://www.agisoft.com/forum/index.php?topic=13206.0
     """
@@ -92,7 +106,12 @@ class MeshProcessor:
         }
         # update default params with the input
         default_params.update(kwargs)
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('buildTiledModel',))
+            thread.start()
         self.project.chunk.buildTiledModel(progress=progress_printer, **default_params)
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
         self.project.save_project(version="buildTiledModel")
 
     """
@@ -114,7 +133,12 @@ class MeshProcessor:
             }
             # update default params with the input
             default_params.update(kwargs)
+            if self.project.monitoring is not None:
+                thread = threading.Thread(target=self.project.monitoring.start, args=('exportModel',))
+                thread.start()
             self.project.chunk.exportModel(path=path+'/model/model.obj', progress= progress_printer, **default_params)
+            if self.project.monitoring is not None:
+                self.project.monitoring.stop()
 
     """
     Export TiledModel
@@ -132,7 +156,12 @@ class MeshProcessor:
             }
             # update default params with the input
             default_params.update(kwargs)
+            if self.project.monitoring is not None:
+                thread = threading.Thread(target=self.project.monitoring.start, args=('exportTiledModel',))
+                thread.start()
             self.project.chunk.exportTiledModel(path=path+'/tiled/tiled.zip', progress= progress_printer, **default_params)
+            if self.project.monitoring is not None:
+                self.project.monitoring.stop()
 
     """
     Export model texture to file
@@ -145,4 +174,9 @@ class MeshProcessor:
                 "save_alpha": False
             }
             default_params.update(kwargs)
-            self.project.chunk.exportTexture(path=path+'/texture/texture.jpg', progress= progress_printer, **default_params)    # png o tiff
+            if self.project.monitoring is not None:
+                thread = threading.Thread(target=self.project.monitoring.start, args=('exportTexture',))
+                thread.start()
+            self.project.chunk.exportTexture(path=path+'/texture/texture.jpg', progress= progress_printer, **default_params)    # png/tiff
+            if self.project.monitoring is not None:
+                self.project.monitoring.stop()
