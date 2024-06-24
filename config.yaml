@@ -12,3 +12,4 @@ workflow:
     exportPointCloud: {}
     exportTiledModel: {}
     exportTexture: {}
+    exportOrthophotos: {}

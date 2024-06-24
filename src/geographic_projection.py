@@ -65,4 +65,24 @@ class GeographicProjection:
             # update default params with the input
             default_params.update(kwargs)
             self.project.chunk.exportRaster(path=path+"/orthomosaic/orthomosaic.tif", progress= progress_printer, **default_params)
-            
+
+    """
+    Export Orthophoto
+    """
+    def exportOrthophotos(self, progress_printer: str, path: str, **kwargs) -> None:
+        if self.project.chunk.orthomosaic:
+            default_params = {
+                "raster_transform": Metashape.RasterTransformType.RasterTransformNone,
+                "resolution": 0,
+                "resolution_x": 0,
+                "resolution_y": 0,
+                "save_kml": False,
+                "save_world": False,
+                "save_alpha": True,
+                "image_compression": Metashape.ImageCompression.TiffCompressionJPEG,
+                "white_background": True, 
+                "north_up": True
+            }
+            # update default params with the input
+            default_params.update(kwargs)
+            self.project.chunk.exportOrthophotos(path=path+"/orthophotos/orthophoto.tif", progress= progress_printer, **default_params)            

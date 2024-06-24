@@ -151,7 +151,9 @@ def execute_steps(steps_params_to_run: dict) -> None:
                 orthodemprocess.buildOrthomosaic(progress_printer=ProgressPrinter("buildOrtho"))
                 if 'exportOrthomosaic' in steps_params_to_run['OrthoAndDEMCreation']:
                     orthodemprocess.exportOrthomosaic(progress_printer=ProgressPrinter("exportOrthomosaic"), path=output_save_folder,  **steps_params_to_run['OrthoAndDEMCreation']['exportOrthomosaic'])
-                
+                if 'exportOrthophotos' in steps_params_to_run['exportResults']:
+                    orthodemprocess.exportOrthophotos(progress_printer=ProgressPrinter('exportOrthophotos'), path= output_save_folder, **steps_params_to_run['exportResults']['exportOrthophotos'])
+
         print(" == == == OrthoAndDEMCreation == == ==")
 
     if 'exportResults' in steps_params_to_run:
@@ -170,7 +172,10 @@ def execute_steps(steps_params_to_run: dict) -> None:
             meshprocess.exportTiledModel(progress_printer=ProgressPrinter('exportTiledModel'), path=output_save_folder,  **steps_params_to_run['exportResults']['exportTiledModel'])
         if 'exportTexture' in steps_params_to_run['exportResults']:
             meshprocess.exportTexture(progress_printer=ProgressPrinter('exportTexture'), path=output_save_folder,  **steps_params_to_run['exportResults']['exportTexture'])
-        
+        if 'exportOrthophotos' in steps_params_to_run['exportResults']:
+            orthodemprocess.exportOrthophotos(progress_printer=ProgressPrinter('exportOrthophotos'), path= output_save_folder, **steps_params_to_run['exportResults']['exportOrthophotos'])
+
+
         print(" == == == exportResults == == ==")
 
     # TODO: usare task https://www.agisoft.com/forum/index.php?topic=11428.msg51371#msg51371
