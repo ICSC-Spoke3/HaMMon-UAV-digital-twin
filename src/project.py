@@ -1,5 +1,6 @@
 # project.py
 import Metashape
+import os
 from src.singleton_meta import SingletonMeta
 from src.system_monitor import SystemMonitor
     
@@ -11,7 +12,8 @@ class Project(metaclass=SingletonMeta):
         self.monitoring = None
         
         if enable_monitoring:
-            self.monitoring = SystemMonitor(project_path + "/monitor.csv")
+            directory_path = os.path.dirname(project_path)
+            self.monitoring = SystemMonitor(directory_path + "/monitor.csv")
 
     @classmethod
     def get_project(cls):
