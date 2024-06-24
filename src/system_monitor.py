@@ -92,7 +92,7 @@ class SystemMonitor:
 
 if __name__ == "__main__":
     monitor = SystemMonitor('system.csv')
-    thread = threading.Thread(target=monitor.start)
+    thread = threading.Thread(target=monitor.start, args=('Esempio',))
     thread.start('TestSystemMonitor')
     time.sleep(20)
     monitor.stop()
