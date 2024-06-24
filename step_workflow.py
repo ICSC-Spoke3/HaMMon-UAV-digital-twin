@@ -271,7 +271,7 @@ if __name__ == "__main__":
         raise Exception("Missing parameters. Specify \n<–config> to run from a configuration file, or <–exec> to run from the command line. \n<–output> saving project path \n<–help> for more information.")
 
     # check monitoring flag
-    if args.monitor:
+    if args.monitoring:
         flag_monitoring = True
 
     execute_steps(steps_params_to_run)
