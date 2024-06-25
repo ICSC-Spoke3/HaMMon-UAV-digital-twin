@@ -38,6 +38,7 @@ class SystemMonitor:
     def parese_dataram(self, ram_memory):
         # Convert in GB and exclude the decimal part
         ram_memory = ram_memory / (1024 * 1024 * 1024)
+        print(type(ram_memory))
         return ram_memory
     
     def parse_gpustat(self, gpustat_output):
@@ -58,11 +59,13 @@ class SystemMonitor:
                     'mem_total': ''.join(memgpu[2:])
                 }
                 stats.append(stat)
+        print(type(stats))
         return stats
 
     def log_cpu(self):
         cpu_usage = psutil.cpu_percent(interval=None, percpu=False) # avg from last call (delta_t)
         cpu_core_usage = psutil.cpu_percent(interval=None, percpu=True)    # percpu floating for each core cpu
+        print(type(cpu_usage), type(cpu_core_usage))
         return cpu_usage, cpu_core_usage
 
     def log_ram(self):
@@ -71,12 +74,14 @@ class SystemMonitor:
         ram_available = self.parese_dataram(psutil.virtual_memory().available)
         ram_active = self.parese_dataram(psutil.virtual_memory().active)
         ram_used = self.parese_dataram(psutil.virtual_memory().used)
+        print(type(ram_usage), type(ram_total), type(ram_available), type(ram_active), type(ram_used))
         return ram_usage, ram_total, ram_available, ram_active, ram_used
         
     def log_gpu(self):
         result = subprocess.run(['gpustat'], stdout=subprocess.PIPE)
         stats_str = result.stdout.decode('utf-8')
         stats = self.parse_gpustat(stats_str)
+        print(type(stats))
         return stats
 
 if __name__ == "__main__":
