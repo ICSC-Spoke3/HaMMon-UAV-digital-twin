@@ -20,7 +20,7 @@ flag_monitoring = False
 valid_steps = ['settings', 'project', 'PhotoProcessor', 'PointCloudProcessor', "3DModelProcessor", "OrthoAndDEMCreation", "exportResults"]
 
 # return if any file.ext in path
-def is_file_path(path) -> bool:
+def is_file_path(path: str) -> bool:
     return os.path.splitext(path)[1] != ''
 
 """
