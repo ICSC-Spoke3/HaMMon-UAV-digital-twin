@@ -1,7 +1,7 @@
 import sys, time
 
 """
-Classe per la gestione dello status progressivo di ogni step
+Classe per tenere traccia dello status progressivo di ogni step
 """
 class ProgressPrinter:
 	def __init__( self, name ):
