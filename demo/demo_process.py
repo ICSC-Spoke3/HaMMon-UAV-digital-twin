@@ -1,6 +1,6 @@
 import Metashape
-from progress_printer import ProgressPrinter
-from system_monitor import SystemMonitor
+from demo.progress_printer import ProgressPrinter
+from demo.system_monitor import SystemMonitor
 import os, sys, datetime, threading, time
 
 
