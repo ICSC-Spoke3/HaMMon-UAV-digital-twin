@@ -1,0 +1,15 @@
+# Use a build argument to specify the base image 
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+# Update the apt package list, install the necessary packages and clean up
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3-pip \
+    htop \
+    git \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install gpustat
+
+# clone this very repository into the image
+RUN git clone https://github.com/VisIVOLab/UAV-digital-twin.git
+

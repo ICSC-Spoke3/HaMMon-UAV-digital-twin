@@ -1,0 +1,31 @@
+# Use a build argument to specify the base image which should be based on Ubuntu 22.04 
+# and meet the Agisoft Metashape requirements specified in the user manual
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+# Set an environment variable to ensure that user interactions 
+# are not required during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update the apt package list and install only the necessary packages 
+# Clean up by removing the list of packages to reduce the layer size
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libxcb-xinerama0 \
+    libglu1 \
+    libgomp1 \
+    libglib2.0-0 \
+    qtbase5-dev \ 
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create a new user 'metashape' with no password and no specific user information
+RUN adduser --disabled-password --gecos '' metashape
+
+# Set the working directory to the metashape user's home directory
+WORKDIR /home/metashape
+
+# Download the Metashape software, unpack it, and remove the downloaded tar.gz file to clean up
+RUN curl -s -o metashape.tar.gz https://s3-eu-west-1.amazonaws.com/download.agisoft.com/metashape-pro_2_1_1_amd64.tar.gz && \
+    tar zxf metashape.tar.gz && \
+    rm metashape.tar.gz
+
