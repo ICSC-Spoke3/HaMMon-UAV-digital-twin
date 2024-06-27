@@ -222,15 +222,23 @@ class Report:
         ax.text(midpoint, ax.get_ylim()[0]+ vertical_offset, str(modulo_value), verticalalignment='top', horizontalalignment='left', rotation=90)
         ax.axvspan(start_change, end_change, facecolor=colors[current_color % 2 + 1], alpha=1)
 
-    def PLOT(self, figsize, save=True):
+    def PLOT(self, figsize, save=True, modulo=False):
         """
         Plot and optionally save normalized system monitoring data for CPU, RAM, Cores, GPU, and gRAM usage.
         Accepts:
         - `figsize`: A tuple specifying the dimensions of the plot.
         - `save`: A boolean indicating whether to save the plot to disk (default is True).
+        - 'modulo': a list of strings indicating the step of the process that
+                you wanna include in the plot
         """
+
         csv = self.norm
 
+        if (modulo):
+            assert isinstance(modulo, list), "modulo must be a list"
+            csv = csv[csv['Modulo'].isin(modulo)].reset_index(drop=True)
+      
+    
         fig, ax = plt.subplots(figsize=figsize)
         
         csv['CPU'].plot(ax=ax, label='CPU', color='blue')  
@@ -250,7 +258,7 @@ class Report:
         if (save):
             self.plt.savefig(self.data_path+'/plot_all.png', format='png')  # Adjust the filename, format, and DPI as needed
     
-    def GPU_PLOT(self, figsize, save=True):
+    def GPU_PLOT(self, figsize, save=True, modulo=False):
         """
         Plot and optionally save GPU-related data, specifically memory usage for individual GPUs.
         Accepts:
@@ -258,6 +266,11 @@ class Report:
         - `save`: A boolean indicating whether to save the plot to disk (default is True).
         """
         csv = self.csv
+
+        if (modulo):
+            assert isinstance(modulo, list), "modulo must be a list"
+            csv = csv[csv['Modulo'].isin(modulo)].reset_index(drop=True)
+      
 
         fig, ax = plt.subplots(figsize=figsize)
         
