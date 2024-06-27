@@ -1,2 +1,6 @@
 psutil==5.9.8
 PyYAML==6.0.1
+pandas==2.2.2
+numpy==1.26.4
+matplotlib==3.5.1
+gpustat==1.1.1
