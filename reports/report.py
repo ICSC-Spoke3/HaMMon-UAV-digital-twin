@@ -193,8 +193,11 @@ class Report:
     
 # plots
 
-    def add_colored_background(self, ax, df):
+    def add_colored_background(self, ax, df, fontsize=12):
         # fix the comments
+
+        rotation = 90
+
 
         colors = {1: 'white', 2: "#EFEFEF"}  # Mappa i colori alternati
         current_color = df['Control'][0]  # Start with the initial color based on the first entry
@@ -209,7 +212,7 @@ class Report:
                 end_change = df.index[idx]
                 # Place the annotation for the previous segment
                 midpoint = (start_change + end_change) / 2
-                ax.text(midpoint, ax.get_ylim()[0]+vertical_offset, str(modulo_value), verticalalignment='top', horizontalalignment='left', rotation=90)
+                ax.text(midpoint, ax.get_ylim()[0]+vertical_offset, str(modulo_value), verticalalignment='top', horizontalalignment='left', rotation=rotation, fontsize=fontsize)
                 ax.axvspan(start_change, end_change, facecolor=colors[current_color % 2 + 1], alpha=1)
                 # Update for new segment
                 start_change = df.index[idx]
@@ -219,10 +222,10 @@ class Report:
         # Handle the last segment, which won't necessarily trigger in the loop
         end_change = df.index[-1]
         midpoint = (start_change + end_change) / 2
-        ax.text(midpoint, ax.get_ylim()[0]+ vertical_offset, str(modulo_value), verticalalignment='top', horizontalalignment='left', rotation=90)
+        ax.text(midpoint, ax.get_ylim()[0]+ vertical_offset, str(modulo_value), verticalalignment='top', horizontalalignment='left', rotation=rotation, fontsize=fontsize)
         ax.axvspan(start_change, end_change, facecolor=colors[current_color % 2 + 1], alpha=1)
 
-    def PLOT(self, figsize, save=True, modulo=False, n=float('inf'), fileName='plot_all'):
+    def PLOT(self, figsize, save=True, modulo=False, n=float('inf'), fileName='plot_all', fontsize=12):
         """
         Plot and optionally save normalized system monitoring data for CPU, RAM, Cores, GPU, and gRAM usage.
         Accepts:
@@ -276,10 +279,13 @@ class Report:
             segment['GPU'].plot(ax=ax, label='GPU', color='red')
             segment['gRAM'].plot(ax=ax, label='gRAM', linestyle='--', color='red')
 
-            self.add_colored_background(ax, segment)
+            self.add_colored_background(ax, segment, fontsize=fontsize)
 
             if i == 0:
-                ax.legend(loc='upper left', bbox_to_anchor=(-0.03, 0.9), shadow=True, fancybox=False, title='Legend', edgecolor='black', facecolor='white')
+                ax.legend(loc='upper left', bbox_to_anchor=(-0.03, 0.9), 
+                          shadow=True, fancybox=False, title='Legend', 
+                          edgecolor='black', facecolor='white',
+                          fontsize=fontsize)
 
             ax.set_xlim(segment.index[0], segment.index[-1])
             if i < num_segments - 1:
@@ -290,7 +296,7 @@ class Report:
         if save:
             self.plt.savefig(self.data_path + '/'+ fileName + '.png', format='png')  # Adjust the filename, format, and DPI as needed
 
-    def TWO_GPU_PLOT(self, figsize, save=True, modulo=False, fileName='plot_gpu'):
+    def TWO_GPU_PLOT(self, figsize, save=True, modulo=False, fileName='plot_gpu', fontsize=12):
         """
         Plot and optionally save GPU-related data, specifically memory usage for individual GPUs.
         Accepts:
@@ -313,11 +319,14 @@ class Report:
         #csv['gproc-0'].plot(ax=ax, label='gpu 0', color='red' )
         csv['gmem-0'].plot(ax=ax, label='gpu 0',  linestyle='--', color='green' )        
         #csv['gproc-1'].plot(ax=ax, label='gpu 1, color='blue' )
-        (csv['gmem-1']*-1).plot(ax=ax, label='gpu 1',  linestyle='--', color='blue' )
+        (csv['gmem-1']*-1).plot(ax=ax, label='(-1) * gpu 1',  linestyle='--', color='blue' )
 
-        self.add_colored_background(ax, csv)
+        self.add_colored_background(ax, csv, fontsize=fontsize)
 
-        ax.legend(loc='upper left',bbox_to_anchor=(-0.03, 0.9), shadow=True, fancybox=False, title='GPUs Mem (GB)', edgecolor='black', facecolor='white')
+        ax.legend(loc='upper left',bbox_to_anchor=(-0.03, 0.9), shadow=True,
+                   fancybox=False, title='GPUs Mem (GB)', 
+                   edgecolor='black', facecolor='white',
+                   fontsize=fontsize)
         ax.set_xlim(csv.index[0], csv.index[-1])
         ax.set_xticklabels([])
 
