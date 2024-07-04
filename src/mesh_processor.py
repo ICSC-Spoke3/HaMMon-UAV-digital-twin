@@ -24,6 +24,9 @@ class MeshProcessor:
             'vertex_colors': True,
             'vertex_confidence': True,
             'keep_depth': True,
+            'split_in_blocks': False,
+            'blocks_crs': Metashape.CoordinateSystem("WGS 84"),
+            'blocks_size': 250,
             'build_texture': True,
             'subdivide_task': True
         }

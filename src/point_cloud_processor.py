@@ -133,7 +133,3 @@ class PointCloudProcessor:
         if self.project.monitoring is not None:
             self.project.monitoring.stop()
 
-
-# TODO: detect and filter point cloud confidence
-# https://www.agisoft.com/forum/index.php?topic=11331.msg51735#msg51735 spiegazione
-# https://www.agisoft.com/forum/index.php?topic=11817.0

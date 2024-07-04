@@ -6,7 +6,7 @@ from unittest.mock import patch
 from step_workflow import get_config_from_file
 from step_workflow import get_config_from_cli
 from step_workflow import execute_steps
-from step_workflow import find_files
+from step_workflow import find_photo_files
 
 class TestStepWorkflow(unittest.TestCase):
     def setUp(self):
@@ -102,39 +102,39 @@ class TestStepWorkflow(unittest.TestCase):
         self.assertEqual(get_config_from_cli(input_config), expected_output, 'Error: test_get_config_from_cli_single_param')
     
     # test_execute_steps
-    @patch('step_workflow.step1', autospec=True)  
-    def test_execute_steps_single(self, mock_step):
+    @patch('step_workflow.Settings', autospec=True)  
+    def test_execute_steps_single(self, mock_Settings):
         # check steps_params_input in valid_steps
         steps_params_input = {
-            'step1': ['param1', 'param2']
+            'Settings': ['param1', 'param2']
         }
         execute_steps(steps_params_input)
-        mock_step.run.assert_called_once_with(steps_params_input['step1'])
+        mock_Settings.run.assert_called_once_with(steps_params_input['Settings'])
         
-    @patch('step_workflow.step2', autospec=True)
-    @patch('step_workflow.step1', autospec=True)
-    def test_execute_steps_multi(self, mock_step1, mock_step2):
+    #@patch('step_workflow.step2', autospec=True)
+    @patch('step_workflow.Settings', autospec=True)
+    def test_execute_steps_multi(self, mock_Settings): #, mock_step2):
         # check steps_params_input in valid_steps
         steps_params_input = {
-            'step1': ['param1', 'param2'],
-            'step2': ['param3', 'param4']
+            'Settings': ['param1', 'param2']
+            #'step2': ['param3', 'param4']
         }
         execute_steps(steps_params_input)
-        mock_step1.run.assert_called_once_with(steps_params_input['step1'])
-        mock_step2.run.assert_called_once_with(steps_params_input['step2'])
+        mock_Settings.run.assert_called_once_with(steps_params_input['Settings'])
+        #mock_step2.run.assert_called_once_with(steps_params_input['step2'])
 
-    @patch('step_workflow.step2', autospec=True)
-    @patch('step_workflow.step1', autospec=True)
-    def test_execute_steps_invalid_step(self, mock_step1, mock_step2):
+    #@patch('step_workflow.step2', autospec=True)
+    @patch('step_workflow.Settings', autospec=True)
+    def test_execute_steps_invalid_step(self, mock_Settings): #, mock_step2):
         steps_params_input = {
             'invalid_step': ['param1', 'param2']
         }
         with self.assertRaises(SystemExit):
             execute_steps(steps_params_input)
-        mock_step1.run.assert_not_called()
-        mock_step2.run.assert_not_called()
+        mock_Settings.run.assert_not_called()
+        #mock_step2.run.assert_not_called()
 
-    @patch('step_workflow.settings', autospec=True)
+    @patch('step_workflow.Settings', autospec=True)
     def test_execute_steps_empty(self, mock_step):
         steps_params_input = {}
         with self.assertRaises(SystemExit):
@@ -143,23 +143,23 @@ class TestStepWorkflow(unittest.TestCase):
 
     # find_files
     def test_find_files_only_accepted_format(self):
-        image_files = find_files(self.tmpdirname, ['.jpg', '.png'])
+        image_files = find_photo_files(self.tmpdirname, ['.jpg', '.png'])
         self.assertEqual(len(image_files), 2, 'Read only images files')
         self.assertIn(os.path.join(self.tmpdirname, 'jpg_file.jpg'), image_files, 'jpg_file.jpg should be on list')
         self.assertIn(os.path.join(self.tmpdirname, 'png_file.png'), image_files, 'png_file.png should be on list')
 
     def test_find_files_no_files_found(self):
-        no_files = find_files(self.tmpdirname, ['.doc'])
+        no_files = find_photo_files(self.tmpdirname, ['.doc'])
         self.assertEqual(len(no_files), 0, 'Should not be different file format')
 
     def test_find_files_non_existent_folder(self):
         with self.assertRaises(FileNotFoundError):
-            find_files('/non/existent/folder', ['.jpg', '.png'])
+            find_photo_files('/non/existent/folder', ['.jpg', '.png'])
         with self.assertRaises(FileNotFoundError):
-            find_files('', ['.jpg', '.png'])
+            find_photo_files('', ['.jpg', '.png'])
 
     def test_find_files_empty_types_list(self):
-        no_files = find_files(self.tmpdirname, [])
+        no_files = find_photo_files(self.tmpdirname, [])
         self.assertEqual(len(no_files), 0, 'Should not be file if list format is empty')
 
     
