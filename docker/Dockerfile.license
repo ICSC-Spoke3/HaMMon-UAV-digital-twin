@@ -1,0 +1,19 @@
+FROM debian:bookworm-slim
+
+RUN apt-get update && apt-get install -y libcurl4 \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+RUN adduser --disabled-password --gecos '' agisoft-license-server
+WORKDIR /home/agisoft-license-server
+
+ADD https://s3-eu-west-1.amazonaws.com/download.agisoft.com/agisoft-license-server_1_0_4_amd64.tar.gz .
+
+RUN tar zxf agisoft-license-server_1_0_4_amd64.tar.gz && \
+    rm agisoft-license-server_1_0_4_amd64.tar.gz
+
+EXPOSE 5842
+
+USER agisoft-license-server
+CMD ["./agisoft-license-server/agisoft-fls"]
+

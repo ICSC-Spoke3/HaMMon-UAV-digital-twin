@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 This library processes the 'system.csv' file coming from
 the resource consumption monitoring script. 
 It produces plots and files with readable informations.
-The main class, Report, expects a folder as input 
+The main class, Report, expects a folder as input during instantiation,
 where it searches for 'system.csv' and places the output artifacts
 """
 
@@ -193,8 +193,11 @@ class Report:
     
 # plots
 
-    def add_colored_background(self, ax, df):
+    def add_colored_background(self, ax, df, fontsize=12):
         # fix the comments
+
+        rotation = 90
+
 
         colors = {1: 'white', 2: "#EFEFEF"}  # Mappa i colori alternati
         current_color = df['Control'][0]  # Start with the initial color based on the first entry
@@ -209,7 +212,7 @@ class Report:
                 end_change = df.index[idx]
                 # Place the annotation for the previous segment
                 midpoint = (start_change + end_change) / 2
-                ax.text(midpoint, ax.get_ylim()[0]+vertical_offset, str(modulo_value), verticalalignment='top', horizontalalignment='left', rotation=90)
+                ax.text(midpoint, ax.get_ylim()[0]+vertical_offset, str(modulo_value), verticalalignment='top', horizontalalignment='left', rotation=rotation, fontsize=fontsize)
                 ax.axvspan(start_change, end_change, facecolor=colors[current_color % 2 + 1], alpha=1)
                 # Update for new segment
                 start_change = df.index[idx]
@@ -219,51 +222,88 @@ class Report:
         # Handle the last segment, which won't necessarily trigger in the loop
         end_change = df.index[-1]
         midpoint = (start_change + end_change) / 2
-        ax.text(midpoint, ax.get_ylim()[0]+ vertical_offset, str(modulo_value), verticalalignment='top', horizontalalignment='left', rotation=90)
+        ax.text(midpoint, ax.get_ylim()[0]+ vertical_offset, str(modulo_value), verticalalignment='top', horizontalalignment='left', rotation=rotation, fontsize=fontsize)
         ax.axvspan(start_change, end_change, facecolor=colors[current_color % 2 + 1], alpha=1)
 
-    def PLOT(self, figsize, save=True, modulo=False):
+    def PLOT(self, figsize, save=True, modulo=False, n=float('inf'), fileName='plot_all', fontsize=12):
         """
         Plot and optionally save normalized system monitoring data for CPU, RAM, Cores, GPU, and gRAM usage.
         Accepts:
         - `figsize`: A tuple specifying the dimensions of the plot.
         - `save`: A boolean indicating whether to save the plot to disk (default is True).
-        - 'modulo': a list of strings indicating the step of the process that
-                you wanna include in the plot
+        - 'modulo': a list of strings indicating the steps of the process that
+                you want to include in the plot
+        - `n`: The number of elements after which the plot should wrap to the next line.
         """
 
         csv = self.norm
 
-        if (modulo):
+        if n == float('inf'):
+            n = len(csv)
+
+        if modulo:
             assert isinstance(modulo, list), "modulo must be a list"
             csv = csv[csv['Modulo'].isin(modulo)].reset_index(drop=True)
-      
-    
-        fig, ax = plt.subplots(figsize=figsize)
         
-        csv['CPU'].plot(ax=ax, label='CPU', color='blue')  
-        csv['RAM'].plot(ax=ax, label='RAM', linestyle='--', color='blue')
-        csv['Cores'].plot(ax=ax, label='Cores', linestyle='dotted', color='blue')  
-        csv['GPU'].plot(ax=ax, label='GPU', color='red' )
-        csv['gRAM'].plot(ax=ax, label='gRAM',  linestyle='--', color='red' )
+       # num_segments = (len(csv) + n - 1) // n  # Calculate number of segments needed
 
-        self.add_colored_background(ax, csv)
+       # Calculate the number of segments needed
+        remainder = len(csv) % n
+        if remainder != 0:
+            padding_length = n - remainder
+            padding = pd.DataFrame(np.nan, index=range(padding_length), columns=csv.columns)
+            padding['Modulo']='padding'
+            padding['Control']=csv['Control'].iloc[len(csv)-1]+1
+            csv = pd.concat([csv, padding]).reset_index(drop=True)
+        
+        num_segments = len(csv) // n
 
-        ax.legend(loc='upper left',bbox_to_anchor=(-0.03, 0.9), shadow=True, fancybox=False, title='Legend', edgecolor='black', facecolor='white')
-        ax.set_xlim(csv.index[0], csv.index[-1])
-        ax.set_xticklabels([])
+        figsize[1]=figsize[1]*num_segments
+
+
+        fig, axes = plt.subplots(num_segments, 1, figsize=figsize, sharex=True)
+        if num_segments == 1:
+            axes = [axes]  # Ensure axes is always a list
+
+        for i in range(num_segments):
+            start = i * n
+            end = start + n
+            segment = csv.iloc[start:end]
+
+            ax = axes[i]
+            segment.reset_index(drop=True, inplace=True)  # Reset index for each segment
+
+            segment['CPU'].plot(ax=ax, label='CPU', color='blue')
+            segment['RAM'].plot(ax=ax, label='RAM', linestyle='--', color='blue')
+            segment['Cores'].plot(ax=ax, label='Cores', linestyle='dotted', color='blue')
+            segment['GPU'].plot(ax=ax, label='GPU', color='red')
+            segment['gRAM'].plot(ax=ax, label='gRAM', linestyle='--', color='red')
+
+            self.add_colored_background(ax, segment, fontsize=fontsize)
+
+            if i == 0:
+                ax.legend(loc='upper left', bbox_to_anchor=(-0.03, 0.9), 
+                          shadow=True, fancybox=False, title='Legend', 
+                          edgecolor='black', facecolor='white',
+                          fontsize=fontsize)
+
+            ax.set_xlim(segment.index[0], segment.index[-1])
+            if i < num_segments - 1:
+                ax.set_xticklabels([])  # Hide x labels for all but the last subplot
 
         self.plt = plt
         self.plt.tight_layout()
-        if (save):
-            self.plt.savefig(self.data_path+'/plot_all.png', format='png')  # Adjust the filename, format, and DPI as needed
-    
-    def GPU_PLOT(self, figsize, save=True, modulo=False):
+        if save:
+            self.plt.savefig(self.data_path + '/'+ fileName + '.png', format='png')  # Adjust the filename, format, and DPI as needed
+
+    def TWO_GPU_PLOT(self, figsize, save=True, modulo=False, fileName='plot_gpu', fontsize=12):
         """
         Plot and optionally save GPU-related data, specifically memory usage for individual GPUs.
         Accepts:
         - `figsize`: A tuple specifying the dimensions of the plot.
         - `save`: A boolean indicating whether to save the plot to disk (default is True).
+        - 'modulo': a list of strings indicating the steps of the process that
+                    you want to include in the plot
         """
         csv = self.csv
 
@@ -275,31 +315,23 @@ class Report:
         fig, ax = plt.subplots(figsize=figsize)
         
         #csv['GPU Core %'].plot(ax=ax, label='Cores Aggr', color='yellow')  
-        csv['GPU RAM'].plot(ax=ax, label='Sum', linestyle='--', color='green')
+        csv['GPU RAM'].plot(ax=ax, label='Sum', linestyle='solid', color='red')
         #csv['gproc-0'].plot(ax=ax, label='gpu 0', color='red' )
-        csv['gmem-0'].plot(ax=ax, label='gpu 0',  linestyle='--', color='red' )        
+        csv['gmem-0'].plot(ax=ax, label='gpu 0',  linestyle='--', color='green' )        
         #csv['gproc-1'].plot(ax=ax, label='gpu 1, color='blue' )
-        csv['gmem-1'].plot(ax=ax, label='gpu 1',  linestyle='--', color='blue' )
+        (csv['gmem-1']*-1).plot(ax=ax, label='(-1) * gpu 1',  linestyle='--', color='blue' )
 
-        self.add_colored_background(ax, csv)
+        self.add_colored_background(ax, csv, fontsize=fontsize)
 
-        ax.legend(loc='upper left',bbox_to_anchor=(-0.03, 0.9), shadow=True, fancybox=False, title='GPUs Mem (GB)', edgecolor='black', facecolor='white')
+        ax.legend(loc='upper left',bbox_to_anchor=(-0.03, 0.9), shadow=True,
+                   fancybox=False, title='GPUs Mem (GB)', 
+                   edgecolor='black', facecolor='white',
+                   fontsize=fontsize)
         ax.set_xlim(csv.index[0], csv.index[-1])
         ax.set_xticklabels([])
 
         self.plt = plt
         self.plt.tight_layout()
         if (save):
-            self.plt.savefig(self.data_path+'/plot_gpu.png', format='png')  # Adjust the filename, format, and DPI as needed
-       
-    # def show(self):
-    #     self.plt.tight_layout()
-    #     self.plt.show()
-
-    # def save(self,filename):
-    #     assert isinstance(filename, str)
-    #     # Save the plot to a file
-    #     self.plt.tight_layout()
-    #     self.plt.savefig(filename, format='png')  # Adjust the filename, format, and DPI as needed
-
+            self.plt.savefig(self.data_path + '/'+ fileName + '.png', format='png')  # Adjust the filename, format, and DPI as needed
 
