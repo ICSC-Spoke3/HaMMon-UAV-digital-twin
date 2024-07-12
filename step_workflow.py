@@ -250,7 +250,7 @@ if __name__ == "__main__":
         if len(image_files) < 2:
             raise ValueError("Not enough images to process in the path.")
     else:
-        raise Exception("Missing input photos folder. Specifica:\n <--input> il path delle raw photos.")
+        raise Exception("Invalid photos folder arguments. Usage:\n <--input> raw photos path.")
 
     # check output folder
     if args.output:
@@ -268,7 +268,7 @@ if __name__ == "__main__":
     elif args.exec:
         steps_params_to_run = get_config_from_cli(args.exec)
     else:
-        raise Exception("Missing parameters. Specify \n<–config> to run from a configuration file, or <–exec> to run from the command line. \n<–output> saving project path \n<–help> for more information.")
+        raise Exception("Invalid parameters. Usage:\n <-–config> to run from a configuration file, or <–-exec> to run from the command line. \n<–-output> saving project path \n<–-help> for more information.")
 
     # check monitoring flag
     if args.monitoring:
