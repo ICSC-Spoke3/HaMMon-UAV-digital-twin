@@ -1,6 +1,11 @@
 import Metashape
 import sys, os
 
+if Metashape.app.activated:
+    print("-- Metashape is activated: ", Metashape.app.activated)
+else:
+    raise Exception("No license found.")
+
 compatible_major_version = "2.1"
 found_major_version = ".".join(Metashape.app.version.split('.')[:2])
 if found_major_version != compatible_major_version:
