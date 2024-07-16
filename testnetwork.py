@@ -20,7 +20,7 @@ output_folder = sys.argv[2]
 
 # Settings
 process_network = True  # TODO: yaml
-network_server = '127.0.0.1' # TODO: è dinamico? richiedo questo da input o yaml settings?
+network_server = '192.168.1.70' # TODO: è dinamico? richiedo questo da input o yaml settings?
 Metashape.app.settings.network_path = '/mnt/datasets'
 photos = find_files(image_folder, [".jpg", ".jpeg", ".tif", ".tiff"])
 
