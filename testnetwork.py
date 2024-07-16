@@ -1,5 +1,5 @@
 import Metashape
-import sys
+import sys, os
 
 def find_files(folder, types):
     return [entry.path for entry in os.scandir(folder) if (entry.is_file() and os.path.splitext(entry.name)[1].lower() in types)]
