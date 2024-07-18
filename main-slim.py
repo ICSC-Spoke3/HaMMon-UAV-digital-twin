@@ -59,13 +59,6 @@ print("--Adding Photos 3")
 chunk.addPhotos(photos)
 doc.save()
 
-# estimate image quality
-for camera in chunk.cameras:
-    chunk.analyzePhotos(camera)
-    if float(camera.photo.meta['Image/Quality']) < 0.5:
-         camera.enabled = False
-doc.save()
-
 print(str(len(chunk.cameras)) + " images loaded")
 
 print("--Matching Photos 4")
