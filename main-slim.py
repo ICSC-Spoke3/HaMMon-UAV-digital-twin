@@ -70,46 +70,93 @@ chunk.matchPhotos(keypoint_limit = 40000,
                   progress=progress_printer) # Progress callback
 doc.save()
 
+print("--Aligning Cameras 5")
 chunk.alignCameras()
 doc.save()
 
-chunk.buildDepthMaps(downscale = 2, filter_mode = Metashape.MildFiltering)
+progress_printer = ProgressPrinter("buildDeptMaps")
+chunk.buildDepthMaps(
+                downscale = 2,
+                filter_mode = Metashape.MildFiltering, 
+                reuse_depth = True,
+                progress = progress_printer)
 doc.save()
 
-chunk.buildModel(source_data = Metashape.DepthMapsData)
+progress_printer = ProgressPrinter("buildModel")
+chunk.buildModel(source_data = Metashape.DepthMapsData,
+                 surface_type = Metashape.HeightField,
+                 face_count = Metashape.HighFaceCount,
+                 interpolation = Metashape.DisabledInterpolation,
+                 vertex_color = True,
+                 progress = progress_printer)
 doc.save()
 
-chunk.buildUV(page_count = 2, texture_size = 4096)
+print("--Building UV 7")
+progress_printer = ProgressPrinter("buildUV")
+chunk.buildUV(page_count = 2, 
+              texture_size = 4096,
+              progress = progress_printer)
 doc.save()
 
-chunk.buildTexture(texture_size = 4096, ghosting_filter = True)
+print("--Building Texture 8")
+progress_printer = ProgressPrinter("buildTexture")
+chunk.buildTexture(blending_mode = Metashape.MosaicBlending,
+                   texture_size = 4096,
+                   fill_holes = True, 
+                   ghosting_filter = True, 
+                   progress = progress_printer)
 doc.save()
 
 has_transform = chunk.transform.scale and chunk.transform.rotation and chunk.transform.translation
 
+# or directly check reference on cameras
+"""
+has_reference = False
+for c in chunk.cameras:
+    if c.reference.location:
+        has_reference = True
+"""
+
 if has_transform:
-    chunk.buildPointCloud()
+    print("--Building Point Cloud (has_transform) 9")
+    progress_printer = ProgressPrinter("buildPointCloud")
+    chunk.buildPointCloud(
+        point_colors = True, 
+        point_confidence = True, 
+        keep_depth = True,
+        progress = progress_printer)
     doc.save()
 
-    chunk.buildDem(source_data=Metashape.PointCloudData)
+    print("--Building Dem (has_transform) 10")
+    chunk.buildDem(source_data = Metashape.PointCloudData,
+                   interpolation = Metashape.EnabledInterpolation, 
+                   progress = progress_printer)
     doc.save()
 
-    chunk.buildOrthomosaic(surface_data=Metashape.ElevationData)
+    print("--Building Orthomosaic (has_transform) 11")
+    progress_printer = ProgressPrinter("buildOrthomosaic")
+    chunk.buildOrthomosaic(surface_data = Metashape.ElevationData, progress = progress_printer)
     doc.save()
 
+print("--Exporting results")
 # export results
 chunk.exportReport(output_folder + '/report.pdf')
 
 if chunk.model:
+    print("--Exporting Model")
     chunk.exportModel(output_folder + '/model.obj')
 
 if chunk.point_cloud:
+    print("--Exporting Point Cloud")
     chunk.exportPointCloud(output_folder + '/point_cloud.las', source_data = Metashape.PointCloudData)
 
 if chunk.elevation:
+    print("--Exporting Elevation")
     chunk.exportRaster(output_folder + '/dem.tif', source_data = Metashape.ElevationData)
 
 if chunk.orthomosaic:
-    chunk.exportRaster(output_folder + '/orthomosaic.tif', source_data = Metashape.OrthomosaicData)
+    print("--Exporting Orthomosaic")
+    chunk.exportRaster(output_folder + '/orthomosaic.tif', source_data = Metashape.OrthomosaicData, split_in_blocks=True)
 
 print('Processing finished, results saved to ' + output_folder + '.')
+Metashape.app.quit()
