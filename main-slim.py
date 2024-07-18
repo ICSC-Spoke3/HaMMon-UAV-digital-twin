@@ -25,6 +25,7 @@ try:
     # only image_folder
     if len(sys.argv) == 2:
         # default output folder path
+        print("=========",image_folder)
         output_folder_name = os.path.basename(image_folder) + '_' + datetime.datetime.now().strftime("%d%m_%H%M")
         output_folder = os.path.join('../', output_folder_name)
         os.makedirs(output_folder, exist_ok=True)
