@@ -2,8 +2,7 @@ import Metashape
 from demo.progress_printer import ProgressPrinter
 import os, sys, datetime
 
-
-# Checking compatibility: to remove if it give trubleshooting
+# Checking compatibility
 compatible_major_version = "2.1"
 found_major_version = ".".join(Metashape.app.version.split('.')[:2])
 if found_major_version != compatible_major_version:
@@ -25,9 +24,11 @@ try:
     
     # only image_folder
     if len(sys.argv) == 2:
-        # Save on Moduli
+        # default output folder path
+        if image_folder.endswith('/'):
+            image_folder = image_folder[:-1]
         output_folder_name = os.path.basename(image_folder) + '_' + datetime.datetime.now().strftime("%d%m_%H%M")
-        output_folder = os.path.join('/storage/Metashape_Hammon/Modelli', output_folder_name)
+        output_folder = os.path.join('../', output_folder_name)
         os.makedirs(output_folder, exist_ok=True)
         
     # image e output
@@ -43,8 +44,7 @@ try:
 except Exception as e:
     print(f"Error: {str(e)}")
 
-# check presence of image in image_folder
-photos = find_files(image_folder, [".jpg", ".jpeg", "jp2", "j2k", "jxl", ".tif", ".tiff", ".png", ".bmp", ".exr", ".tga", ".pgm", ".ppm", ".dng", ".mpo", ".seq", ".ara"])
+photos = find_files(image_folder, [".jpg", ".jpeg", ".tif", ".tiff"])
 
 # Settings preference:
 # disable CPU when performing GPU accelerated processing
@@ -59,13 +59,6 @@ chunk = doc.addChunk()
 
 print("--Adding Photos 3")
 chunk.addPhotos(photos)
-doc.save()
-
-# estimate image quality
-for camera in chunk.cameras:
-    chunk.analyzePhotos(camera)
-    if float(camera.photo.meta['Image/Quality']) < 0.5:
-         camera.enabled = False
 doc.save()
 
 print(str(len(chunk.cameras)) + " images loaded")
