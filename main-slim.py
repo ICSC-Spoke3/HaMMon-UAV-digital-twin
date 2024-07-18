@@ -1,5 +1,6 @@
 import Metashape
-import os, sys
+from demo.progress_printer import ProgressPrinter
+import os, sys, datetime
 
 # Checking compatibility
 compatible_major_version = "2.1"
@@ -10,26 +11,70 @@ if found_major_version != compatible_major_version:
 def find_files(folder, types):
     return [entry.path for entry in os.scandir(folder) if (entry.is_file() and os.path.splitext(entry.name)[1].lower() in types)]
 
-if len(sys.argv) < 3:
-    print("Usage: main-slim.py <image_folder> <output_folder>")
-    raise Exception("Invalid script arguments")
+# manage input parameters
+try:
+    if len(sys.argv) < 2:
+        print("Usage: main.py <image_folder> [output_folder]")
+        raise Exception("Invalid script arguments")
+    image_folder = sys.argv[1]
 
-image_folder = sys.argv[1]
-output_folder = sys.argv[2]
+    # check image_folder exist
+    if not os.path.isdir(image_folder):
+        raise FileNotFoundError(f"{image_folder} does not exist")
+    
+    # only image_folder
+    if len(sys.argv) == 2:
+        # default output folder path
+        output_folder_name = os.path.basename(image_folder) + '_' + datetime.datetime.now().strftime("%d%m_%H%M")
+        output_folder = os.path.join('../', output_folder_name)
+        os.makedirs(output_folder, exist_ok=True)
+        
+    # image e output
+    if len(sys.argv) == 3:
+        output_folder = sys.argv[2]
+        # if output_folder do not exist, create it
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+
+    if len(sys.argv) >= 4:
+        raise Exception("Too much input arguments")
+    
+except Exception as e:
+    print(f"Error: {str(e)}")
 
 photos = find_files(image_folder, [".jpg", ".jpeg", ".tif", ".tiff"])
 
+# Settings preference:
+# disable CPU when performing GPU accelerated processing
+Metashape.app.cpu_enable = False
+
+print("--Creating Project 1")
 doc = Metashape.Document()
 doc.save(output_folder + '/project.psx')
 
+print("--Adding Chunk 2")
 chunk = doc.addChunk()
 
+print("--Adding Photos 3")
 chunk.addPhotos(photos)
+doc.save()
+
+# estimate image quality
+for camera in chunk.cameras:
+    chunk.analyzePhotos(camera)
+    if float(camera.photo.meta['Image/Quality']) < 0.5:
+         camera.enabled = False
 doc.save()
 
 print(str(len(chunk.cameras)) + " images loaded")
 
-chunk.matchPhotos(keypoint_limit = 40000, tiepoint_limit = 10000, generic_preselection = True, reference_preselection = True)
+print("--Matching Photos 4")
+progress_printer = ProgressPrinter("matchPhotos")
+chunk.matchPhotos(keypoint_limit = 40000, 
+                  tiepoint_limit = 10000, 
+                  generic_preselection = True, 
+                  reference_preselection = True,
+                  progress=progress_printer) # Progress callback
 doc.save()
 
 chunk.alignCameras()
