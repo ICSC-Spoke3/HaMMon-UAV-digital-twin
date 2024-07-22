@@ -1,6 +1,8 @@
 import Metashape
 import os, sys
+  
 
+  
 """
 # Checking compatibility
 compatible_major_version = "2.1"
@@ -13,7 +15,7 @@ def find_files(folder, types):
 
 # to start the script command: network_processing.py <image_folder> <output_folder>
 if len(sys.argv) < 3:
-    print("Usage: network_processing.py <image_folder> <output_folder>")
+    print("Usage: network_processing.py <full path image directory> <resulting directory>")
     raise Exception("Invalid script arguments") # TODO
 
 image_folder = sys.argv[1]  # argomento 1

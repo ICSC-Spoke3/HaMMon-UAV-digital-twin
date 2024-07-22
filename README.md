@@ -16,8 +16,8 @@ Once installed, simply clone this repository and run the scripts using Python. T
 
 It is possible to specify execution tasks by passing them as input or through a config file (YAML/JSON).
 ```bash
-python step_workflow.py -i <path/to/folder/images> -c <config.json> -o [output/path]
-python step_workflow.py -i <path/to/folder/images> -e <"task1:param1 task2:param1,param2"> -o [output/path]
+python step_workflow.py -i <path/to/folder/images> -c <config.json> -o [resulting/directory]
+python step_workflow.py -i <path/to/folder/images> -e <"task1:param1 task2:param1,param2"> -o [resulting/directory]
 ```
 It is possible to see all available commands with the following command
 ```bash
