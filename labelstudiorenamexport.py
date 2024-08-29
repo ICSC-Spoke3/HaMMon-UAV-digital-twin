@@ -14,7 +14,19 @@ def rename_photos(json_file, photos_folder):
         if image_path:
             # Estrai il nome del file dall'immagine
             base_name = os.path.basename(image_path)
-            new_name = base_name.split('-')[-1].replace('.png', '_mask.png')
+
+            # Converti l'estensione in minuscolo
+            extension = base_name.split('.')[-1].lower()
+            base_name = base_name.rsplit('.', 1)[0] + '.' + extension
+            
+            # Gestisci sia .png che .jpg
+            if base_name.endswith('.png'):
+                new_name = base_name.split('-')[-1].replace('.png', '_mask.png')
+            elif base_name.endswith('.jpg'):
+                new_name = base_name.split('-')[-1].replace('.jpg', '_mask.png')
+            else:
+                print("Estenzioni nel formato non conforme")
+                break
             
             # Ottieni il valore di brushlabels all'interno di tag
             brushlabels = item['tag'][0]['brushlabels'][0]
@@ -34,6 +46,6 @@ def rename_photos(json_file, photos_folder):
                 print(f'{old_name} non trovato nella cartella delle foto')
 
 # Esempio di utilizzo
-json_file = 'text.json'
-photos_folder = 'path/to/folder/photos'
+json_file = 'path to .json'
+photos_folder = 'path to photos folder'
 rename_photos(json_file, photos_folder)
