@@ -1,5 +1,5 @@
 import Metashape
-from demo.progress_printer import ProgressPrinter
+from progress_printer import ProgressPrinter
 import os, sys, datetime
 
 
