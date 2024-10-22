@@ -230,7 +230,7 @@ def find_photo_files(folder: str, types: list[str]) -> list[str]:
 if __name__ == "__main__":
     # args argument
     parser = argparse.ArgumentParser(description='Esegue il workflow degli specificati step del processo fotogrammetrico.')
-    parser.add_argument('-e', '--exec', help='Specifica gli step di esecuzione e i parametri richiesti da linea di comando (es. "step1:ciao1,ciao2 step2:ciao3"')
+    parser.add_argument('-e', '--exec', help='Specifica gli step di esecuzione e i parametri richiesti da linea di comando (es. "task1:param1 task2:param1,param2"")')
     parser.add_argument('-c', '--config', help='Path configuration file JSON/YAML')
     parser.add_argument('-i', '--input', help='Path project photos')
     parser.add_argument('-o', '--output', help='Saving path project files')
