@@ -3,10 +3,10 @@
         "settings": {
             "cpu_enable": false,
             "gpu_mask": "11",
-            "log": "./path/log/"
+            "log": "../storage/palazzo_maresa/progetto/log"
         },
         "project":{
-            "path": "../new_project/"
+            "path": "../storage/palazzo_maresa/progetto"
         },
         "PhotoProcessor":{
             "matchPhotos":{ },
