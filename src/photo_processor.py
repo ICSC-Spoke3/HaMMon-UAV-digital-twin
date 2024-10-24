@@ -36,9 +36,9 @@ class PhotoProcessor:
             thread = threading.Thread(target=self.project.monitoring.start, args=('filterImageQuality',))
             thread.start()
         self.project.chunk.analyzeImages(cameras=self.project.chunk.cameras,
-                                         filter_mask= True,
+                                         filter_mask= False,
                                          progress=progress_printer)
-        # FIXME: filter_mask, delete it if not necessary
+        # FIXME: filter_mask(bool), delete it if not necessary
         print()
         num_disable_photos = 0
         for camera in self.project.chunk.cameras:
@@ -85,7 +85,7 @@ class PhotoProcessor:
     def alignCameras(self, progress_printer: str, **kwargs) -> None:
         default_params = {
             'adaptive_fitting': False,
-            'reset_alignment': False,
+            'reset_alignment': True,
             'subdivide_task': True
         }
         # update default params with the input

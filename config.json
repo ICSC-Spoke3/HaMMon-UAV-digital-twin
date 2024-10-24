@@ -20,8 +20,27 @@
                 "guided_matching": false,
                 "subdivide_task": true
             },
-            "alignCameras":{ },
-            "optimizeCameras":{ }
+            "alignCameras":{
+                "adaptive_fitting": false,
+                "reset_alignment": true,
+                "subdivide_task": true
+            },
+            "optimizeCameras":{
+                "fit_f": true, 
+                "fit_cx": true, 
+                "fit_cy": true, 
+                "fit_b1": false, 
+                "fit_b2": false, 
+                "fit_k1": true,
+                "fit_k2": true, 
+                "fit_k3": true, 
+                "fit_k4": false, 
+                "fit_p1": true, 
+                "fit_p2": true, 
+                "fit_corrections": false,
+                "adaptive_fitting": false, 
+                "tiepoint_covariance": false
+            }
         },
         "PointCloudProcessor":{
             "buildDepthMaps":{
