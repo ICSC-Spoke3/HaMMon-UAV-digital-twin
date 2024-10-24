@@ -44,6 +44,10 @@
         },
         "PointCloudProcessor":{
             "buildDepthMaps":{
+                "downscale": 2,
+                "filter_mode": "MildFiltering",
+                "reuse_depth": false,
+                "subdivide_task": true
 
             },
             "buildPointCloud":{

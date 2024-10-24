@@ -84,7 +84,7 @@ def execute_steps(steps_params_to_run: dict) -> None:
         if 'optimizeCameras' in steps_params_to_run['PhotoProcessor']:
             photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
     
-        print(" == == == Loading/NewProject == == ==")
+        print(" == == == PhotoProcessor == == ==")
 
     if 'PointCloudProcessor' in steps_params_to_run:
         pointcloudprocess = PointCloudProcessor()
