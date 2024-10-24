@@ -75,11 +75,11 @@ def execute_steps(steps_params_to_run: dict) -> None:
         photoprocess.filterImageQuality(progress_printer=ProgressPrinter("filterPhotos"))
         if 'matchPhotos' in steps_params_to_run['PhotoProcessor']:
             photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"), **steps_params_to_run['PhotoProcessor']['matchPhotos'])
-        #else: # do it by default
+        #else: # do it by default NOTE
         #    photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"))
         if 'alignCameras' in steps_params_to_run['PhotoProcessor']:
             photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"), **steps_params_to_run['PhotoProcessor']['alignCameras'])
-        #else: # do it by default
+        #else: # do it by default NOTE
         #    photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"))
         if 'optimizeCameras' in steps_params_to_run['PhotoProcessor']:
             photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])

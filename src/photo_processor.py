@@ -22,6 +22,7 @@ class PhotoProcessor:
             thread.start()
         self.project.chunk.addPhotos(filenames=self.photos_path,
                                      progress=progress_printer)
+        # NOTE: load_reference(bool) in addPhotos [https://www.agisoft.com/forum/index.php?topic=13603.0]
         if self.project.monitoring is not None:
             self.project.monitoring.stop()
         self.project.save_project(version="addPhotos")
@@ -35,7 +36,9 @@ class PhotoProcessor:
             thread = threading.Thread(target=self.project.monitoring.start, args=('filterImageQuality',))
             thread.start()
         self.project.chunk.analyzeImages(cameras=self.project.chunk.cameras,
+                                         filter_mask= True,
                                          progress=progress_printer)
+        # FIXME: filter_mask, delete it if not necessary
         print()
         num_disable_photos = 0
         for camera in self.project.chunk.cameras:
@@ -60,9 +63,12 @@ class PhotoProcessor:
             'generic_preselection': True,
             'reference_preselection': False,
             'filter_stationary_points': True,
+            'keep_keypoints': True,
             'guided_matching': False,
             'subdivide_task': True
         }
+        # NOTE: filter_mask (bool) – Filter points by mask
+        # NOTE: pairs (list[tuple[int, int]]) – User defined list of camera pairs to match.
         # update default params with the input
         default_params.update(kwargs)
         if self.project.monitoring is not None:
