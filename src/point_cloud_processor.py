@@ -4,6 +4,17 @@ import Metashape
 import threading
 
 
+filter_modes = {
+    "Metashape.FilterMode.MildFiltering": Metashape.FilterMode.MildFiltering,
+    "Metashape.MildFiltering": Metashape.FilterMode.MildFiltering,
+    "Metashape.FilterMode.NoFiltering": Metashape.FilterMode.NoFiltering,
+    "Metashape.NoFiltering": Metashape.FilterMode.NoFiltering,
+    "Metashape.FilterMode.ModerateFiltering": Metashape.FilterMode.ModerateFiltering,
+    "Metashape.ModerateFiltering": Metashape.FilterMode.ModerateFiltering,
+    "Metashape.FilterMode.AggressiveFiltering": Metashape.FilterMode.AggressiveFiltering,
+    "Metashape.AggressiveFiltering": Metashape.FilterMode.AggressiveFiltering
+}
+
 def update_existing_keys(dict1, dict2):
     for k in dict1.keys():
         if k in dict2:
@@ -31,25 +42,19 @@ class PointCloudProcessor:
             'subdivide_task': True
         }
         # update default params with the input
-        #default_params.update(kwargs)
-        print("errore prima?")
+        # default_params.update(kwargs)
         default_params = update_existing_keys(default_params, kwargs)
-        print("errore dopo?")
         # update default params with the filter_mode if exist
-        """if 'filter_mode' in kwargs:
+        if 'filter_mode' in kwargs:
             print("trovato filter_mode")
-            filter_mode_parts = (kwargs['filter_mode']).split('.')
-            print(filter_mode_parts[0])
-            print(filter_mode_parts[1])
             try:
-                filter_mode = getattr(filter_mode_parts[0], filter_mode_parts[1])
+                filter_mode = filter_modes.get(kwargs['filter_mode'], Metashape.MildFiltering)
             except AttributeError:
-                print(f"Avviso: '{filter_mode_parts[1]}' non è un attributo valido in Metashape.")
-            
+                print(f"Avviso: '{kwargs['filter_mode']}' non è un attributo valido in Metashape.")
             print("prima ", filter_mode)
             default_params = update_existing_keys(default_params, filter_mode)  # filter_mode updated correctly
-            print("dopo ",default_params['filter_mode'])
-        """
+            print("dopo ", default_params['filter_mode'])
+        
             
         if self.project.monitoring is not None:
             thread = threading.Thread(target=self.project.monitoring.start, args=('buildDepthMaps',))
