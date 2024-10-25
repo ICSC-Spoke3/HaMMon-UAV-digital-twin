@@ -43,11 +43,16 @@ class PointCloudProcessor:
         }
         # update default params with the input
         # default_params.update(kwargs)
+        print("valori ok standard:")
+        print(default_params)
         default_params = update_existing_keys(default_params, kwargs)
+        print("valori importati da JSON")
+        print(default_params)
         # update default params with the filter_mode if exist
         if 'filter_mode' in kwargs:
             print("trovato filter_mode")
             try:
+                print(kwargs['filter_mode'])
                 filter_mode = filter_modes.get(kwargs['filter_mode'], Metashape.MildFiltering)
             except AttributeError:
                 print(f"Avviso: '{kwargs['filter_mode']}' non è un attributo valido in Metashape.")
