@@ -36,8 +36,9 @@ class PointCloudProcessor:
         default_params = update_existing_keys(default_params, kwargs)
         print("errore dopo?")
         # update default params with the filter_mode if exist
-        if 'filter_mode' in kwargs['PointCloudProcessor']['buildDepthMaps']:
-            filter_mode_parts = (kwargs['PointCloudProcessor']['buildDepthMaps']['filter_mode']).split('.')
+        if 'filter_mode' in kwargs:
+            print("trovato filter_mode")
+            filter_mode_parts = (kwargs['filter_mode']).split('.')
             modulo = globals()[filter_mode_parts[0]]()
             filter_mode = getattr(modulo, filter_mode_parts[1])
             try:
