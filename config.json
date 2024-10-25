@@ -50,7 +50,7 @@
                 "subdivide_task": true
             },
             "buildPointCloud":{
-                "source_data": "DepthMapsData",
+                "source_data": "Metashape.DataSource.DepthMapsData",
                 "point_colors": true,
                 "point_confidence": true,
                 "keep_depth": true,
