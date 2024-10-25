@@ -58,9 +58,8 @@ class PointCloudProcessor:
             except AttributeError:
                 print(f"Avviso: '{kwargs['filter_mode']}' non è un attributo valido in Metashape.")
             print("prima ", filter_mode)
-            default_params = update_existing_keys(default_params, filter_mode)  # filter_mode updated correctly
+            default_params['filter_mode'] = filter_mode  # filter_mode updated correctly
             print("dopo ", default_params['filter_mode'])
-        
             
         if self.project.monitoring is not None:
             thread = threading.Thread(target=self.project.monitoring.start, args=('buildDepthMaps',))
