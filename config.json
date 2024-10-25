@@ -45,7 +45,6 @@
         "PointCloudProcessor":{
             "buildDepthMaps":{
                 "downscale": 2,
-                "filter_mode": "Metashape.MildFiltering",
                 "reuse_depth": false,
                 "subdivide_task": true
             },

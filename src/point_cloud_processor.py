@@ -26,7 +26,7 @@ class PointCloudProcessor:
     def buildDepthMaps(self, progress_printer: str, **kwargs) -> None:
         default_params = {
             'downscale': 2,
-            'filter_mode': Metashape.MildFiltering,
+            'filter_mode': Metashape.FilterMode.MildFiltering,
             'reuse_depth': False,
             'subdivide_task': True
         }
@@ -36,7 +36,7 @@ class PointCloudProcessor:
         default_params = update_existing_keys(default_params, kwargs)
         print("errore dopo?")
         # update default params with the filter_mode if exist
-        if 'filter_mode' in kwargs:
+        """if 'filter_mode' in kwargs:
             print("trovato filter_mode")
             filter_mode_parts = (kwargs['filter_mode']).split('.')
             print(filter_mode_parts[0])
@@ -49,6 +49,7 @@ class PointCloudProcessor:
             print("prima ", filter_mode)
             default_params = update_existing_keys(default_params, filter_mode)  # filter_mode updated correctly
             print("dopo ",default_params['filter_mode'])
+        """
             
         if self.project.monitoring is not None:
             thread = threading.Thread(target=self.project.monitoring.start, args=('buildDepthMaps',))
