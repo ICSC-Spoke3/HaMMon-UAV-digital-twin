@@ -32,7 +32,23 @@ class PointCloudProcessor:
         }
         # update default params with the input
         #default_params.update(kwargs)
+        print("errore prima?")
         default_params = update_existing_keys(default_params, kwargs)
+        print("errore dopo?")
+        # update default params with the filter_mode if exist
+        if 'filter_mode' in kwargs['PointCloudProcessor']['buildDepthMaps']:
+            filter_mode_parts = (kwargs['PointCloudProcessor']['buildDepthMaps']['filter_mode']).split('.')
+            modulo = globals()[filter_mode_parts[0]]()
+            filter_mode = getattr(modulo, filter_mode_parts[1])
+            try:
+                filter_mode = getattr(modulo, filter_mode_parts[1])
+            except AttributeError:
+                print(f"Avviso: '{filter_mode_parts[1]}' non è un attributo valido in Metashape.")
+            
+            print(filter_mode)
+            default_params = update_existing_keys(default_params, filter_mode)  # filter_mode updated correctly
+            print(default_params['filter_mode'])
+            
         if self.project.monitoring is not None:
             thread = threading.Thread(target=self.project.monitoring.start, args=('buildDepthMaps',))
             thread.start()
@@ -40,6 +56,10 @@ class PointCloudProcessor:
         if self.project.monitoring is not None:
             self.project.monitoring.stop()
         self.project.save_project(version="buildDepthMaps")
+
+        print("===================DEBUG============================")
+        print(default_params['filter_mode'])
+        print("===================DEBUG============================")
 
     """
     Build dense point cloud
@@ -55,6 +75,11 @@ class PointCloudProcessor:
         # update default params with the input
         #default_params.update(kwargs)
         default_params = update_existing_keys(default_params, kwargs)
+        # update default params with the source_data if exist
+        if 'source_data' in kwargs['PointCloudProcessor']['buildDepthMaps']:
+            source_data = getattr(Metashape, kwargs['PointCloudProcessor']['buildPointCloud']['source_data'])
+            default_params = update_existing_keys(default_params, source_data)  # source_data updated correctly
+
         if self.project.monitoring is not None:
             thread = threading.Thread(target=self.project.monitoring.start, args=('buildPointCloud',))
             thread.start()
@@ -62,6 +87,10 @@ class PointCloudProcessor:
         if self.project.monitoring is not None:
             self.project.monitoring.stop()
         self.project.save_project(version="buildPointCloud")
+
+        print("===================DEBUG============================")
+        print(default_params['source_data'])
+        print("===================DEBUG============================")
 
     """
     Calculate point colors for the point cloud
