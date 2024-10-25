@@ -39,16 +39,16 @@ class PointCloudProcessor:
         if 'filter_mode' in kwargs:
             print("trovato filter_mode")
             filter_mode_parts = (kwargs['filter_mode']).split('.')
-            modulo = globals()[filter_mode_parts[0]]()
-            filter_mode = getattr(modulo, filter_mode_parts[1])
+            print(filter_mode_parts[0])
+            print(filter_mode_parts[1])
             try:
-                filter_mode = getattr(modulo, filter_mode_parts[1])
+                filter_mode = getattr(filter_mode_parts[0], filter_mode_parts[1])
             except AttributeError:
                 print(f"Avviso: '{filter_mode_parts[1]}' non è un attributo valido in Metashape.")
             
-            print(filter_mode)
+            print("prima ", filter_mode)
             default_params = update_existing_keys(default_params, filter_mode)  # filter_mode updated correctly
-            print(default_params['filter_mode'])
+            print("dopo ",default_params['filter_mode'])
             
         if self.project.monitoring is not None:
             thread = threading.Thread(target=self.project.monitoring.start, args=('buildDepthMaps',))
