@@ -51,6 +51,7 @@ class PointCloudProcessor:
         # update default params with the filter_mode if exist
         if 'filter_mode' in kwargs:
             print("trovato filter_mode")
+            print(Metashape.FilterMode.MildFiltering)
             try:
                 print(kwargs['filter_mode'])
                 filter_mode = filter_modes.get(kwargs['filter_mode'], Metashape.MildFiltering)
