@@ -105,7 +105,8 @@ def execute_steps(steps_params_to_run: dict) -> None:
             #    pointcloudprocess.buildPointCloud(progress_printer=ProgressPrinter("buildPointCloud"))
                 if 'maxconf' in steps_params_to_run['PointCloudProcessor']['buildPointCloud']:
                     pointcloudprocess.filterPointCloud(steps_params_to_run['PointCloudProcessor']['buildPointCloud']['maxconf'])
-            pointcloudprocess.colorizePointCloud(progress_printer=ProgressPrinter("colorizePointCloud"))
+            if 'colorizePointCloud' in steps_params_to_run['PointCloudProcessor']:
+                pointcloudprocess.colorizePointCloud(progress_printer=ProgressPrinter("colorizePointCloud"))
             if 'exportPointCloud' in steps_params_to_run['PointCloudProcessor']:
                 pointcloudprocess.exportPointCloud(progress_printer=ProgressPrinter("exportPointCloud"), path=output_save_folder,  **steps_params_to_run['PointCloudProcessor']['exportPointCloud'])
 

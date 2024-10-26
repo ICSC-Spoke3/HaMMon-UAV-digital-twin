@@ -54,13 +54,13 @@
                 "point_colors": true,
                 "point_confidence": true,
                 "keep_depth": true,
-                "subdivide_task": true
+                "subdivide_task": true,
+                "maxconf": 3
             },
             "colorizePointCloud":{
                 "source_data": "Metashape.ImagesData",
                 "subdivide_task": true
             }
-
         },
         "3DModelProcessor":{
             "buildModel":{
