@@ -126,6 +126,13 @@ class PointCloudProcessor:
         # update default params with the input
         #default_params.update(kwargs)
         default_params = update_existing_keys(default_params, kwargs)
+        if 'source_data' in kwargs:
+            try:
+                source_data = filter_modes.get(kwargs['source_data'], Metashape.ImagesData)
+            except AttributeError:
+                print(f"Note: '{kwargs['source_data']}' is not valid on Metashape.")
+            default_params['source_data'] = source_data  # source_data updated correctly
+
         if self.project.monitoring is not None:
             thread = threading.Thread(target=self.project.monitoring.start, args=('colorizePointCloud',))
             thread.start()

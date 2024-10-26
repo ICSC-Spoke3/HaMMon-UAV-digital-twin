@@ -57,7 +57,8 @@
                 "subdivide_task": true
             },
             "colorizePointCloud":{
-                
+                "source_data": "Metashape.ImagesData",
+                "subdivide_task": true
             }
 
         },
