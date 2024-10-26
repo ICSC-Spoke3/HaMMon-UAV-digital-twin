@@ -64,7 +64,17 @@
         },
         "3DModelProcessor":{
             "buildModel":{
-
+                "surface_type": "Metashape.Arbitrary",
+                "source_data": "Metashape.DepthMapsData",
+                "interpolation": "Metashape.EnabledInterpolation",
+                "face_count": "Metashape.HighFaceCount",
+                "vertex_colors": true,
+                "vertex_confidence": true,
+                "keep_depth": true,
+                "split_in_blocks": false,
+                "blocks_size": 250,
+                "build_texture": true,
+                "subdivide_task": true
             },
             "buildTexture":{
                 
