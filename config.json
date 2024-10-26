@@ -11,8 +11,8 @@
         "PhotoProcessor":{
             "matchPhotos":{
                 "downscale": 1,
-                "keypoint_limit": 4000,
-                "tiepoint_limit": 1000,
+                "keypoint_limit": 40000,
+                "tiepoint_limit": 10000,
                 "generic_preselection": true,
                 "reference_preselection": false,
                 "filter_stationary_points": true,

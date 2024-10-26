@@ -82,10 +82,9 @@ def execute_steps(steps_params_to_run: dict) -> None:
         #else: # do it by default NOTE
         #    photoprocess.alignCameras(progress_printer=ProgressPrinter("alignCameras"))
         if 'optimizeCameras' in steps_params_to_run['PhotoProcessor']:
-            # photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
-            # TODO decomment up dealigne down
-            # TODO: fix keypoint_limit 40k e tiepoint_limit 10k
-            print(" == == == PhotoProcessor == == ==")
+            photoprocess.optimizeCameras(progress_printer=ProgressPrinter("optimizeCameras"), **steps_params_to_run['PhotoProcessor']['optimizeCameras'])
+        
+        print(" == == == PhotoProcessor == == ==")
 
     if 'PointCloudProcessor' in steps_params_to_run:
         pointcloudprocess = PointCloudProcessor()
