@@ -61,6 +61,9 @@ def execute_steps(steps_params_to_run: dict) -> None:
         # define new project name_project.psx
             prj = Project(project_path=abs_path.rstrip('/') + "/"+ os.path.basename(abs_path.rstrip('/')) +".psx", enable_monitoring=flag_monitoring)
             prj.new_project()
+        
+        # path of saving reports and exports
+        output_save_folder = abs_path
 
         #print("--DEGUB: lista di chunck ", prj.doc.chunks)
         #print("--DEGUB: meta ", prj.doc.meta)
