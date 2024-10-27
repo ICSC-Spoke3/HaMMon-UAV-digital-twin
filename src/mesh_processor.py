@@ -48,7 +48,26 @@ filter_modes = {
     "Metashape.LaserScansData": Metashape.DataSource.LaserScansData,
     "Metashape.DataSource.DepthMapsAndLaserScansData": Metashape.DataSource.DepthMapsAndLaserScansData,
     "Metashape.DepthMapsAndLaserScansData": Metashape.DataSource.DepthMapsAndLaserScansData,
-
+    "Metashape.MappingMode.GenericMapping": Metashape.MappingMode.GenericMapping,
+    "Metashape.GenericMapping": Metashape.MappingMode.GenericMapping,
+    "Metashape.MappingMode.OrthophotoMapping": Metashape.MappingMode.OrthophotoMapping,
+    "Metashape.OrthophotoMapping": Metashape.MappingMode.OrthophotoMapping,
+    "Metashape.MappingMode.AdaptiveOrthophotoMapping": Metashape.MappingMode.AdaptiveOrthophotoMapping,
+    "Metashape.AdaptiveOrthophotoMapping": Metashape.MappingMode.AdaptiveOrthophotoMapping,
+    "Metashape.MappingMode.SphericalMapping": Metashape.MappingMode.SphericalMapping,
+    "Metashape.SphericalMapping": Metashape.MappingMode.SphericalMapping,
+    "Metashape.MappingMode.CameraMapping": Metashape.MappingMode.CameraMapping,
+    "Metashape.CameraMapping": Metashape.MappingMode.CameraMapping,
+    "Metashape.BlendingMode.AverageBlending": Metashape.BlendingMode.AverageBlending,
+    "Metashape.AverageBlending": Metashape.BlendingMode.AverageBlending,
+    "Metashape.BlendingMode.MosaicBlending": Metashape.BlendingMode.MosaicBlending,
+    "Metashape.MosaicBlending": Metashape.BlendingMode.MosaicBlending,
+    "Metashape.BlendingMode.MinBlending": Metashape.BlendingMode.MinBlending,
+    "Metashape.MinBlending": Metashape.BlendingMode.MinBlending,
+    "Metashape.BlendingMode.MaxBlending": Metashape.BlendingMode.MaxBlending,
+    "Metashape.MaxBlending": Metashape.BlendingMode.MaxBlending,
+    "Metashape.BlendingMode.DisabledBlending": Metashape.BlendingMode.DisabledBlending,
+    "Metashape.DisabledBlending": Metashape.BlendingMode.DisabledBlending
 }
 
 class MeshProcessor:
@@ -131,6 +150,13 @@ class MeshProcessor:
         }
         # update default params with the input
         default_params.update(kwargs)
+        if 'mapping_mode' in kwargs:
+            try:
+                mapping_mode = filter_modes.get(kwargs['mapping_mode'], Metashape.GenericMapping)
+            except AttributeError:
+                print(f"Note: '{kwargs['mapping_mode']}' is not valid on Metashape.")
+            default_params['mapping_mode'] = mapping_mode  # mapping_mode updated correctly
+
         if self.project.monitoring is not None:
             thread = threading.Thread(target=self.project.monitoring.start, args=('buildUV',))
             thread.start()
@@ -151,6 +177,13 @@ class MeshProcessor:
         }
         # update default params with the input
         default_params.update(kwargs)
+        if 'blending_mode' in kwargs:
+            try:
+                blending_mode = filter_modes.get(kwargs['blending_mode'], Metashape.MosaicBlending)
+            except AttributeError:
+                print(f"Note: '{kwargs['blending_mode']}' is not valid on Metashape.")
+            default_params['blending_mode'] = blending_mode  # blending_mode updated correctly
+
         if self.project.monitoring is not None:
             thread = threading.Thread(target=self.project.monitoring.start, args=('buildTexture',))
             thread.start()
@@ -168,15 +201,23 @@ class MeshProcessor:
         default_params = {
             'pixel_size': 0,
             'tile_size': 256,
-            'source_data': Metashape.DataSource.DepthMapsData,
+            'source_data': Metashape.DataSource.PointCloudData,
             'face_count': 20000,
             'ghosting_filter': False,
             'transfer_texture': False,
             'keep_depth': True,
             'subdivide_task': True
         }
+        #TODO: source_data: Selects between point cloud and mesh.
         # update default params with the input
         default_params.update(kwargs)
+        if 'source_data' in kwargs:
+            try:
+                source_data = filter_modes.get(kwargs['source_data'], Metashape.PointCloudData)
+            except AttributeError:
+                print(f"Note: '{kwargs['source_data']}' is not valid on Metashape.")
+            default_params['source_data'] = source_data  # source_data updated correctly
+
         if self.project.monitoring is not None:
             thread = threading.Thread(target=self.project.monitoring.start, args=('buildTiledModel',))
             thread.start()

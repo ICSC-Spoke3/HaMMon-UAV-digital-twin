@@ -3,10 +3,10 @@
         "settings": {
             "cpu_enable": false,
             "gpu_mask": "11",
-            "log": "../storage/palazzo_maresa/progetto/"
+            "log": "../storage/palazzo_maresa/progetto_palazzo_maresa/"
         },
         "project":{
-            "path": "../storage/palazzo_maresa/progetto"
+            "path": "../storage/palazzo_maresa/progetto_palazzo_maresa"
         },
         "PhotoProcessor":{
             "matchPhotos":{
@@ -77,17 +77,39 @@
                 "subdivide_task": true
             },
             "buildTexture":{
-                
+                "blending_mode": "Metashape.MosaicBlending",
+                "texture_size": 8192,
+                "fill_holes": true,
+                "ghosting_filter": true
             },
-            "buildUV":{},
+            "buildUV":{
+                "mapping_mode": "Metashape.GenericMapping",
+                "page_count": 1,
+                "texture_size": 8192
+            },
+            "buildTiledModel":{
+                "pixel_size": 0,
+                "tile_size": 256,
+                "source_data": "Metashape.DataSource.DepthMapsData",
+                "face_count": 20000,
+                "ghosting_filter": false,
+                "transfer_texture": false,
+                "keep_depth": true,
+                "subdivide_task": true
+            },
             "exportTexture": {}
         },
         "OrthoAndDEMCreation":{
             "buildDem":{
-
+                "source_data": "Metashape.PointCloudData",
+                "interpolation": "Metashape.EnabledInterpolation",
+                "subdivide_task": true
             },
             "buildOrtho":{
-                
+                "surface_data": "Metashape.ElevationData",
+                "fill_holes": true,
+                "subdivide_task": true,
+                "blending_mode": "Metashape.BlendingMode.MosaicBlending"
             }
         }
 
