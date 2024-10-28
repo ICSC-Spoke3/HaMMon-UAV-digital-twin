@@ -42,7 +42,7 @@ pip install -r requirements.txt
 ```bash
 ├── UAV-digital-twin  # Main folder
     ├── assets/        
-        ├── Metashape-2.1.2....whl # Metashape Python module 2.1.2
+        ├── Metashape-2.1.3....whl # Metashape Python module 2.1.3 (Linux, Mac, Win)
     ├── config.json   # E.g. configuration file to execute most of the steps
     ├── config.yaml   # E.g. configuration files to export data
     ├── demo/         # Folder containing demo code
