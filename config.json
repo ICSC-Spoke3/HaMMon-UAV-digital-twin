@@ -3,10 +3,10 @@
         "settings": {
             "cpu_enable": false,
             "gpu_mask": "11",
-            "log": "../storage/municipio/progetto_municipio/"
+            "log": "../storage/piazza/progetto_piazza/"
         },
         "project":{
-            "path": "../storage/municipio/progetto_municipio"
+            "path": "../storage/piazza/progetto_piazza"
         },
         "PhotoProcessor":{
             "matchPhotos":{
