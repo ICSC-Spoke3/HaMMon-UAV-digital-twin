@@ -3,10 +3,10 @@
         "settings": {
             "cpu_enable": false,
             "gpu_mask": "11",
-            "log": "../storage/piazza/progetto_piazza/"
+            "log": "../storage/montebusca/progetto_montebusca/"
         },
         "project":{
-            "path": "../storage/piazza/progetto_piazza"
+            "path": "../storage/montebusca/progetto_montebusca"
         },
         "PhotoProcessor":{
             "matchPhotos":{
