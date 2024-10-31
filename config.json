@@ -3,10 +3,10 @@
         "settings": {
             "cpu_enable": false,
             "gpu_mask": "11",
-            "log": "../storage/montebusca/progetto_montebusca/"
+            "log": "../storage/ottignana/progetto_ottignana/"
         },
         "project":{
-            "path": "../storage/montebusca/progetto_montebusca"
+            "path": "../storage/ottignana/progetto_ottignana"
         },
         "PhotoProcessor":{
             "matchPhotos":{
