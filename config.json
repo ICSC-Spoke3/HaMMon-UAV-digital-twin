@@ -3,10 +3,10 @@
         "settings": {
             "cpu_enable": false,
             "gpu_mask": "11",
-            "log": "../storage/carducci/progetto_carducci/"
+            "log": "../storage/enea/progetto_enea/"
         },
         "project":{
-            "path": "../storage/carducci/progetto_carduccils"
+            "path": "../storage/enea/progetto_enea"
         },
         "PhotoProcessor":{
             "matchPhotos":{
