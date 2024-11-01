@@ -3,10 +3,10 @@
         "settings": {
             "cpu_enable": false,
             "gpu_mask": "11",
-            "log": "../storage/ottignana/progetto_ottignana/"
+            "log": "../storage/carducci/progetto_carducci/"
         },
         "project":{
-            "path": "../storage/ottignana/progetto_ottignana"
+            "path": "../storage/carducci/progetto_carduccils"
         },
         "PhotoProcessor":{
             "matchPhotos":{
