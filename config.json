@@ -3,10 +3,10 @@
         "settings": {
             "cpu_enable": false,
             "gpu_mask": "11",
-            "log": "../storage/enea/progetto_enea/"
+            "log": "../storage/piazza/progetto_piazza/"
         },
         "project":{
-            "path": "../storage/enea/progetto_enea"
+            "path": "../storage/piazza/progetto_piazza"
         },
         "PhotoProcessor":{
             "matchPhotos":{
