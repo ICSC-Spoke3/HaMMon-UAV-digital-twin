@@ -3,10 +3,10 @@
         "settings": {
             "cpu_enable": false,
             "gpu_mask": "11",
-            "log": "../storage/scuola/progetto_scuola/"
+            "log": "../storage/frana/progetto_frana/"
         },
         "project":{
-            "path": "../storage/scuola/progetto_scuola"
+            "path": "../storage/frana/progetto_frana"
         },
         "PhotoProcessor":{
             "matchPhotos":{
