@@ -3,10 +3,10 @@
         "settings": {
             "cpu_enable": false,
             "gpu_mask": "11",
-            "log": "../storage/frana/progetto_frana/"
+            "log": "../storage/palazzo_fantini/progetto_palazzo_fantini/"
         },
         "project":{
-            "path": "../storage/frana/progetto_frana"
+            "path": "../storage/palazzo_fantini/progetto_palazzo_fantini"
         },
         "PhotoProcessor":{
             "matchPhotos":{
