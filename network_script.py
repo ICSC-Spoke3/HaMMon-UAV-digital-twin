@@ -180,3 +180,5 @@ else:
             task.apply(chunk) # progress printer
 
     print('Processing finished, results saved to ' + output_folder + '.')
+
+print("Il processo è finito")
