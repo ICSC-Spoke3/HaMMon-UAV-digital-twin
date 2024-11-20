@@ -58,6 +58,7 @@ pip install -r requirements.txt
     ├── src/          # Folder code for UAV-digital-twin (UML in the doc)
     ├── requirements.txt    # Text file that lists all package dependencies required to run the project correctly
     ├── test/         # Folder containing code for unit tests
+    ├── labelstudiorenamexport.py # Script renames label studio masks
 ```
 
 ## License
