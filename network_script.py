@@ -24,9 +24,12 @@ output_folder = sys.argv[2]
 
 # ------- Settings -------------
 process_network = True  # TODO: yaml
-network_server = '127.0.0.1' # TODO: è dinamico? richiedo questo da input o yaml settings?
-Metashape.app.settings.network_path = '/mnt/datasets'
+network_server = os.getenv("METASHAPE_SERVER") # TODO: 127.0.0.1 ip server master
+Metashape.app.settings.network_path = '/home/photogrammetry/storage' # '/mnt/datasets'
 photos = find_files(image_folder, [".jpg", ".jpeg", ".tif", ".tiff"])
+# Configura il percorso di log globale
+log_file_path = "/home/photogrammetry/storage/logs/funziona.txt"
+Metashape.app.settings.log_path = log_file_path
 
 # -------New project and import photos-------------
 doc = Metashape.Document()
@@ -47,6 +50,7 @@ for c in chunk.cameras:
 
 # ------- MatchPhotos -------------
 task = Metashape.Tasks.MatchPhotos()
+print("-- DEBUG: added Task:", task.name)
 task.downscale = 1
 task.keypoint_limit = 40000
 task.tiepoint_limit = 10000
@@ -61,6 +65,7 @@ tasks.append(task)
 
 # ------- AlignCameras -------------
 task = Metashape.Tasks.AlignCameras()
+print("-- DEBUG: added Task:", task.name)
 task.adaptive_fitting = False
 task.reset_alignment = True
 task.subdivide_task = True
@@ -69,6 +74,7 @@ tasks.append(task)
 
 # ------- BuildDepthMaps -------------
 task = Metashape.Tasks.BuildDepthMaps()
+print("-- DEBUG: added Task:", task.name)
 task.downscale = 2
 task.filter_mode = Metashape.MildFiltering
 task.reuse_depth = False
@@ -79,6 +85,7 @@ tasks.append(task)
 if has_reference:
     # ------- BuildPointCloud -------------
     task = Metashape.Tasks.BuildPointCloud()
+    print("-- DEBUG: added Task:", task.name)
     task.source_data = Metashape.DepthMapsData
     task.point_colors = True
     task.point_confidence = True
@@ -89,6 +96,7 @@ if has_reference:
 
 # ------- BuildModel -------------
 task = Metashape.Tasks.BuildModel()
+print("-- DEBUG: added Task:", task.name)
 task.source_data = Metashape.DepthMapsData
 task.surface_type = Metashape.Arbitrary
 task.interpolation = Metashape.EnabledInterpolation
@@ -105,6 +113,7 @@ tasks.append(task)
 
 # ------- BuildUV -------------
 task = Metashape.Tasks.BuildUV()
+print("-- DEBUG: added Task:", task.name)
 task.page_count = 1
 task.mapping_mode = Metashape.GenericMapping
 task.texture_size = 8192
@@ -113,6 +122,7 @@ tasks.append(task)
 
 # ------- BuildTexture -------------
 task = Metashape.Tasks.BuildTexture()
+print("-- DEBUG: added Task:", task.name)
 task.blending_mode = Metashape.MosaicBlending
 task.texture_size = 8192
 task.ghosting_filter = True
@@ -123,6 +133,7 @@ tasks.append(task)
 if has_reference:
     # ------- BuildDem -------------
     task = Metashape.Tasks.BuildDem()
+    print("-- DEBUG: added Task:", task.name)
     task.source_data = Metashape.PointCloudData
     task.interpolation = Metashape.EnabledInterpolation
     task.subdivide_task = True
@@ -131,6 +142,7 @@ if has_reference:
 
     # ------- BuildOrthomosaic -------------
     task = Metashape.Tasks.BuildOrthomosaic()
+    print("-- DEBUG: added Task:", task.name)
     task.surface_data = Metashape.ElevationData
     task.fill_holes = True
     task.blending_mode = Metashape.MosaicBlending
@@ -140,6 +152,7 @@ if has_reference:
 
 # ------- BuildTiledModel -------------
 task = Metashape.Tasks.BuildTiledModel()
+print("-- DEBUG: added Task:", task.name)
 task.pixel_size = 0
 task.tile_size = 256
 task.source_data = Metashape.DepthMapsData
@@ -152,6 +165,7 @@ tasks.append(task)
 # --------------------
 
 task = Metashape.Tasks.ExportReport()
+print("-- DEBUG: added Task:", task.name)
 task.path = output_folder + '/report.pdf'
 tasks.append(task)
 
@@ -168,6 +182,7 @@ if process_network:
     client = Metashape.NetworkClient()
     client.connect(network_server)
     batch_id = client.createBatch(doc.path, network_tasks)
+    print(" --- DEGUB: batch_id", batch_id)
     client.setBatchPaused(batch_id, False)
 
     print('Processing started, results will be saved to ' + output_folder + '.')
@@ -181,4 +196,4 @@ else:
 
     print('Processing finished, results saved to ' + output_folder + '.')
 
-print("Il processo è finito")
+print("End process network")
