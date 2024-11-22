@@ -30,6 +30,7 @@ photos = find_files(image_folder, [".jpg", ".jpeg", ".tif", ".tiff"])
 # Configura il percorso di log globale
 log_file_path = "/home/photogrammetry/storage/logs/funziona.txt"
 Metashape.app.settings.log_path = log_file_path
+Metashape.app.settings.log_enable = True
 
 # -------New project and import photos-------------
 doc = Metashape.Document()
