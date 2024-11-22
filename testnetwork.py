@@ -37,7 +37,7 @@ print(str(len(chunk.cameras)) + " images loaded")
 tasks = []
 # -------primo task-------------
 task = Metashape.Tasks.MatchPhotos()
-task.name = 'MatchPhotosLEO'
+print("-- DEGUB: added", task.name)
 task.keypoint_limit = 40000
 task.tiepoint_limit = 10000
 task.generic_preselection = True
