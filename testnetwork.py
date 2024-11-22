@@ -35,13 +35,28 @@ doc.save()
 print(str(len(chunk.cameras)) + " images loaded")
 
 tasks = []
-# -------primo task-------------
+
+# ------- MatchPhotos -------------
 task = Metashape.Tasks.MatchPhotos()
-print("-- DEGUB: added", task.name)
+print("-- DEBUG: added Task:", task.name)
+task.downscale = 1
 task.keypoint_limit = 40000
 task.tiepoint_limit = 10000
 task.generic_preselection = True
-task.reference_preselection = True
+task.reference_preselection = False
+task.filter_stationary_points = True
+task.keep_keypoints = True
+task.guided_matching = False
+task.subdivide_task = True
+tasks.append(task)
+# --------------------
+
+# ------- AlignCameras -------------
+task = Metashape.Tasks.AlignCameras()
+print("-- DEBUG: added Task:", task.name)
+task.adaptive_fitting = False
+task.reset_alignment = True
+task.subdivide_task = True
 tasks.append(task)
 # --------------------
 
