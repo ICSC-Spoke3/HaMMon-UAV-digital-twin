@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 #### Project layout
 ```bash
-├── UAV-digital-twin  # Main folder
+├── HaMMon-UAV-digital-twin  # Main folder
     ├── assets/        
         ├── Metashape-2.1.3....whl # Metashape Python module 2.1.3 (Linux, Mac, Win)
     ├── config.json   # E.g. configuration file to execute most of the steps

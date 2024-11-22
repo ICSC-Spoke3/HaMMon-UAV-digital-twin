@@ -2,3 +2,6 @@
 /report/results/
 .DS_Store
 taskandnetworkscript.py
+Monitor Piazza - Single/nohup.out
+Monitor Piazza - Single/single_piazza_monitor.csv
+Monitor Piazza - Single/single_piazza_report.pdf
