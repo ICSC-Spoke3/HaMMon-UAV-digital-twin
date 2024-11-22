@@ -90,7 +90,7 @@ if has_reference:
     task.source_data = Metashape.DepthMapsData
     task.point_colors = True
     task.point_confidence = True
-    tasks.keep_depth = True
+    task.keep_depth = True
     task.subdivide_task = True
     tasks.append(task)
     # --------------------
