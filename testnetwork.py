@@ -73,7 +73,8 @@ if process_network:
     client = Metashape.NetworkClient()
     client.connect(network_server)
     batch_id = client.createBatch(doc.path, network_tasks)
-    client.setBatchPaused(batch_id, False)
+    print(" --- DEGUB: batch_id", batch_id)
+    #client.setBatchPaused(batch_id, False)
 
     print('Processing started, results will be saved to ' + output_folder + '.')
 else:
