@@ -74,7 +74,7 @@ if process_network:
     client.connect(network_server)
     batch_id = client.createBatch(doc.path, network_tasks)
     print(" --- DEGUB: batch_id", batch_id)
-    #client.setBatchPaused(batch_id, False)
+    client.setBatchPaused(batch_id, False)
 
     print('Processing started, results will be saved to ' + output_folder + '.')
 else:
