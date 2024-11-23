@@ -182,6 +182,11 @@ if process_network:
 
     client = Metashape.NetworkClient()
     client.connect(network_server)
+    gpu_mask = 1   # Abilita solo la prima GPU
+    for worker in client.workerList()['workers']:
+        worker_id = worker['worker_id']
+        client.setWorkerCpuEnabled(worker_id, True)
+        client.setWorkerGpuMask(worker_id, gpu_mask)
     batch_id = client.createBatch(doc.path, network_tasks)
     print(" --- DEGUB: batch_id", batch_id)
     client.setBatchPaused(batch_id, False)
