@@ -7,3 +7,9 @@ Monitor Piazza - Single/single_piazza_monitor.csv
 Monitor Piazza - Single/single_piazza_report.pdf
 Monitor Piazza - triple/report.pdf
 Monitor Piazza - triple/TimeTask.txt
+Monitor Piazza - triple/worker_0.json
+Monitor Piazza - triple/worker_1.json
+Monitor Piazza - triple/worker_2.json
+taskandnetworkscript.py
+testnetwork.py
+network_script_monitor.py

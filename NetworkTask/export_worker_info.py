@@ -1,3 +1,10 @@
+"""
+export all worker information
+
+Esempio di utilizzo
+python export_worker_info.py
+"""
+
 import Metashape
 import os
 import json
