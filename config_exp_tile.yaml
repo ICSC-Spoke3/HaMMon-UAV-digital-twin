@@ -6,10 +6,4 @@ workflow:
   project:
     path: "../new_project/new_project.psx"
   exportResults:
-    exportDEM: {}
-    exportOrthomosaic: {}
-    exportModel: {}
-    exportPointCloud: {}
     exportTiledModel: {}
-    exportTexture: {}
-    exportOrthophotos: {}
