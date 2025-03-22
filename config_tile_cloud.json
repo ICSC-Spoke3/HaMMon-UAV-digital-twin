@@ -1,0 +1,69 @@
+{
+    "workflow": {
+        "settings": {
+            "cpu_enable": false,
+            "gpu_mask": "11",
+            "log": "../storage"
+        },
+        "project": {
+            "path": "../storage"
+        },
+        "PhotoProcessor": {
+            "matchPhotos": {
+                "downscale": 1,
+                "keypoint_limit": 40000,
+                "tiepoint_limit": 10000,
+                "generic_preselection": true,
+                "reference_preselection": false,
+                "filter_stationary_points": true,
+                "keep_keypoints": true,
+                "guided_matching": false,
+                "subdivide_task": true
+            },
+            "alignCameras": {
+                "adaptive_fitting": false,
+                "reset_alignment": true,
+                "subdivide_task": true
+            },
+            "optimizeCameras": {
+                "fit_f": true,
+                "fit_cx": true,
+                "fit_cy": true,
+                "fit_b1": false,
+                "fit_b2": false,
+                "fit_k1": true,
+                "fit_k2": true,
+                "fit_k3": true,
+                "fit_k4": false,
+                "fit_p1": true,
+                "fit_p2": true,
+                "fit_corrections": false,
+                "adaptive_fitting": false,
+                "tiepoint_covariance": false
+            }
+        },
+        "PointCloudProcessor": {
+            "buildDepthMaps": {
+                "downscale": 2,
+                "filter_mode": "Metashape.FilterMode.MildFiltering",
+                "reuse_depth": false,
+                "subdivide_task": true
+            },
+            "buildPointCloud": {
+                "source_data": "Metashape.DataSource.DepthMapsData",
+                "point_colors": true,
+                "point_confidence": true,
+                "keep_depth": true,
+                "subdivide_task": true,
+                "maxconf": 3
+            },
+            "colorizePointCloud": {
+                "source_data": "Metashape.ImagesData",
+                "subdivide_task": true
+            }
+        },
+        "3DModelProcessor": {
+            "buildTiledModel": {}
+        }
+    }
+}
