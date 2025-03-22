@@ -258,7 +258,7 @@ class MeshProcessor:
     def exportTiledModel(self, progress_printer: str, path: str, **kwargs) -> None:
         if self.project.chunk.tiled_model:
             default_params = {
-                "format": Metashape.TiledModelFormat.TiledModelFormatCesium,
+                "format": Metashape.TiledModelFormat.TiledModelFormatZIP,
                 "model_format" : Metashape.ModelFormat.ModelFormatCOLLADA,
                 "texture_format": Metashape.ImageFormat.ImageFormatJPEG,
                 "model_compression": True,
@@ -271,7 +271,7 @@ class MeshProcessor:
             if self.project.monitoring is not None:
                 thread = threading.Thread(target=self.project.monitoring.start, args=('exportTiledModel',))
                 thread.start()
-            self.project.chunk.exportTiledModel(path=path+'/tiled/tiled.zip', progress= progress_printer, **default_params)
+            self.project.chunk.exportTiledModel(path=path+'/tiled/', progress= progress_printer, **default_params)
             if self.project.monitoring is not None:
                 self.project.monitoring.stop()
 
