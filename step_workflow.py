@@ -119,9 +119,9 @@ def execute_steps(steps_params_to_run: dict) -> None:
         meshprocess = MeshProcessor()
         if 'buildModel' in steps_params_to_run['3DModelProcessor']:
             meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"), **steps_params_to_run['3DModelProcessor']['buildModel'])
-        #else: # do it by default
-        #    meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"))
-        meshprocess.colorizeModel(progress_printer=ProgressPrinter("colorizeModel"))
+            #else: # do it by default
+            #    meshprocess.buildModel(progress_printer=ProgressPrinter("buildModel"))
+            meshprocess.colorizeModel(progress_printer=ProgressPrinter("colorizeModel"))
         if 'buildUV' in steps_params_to_run['3DModelProcessor']:
             meshprocess.buildUV(progress_printer=ProgressPrinter("buildUV"), **steps_params_to_run['3DModelProcessor']['buildUV'])
         #else: # do it by default
