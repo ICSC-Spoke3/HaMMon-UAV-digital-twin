@@ -53,21 +53,21 @@ def execute_steps(steps_params_to_run: dict) -> None:
         if is_file_path(steps_params_to_run['project']['path']):
             _, extension = os.path.splitext(steps_params_to_run['project']['path'])
             if extension.lower() in ['.psx', '.psz']:
+                project_folder = os.path.dirname(abs_path)  # Cartella che contiene il file
                 prj = Project(project_path=abs_path, enable_monitoring=flag_monitoring)
                 prj.load_project()
             else:
                 raise TypeError("Estenzione file non conforme a .psx/.psz di Metashape")
         else: 
-        # define new project name_project.psx
+            # define new project name_project.psx
             prj = Project(project_path=abs_path.rstrip('/') + "/"+ os.path.basename(abs_path.rstrip('/')) +".psx", enable_monitoring=flag_monitoring)
             prj.new_project()
+            project_folder = abs_path.rstrip('/')  # Se è una cartella, resta invariato
         
         # path of saving reports and exports
-        output_save_folder = abs_path
+        if output_save_folder == ".":
+            output_save_folder = project_folder # Controllo se output_save_folder è cambiato da CLI else assegna la cartella del progetto
 
-        #print("--DEGUB: lista di chunck ", prj.doc.chunks)
-        #print("--DEGUB: meta ", prj.doc.meta)
-        #print("--path: ", prj.doc.path)
         print(" == == == Loading/NewProject == == ==")
     else:
         raise Exception("Non è stato specificato un save path o load project")
