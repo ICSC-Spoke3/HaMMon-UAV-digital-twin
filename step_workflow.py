@@ -11,7 +11,6 @@ from src.point_cloud_processor import PointCloudProcessor
 from src.mesh_processor import MeshProcessor
 from src.geographic_projection import GeographicProjection
 
-
 input_images_folder = ""
 output_save_folder = "."
 image_files = []
@@ -65,6 +64,7 @@ def execute_steps(steps_params_to_run: dict) -> None:
             project_folder = abs_path.rstrip('/')  # Se è una cartella, resta invariato
         
         # path of saving reports and exports
+        global output_save_folder
         if output_save_folder == ".":
             output_save_folder = project_folder # Controllo se output_save_folder è cambiato da CLI else assegna la cartella del progetto
 
