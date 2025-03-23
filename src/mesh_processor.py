@@ -271,7 +271,7 @@ class MeshProcessor:
             if self.project.monitoring is not None:
                 thread = threading.Thread(target=self.project.monitoring.start, args=('exportTiledModel',))
                 thread.start()
-            self.project.chunk.exportTiledModel(path=path+'/tiled/', progress= progress_printer, **default_params)
+            self.project.chunk.exportTiledModel(path=path+'/tiled/tile.zip', progress= progress_printer, **default_params)
             if self.project.monitoring is not None:
                 self.project.monitoring.stop()
 
