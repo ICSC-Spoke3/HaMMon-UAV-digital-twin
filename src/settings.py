@@ -29,7 +29,7 @@ class Settings:
     Checks if the current version of the application is compatible with the required version.
     """
     def check_version(self) -> None:
-        compatible_major_version = "2.1"
+        compatible_major_version = "2.2"
         found_major_version = ".".join(Metashape.app.version.split('.')[:2])
         if found_major_version != compatible_major_version:
             raise Exception("Incompatible Metashape version: {} != {}".format(found_major_version, compatible_major_version))
