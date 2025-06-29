@@ -1,47 +1,45 @@
-#  python -m unittest discover -s test -p "test_*.py"
-# run vscode
 import Metashape
 import os, sys
 assert Metashape.app.version.startswith("2."), "Update Metashape Pro"
 
 def progress_callback(pct):
-    print(f"Progresso: {pct:.2f}% completato")
+    print(f"Progress: {pct:.2f}% complete")
 
-def load_project(percorso_progetto: str) -> Metashape.Document:
+def load_project(project_path: str) -> Metashape.Document:
     """
-    Carica un progetto Metashape (.psx)
+    Load a Metashape project (.psx)
     Args:
-        percorso_progetto (str): Il percorso del file .psx
+        project_path (str): The path to the .psx file
     Returns:
-        Metashape.Document: L'oggetto documento Metashape caricato
+        Metashape.Document: The loaded Metashape document object
     Raises:
-        FileNotFoundError: Se il file non esiste
-        RuntimeError: Se il progetto non può essere aperto
+        FileNotFoundError: If the file does not exist
+        RuntimeError: If the project cannot be opened
     """
-    if not isinstance(percorso_progetto, str):
+    if not isinstance(project_path, str):
         raise TypeError("The project path must be a string.")
-    if not percorso_progetto.endswith((".psx", ".psz")):
+    if not project_path.endswith((".psx", ".psz")):
         raise ValueError("The project file must be a .psx/.psz format")
     
     try:
         doc = Metashape.Document()
-        doc.open(percorso_progetto, read_only=False)
+        doc.open(project_path, read_only=False)
         return doc
     except Exception as e:
         raise RuntimeError(f"Loading error project: {e}")
     
 def check_camera(doc: Metashape.Document) -> bool:
-    """Verifica se il progetto contiene camere su cui applicare la maschera"""
+    """Check if the project contains cameras to apply the mask to"""
     chunk = doc.chunk
     if chunk and chunk.cameras:
         return True
     return False
 
 def check_dense_cloud(doc: Metashape.Document) -> bool:
-    """Verifica se presente una nuvola densa"""
+    """Check if there is a dense cloud"""
     chunk = doc.chunk
     if chunk and chunk.point_cloud and chunk.point_cloud.point_count > 0:
-        print("Nuvola di punti totale:", chunk.point_cloud.point_count)
+        print("Point Cloud Dense #:", chunk.point_cloud.point_count)
         return True
     return False
 
@@ -50,29 +48,29 @@ def check_dense_cloud(doc: Metashape.Document) -> bool:
 
 def import_masks(chunk: Metashape.Chunk, masks_directory: str):
     """
-    Importa le maschere per le immagini nel chunk specificato
+    Import image masks into the specified chunk
     Args:
-        chunk (Metashape.Chunk): il chunk su cui importare le maschere
-        mask_path (str): percorso cartelle contenenti le maschere delle foto (png)
+        chunk (Metashape.Chunk): the chunk to import masks into
+        masks_directory (str): path to folders containing photo masks (png)
     """
     if not os.path.isdir(masks_directory):
-        raise NotADirectoryError(f"Il percorso delle maschere '{masks_directory}' non è una directory valida")
+        raise NotADirectoryError(f"Mask folder '{masks_directory}' it is not a valid directory")
     
     for camera in chunk.cameras:
         if camera.label:
-            # Costruisce il percorso del file maschera usando il nome della camera
-            mask_file_name = f"{camera.label}_mask.png" # nome formato maschere
+            # Builds the mask file path using the camera name
+            mask_file_name = f"{camera.label}_mask.png" # mask name format
             mask_file_path = os.path.join(masks_directory, mask_file_name)
             if os.path.isfile(mask_file_path):
                 try:
                     chunk.generateMasks(path=mask_file_path, masking_mode=Metashape.MaskingMode.MaskingModeFile, mask_operation=Metashape.MaskOperation.MaskOperationReplacement, tolerance=10, cameras=[camera], replace_asset = True)
-                    #print(f"Maschera importata per {camera.label}")
+                    #print(f"import mask-th for {camera.label}")
                 except Exception as e:
-                    print(f"Errore nell'importazione della maschera per {camera.label}: {e}")
+                    print(f"Error importing mask for {camera.label}: {e}")
             else:
-                print(f"Maschera non trovata per {camera.label}") # al percorso {mask_file_path}")
+                print(f"Mask not found for {camera.label}") # on {mask_file_path}")
     
-    # Inverto maschera di selezione
+    # Invert masks
     for camera in chunk.cameras:
         if camera.mask is not None:
             camera.mask = camera.mask.invert()
@@ -112,42 +110,6 @@ def select_points_by_mask(chunk: Metashape.Chunk, softness: float = 4, only_visi
     except Exception as e:
         print(f"Errore durante la selezione dei punti: {e}")
 
-    
-
-def select_classif_points_by_mask_iterations(chunk: Metashape.Chunk, softness: float = 4, only_visible: bool = False):
-    """
-    Seleziona i punti della nuvola densa che corrispondono alle maschere delle camere.
-    
-    Args:
-        chunk (Metashape.Chunk): il chunk contenente la nuvola densa e le camere.
-        softness (float): Morbidezza dei bordi della maschera (default: 4).
-        only_visible (bool): Selezionare solo punti visibili (default: False).
-    
-    La funzione imposta l'attributo 'selected' dei punti corrispondenti alla maschera.
-    """
-    if not chunk.point_cloud:
-        raise RuntimeError("Nuvola densa non presente nel chunk.")
-    
-    cameras = [camera for camera in chunk.cameras if camera.mask is not None]
-    print("Totale maschere inserite:", len(cameras))
-    if not cameras:
-        raise RuntimeError("No cameras with masks found.")
-
-    try:
-        point_cloud = chunk.point_cloud
-
-        for i in cameras:   # itero per sole camere avente la maschera
-            print('Selezione la maschera di camera: ', i)
-            point_cloud.selectMaskedPoints([i], softness=softness, only_visible=only_visible)#, progress=progress_callback)
-
-            try:
-                print('Classificazione nuvola di punti di camera: ', i)
-                point_cloud.assignClassToSelection(target=2)
-
-            except Exception:
-                print('There was no point selected, moving on')
-    except Exception as e:
-        print(f"Errore durante la selezione dei punti: {e}")
 
 def classify_selected_points(chunk: Metashape.Chunk, class_type=Metashape.PointClass.Ground):
     """
@@ -227,27 +189,23 @@ def shape_creation_by_cloud(chunk: Metashape.Chunk, class_point: Metashape.Point
 if __name__ == "__main__":
         
     # Project path to update
-    percorso_progetto = "progetto_ottignana/progetto_ottignana.psx"
-    percorso_maschere = "Maschere Ottignana"
-    percorso_output = "output"
+    project_path = "path/to/project.psx"
+    mask_path = "path/to/mask/folder"
+    output_path = "path/to/output/folder"
 
-    # workflow
-    doc = load_project(percorso_progetto)
+    # Workflow
+    doc = load_project(project_path)
     if len(doc.chunks) == 0:    
-        raise RuntimeError("Nessun chunk presente nel documento.")
+        raise RuntimeError("No chunk found")
     chunk = doc.chunk
-
-    
 
     # check steps
     stato = {
         "Camera": check_camera(doc),
-        "Nuvola Densa": check_dense_cloud(doc),
-        # "Modello 3D": check
+        "Dense Cloud": check_dense_cloud(doc)
     }
 
     missing_steps = [key for key, value in stato.items() if not value]
-
     if missing_steps:
         print("Error: The project is incomplete.")
         for step in missing_steps:
@@ -255,12 +213,9 @@ if __name__ == "__main__":
         Metashape.app.quit()
         sys.exit(1)
 
-    # Importa le maschere sulle camere
-    import_masks(chunk=chunk, masks_directory=percorso_maschere)
+    # Import Mask
+    import_masks(chunk=chunk, masks_directory=mask_path)
     doc.save()
-
-    #select_classif_points_by_mask_iterations(chunk=chunk, softness=4, only_visible=True)
-    #doc.save()
 
     # Seleziona i punti della nuvola densa che ricadono nelle maschere
     select_points_by_mask(chunk, softness=4, only_visible=True)
