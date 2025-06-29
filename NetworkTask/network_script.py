@@ -6,7 +6,7 @@ if Metashape.app.activated:
 else:
     raise Exception("No license found.")
 
-compatible_major_version = "2.1"
+compatible_major_version = "2.2"
 found_major_version = ".".join(Metashape.app.version.split('.')[:2])
 if found_major_version != compatible_major_version:
     raise Exception("Incompatible Metashape version: {} != {}".format(found_major_version, compatible_major_version))
@@ -23,12 +23,12 @@ image_folder = sys.argv[1]
 output_folder = sys.argv[2]
 
 # ------- Settings -------------
-process_network = True  # TODO: yaml
-network_server = os.getenv("METASHAPE_SERVER") # TODO: 127.0.0.1 ip server master
-Metashape.app.settings.network_path = '/home/photogrammetry/storage' # '/mnt/datasets'
+process_network = True
+network_server = os.getenv("METASHAPE_SERVER")
+Metashape.app.settings.network_path = '/home/photogrammetry/storage'
 photos = find_files(image_folder, [".jpg", ".jpeg", ".tif", ".tiff"])
-# Configura il percorso di log globale
-log_file_path = "/home/photogrammetry/storage/logs/funziona.txt"
+# Set log path
+log_file_path = "/home/photogrammetry/storage/logs/log.txt"
 Metashape.app.settings.log_path = log_file_path
 Metashape.app.settings.log_enable = True
 
@@ -171,8 +171,6 @@ task.path = output_folder + '/report.pdf'
 tasks.append(task)
 
 if process_network:
-    # Rendo tutti i task Network task
-    print("Rendo tutti i task network task")
     network_tasks = []
     for task in tasks:
         if task.target == Metashape.Tasks.DocumentTarget:
@@ -182,7 +180,7 @@ if process_network:
 
     client = Metashape.NetworkClient()
     client.connect(network_server)
-    gpu_mask = 1   # Abilita solo la prima GPU
+    gpu_mask = 1    # Set one GPU
     for worker in client.workerList()['workers']:
         worker_id = worker['worker_id']
         client.setWorkerCpuEnabled(worker_id, True)
@@ -193,7 +191,6 @@ if process_network:
 
     print('Processing started, results will be saved to ' + output_folder + '.')
 else:
-    # non è network
     for task in tasks:
         if task.target == Metashape.Tasks.DocumentTarget:
             task.apply(doc) # progress printer

@@ -1,5 +1,5 @@
 """
-Esporta i campi ["time", "cpu_usage", "memory_usage"] dai singoli workerX.json in workerX.csv per plot
+Export fields ["time", "cpu_usage", "memory_usage"] from individual workerX.json to workerX.csv for plot
 """
 import json
 import pandas as pd
@@ -8,32 +8,31 @@ import pandas as pd
 
 def json_to_csv(input_json_file, output_csv_file):
     """
-    Legge un file JSON, estrae le colonne time, cpu_usage e memory_usage
-    dalla tag resource_usage, ordina i dati per time e li salva in un CSV.
+    Reads a JSON file, extracts the time, cpu_usage and memory_usage columns
+    from the resource_usage tag, sorts the data by time and saves it to a CSV.
 
     Args:
-        input_json_file (str): Percorso al file JSON di input.
-        output_csv_file (str): Percorso al file CSV di output.
+    input_json_file (str): Path to the input JSON file.
+    output_csv_file (str): Path to the output CSV file.
     """
-    # Legge il file JSON
     with open(input_json_file, 'r') as f:
         data = json.load(f)
     
-    # Estrae la tag resource_usage
+    # Give the resource_usage tag
     resource_usage_data = data.get("resource_usage", [])
     
-    # Converte in DataFrame
+    # Convert in DataFrame
     df = pd.DataFrame(resource_usage_data)
     
-    # Controlla che le colonne esistano
+    # check columns exist
     columns_to_extract = ["time", "cpu_usage", "memory_usage"]
     if all(col in df.columns for col in columns_to_extract):
-        # Filtra e ordina per time
+        # filter and order by time
         sorted_df = df[columns_to_extract].sort_values(by="time")
-        # Salva nel CSV
+        # save on CSV
         sorted_df.to_csv(output_csv_file, index=False)
     else:
-        raise ValueError(f"Il file JSON non contiene tutte le colonne richieste: {columns_to_extract}")
+        raise ValueError(f"The JSON file does not contain all the required columns: {columns_to_extract}")
 
-# Esempio di utilizzo
+# Usage example
 # json_to_csv("input.json", "output.csv")

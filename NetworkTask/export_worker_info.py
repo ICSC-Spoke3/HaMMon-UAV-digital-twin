@@ -1,7 +1,7 @@
 """
 export all worker information
 
-Esempio di utilizzo
+How to use:
 python export_worker_info.py
 """
 
@@ -12,7 +12,7 @@ import json
 client = Metashape.NetworkClient()
 client.connect(os.getenv("METASHAPE_SERVER"))
 
-# Cicla attraverso i worker e prendi il worker_id
+# Loop through the workers and get the worker_id
 for worker in client.workerList()['workers']:
     worker_id = worker['worker_id']
     file_name = f'worker_{worker_id}.json'
