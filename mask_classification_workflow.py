@@ -268,3 +268,16 @@ if __name__ == "__main__":
     # Count the points in the assigned class
     classified_count = chunk.point_cloud.point_count_by_class
     print(f"Points classified as: {classified_count} / {chunk.point_cloud.point_count}")
+
+    #clean_point_cloud_using_masks(chunk=chunk)
+    #doc.save()
+
+    dense_cloud_export_path = os.path.join(output_directory, f"{classification_type_str}_cloud.las")
+    try:
+        chunk.exportPointCloud(path=dense_cloud_export_path, source_data = Metashape.PointCloudData, classes=[selected_class_type], progress=progress_callback)
+        print(f"Cleaned dense cloud exported to: {dense_cloud_export_path}")
+    except Exception as e:
+        print(f"Error exporting dense cloud: {e}")
+
+    Metashape.app.quit()
+    sys.exit(0)
