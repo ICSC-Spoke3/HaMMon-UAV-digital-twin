@@ -1,6 +1,31 @@
 import Metashape
 import os, sys
+import argparse
 assert Metashape.app.version.startswith("2."), "Update Metashape Pro"
+
+CLASS_MAPPING = {
+    "created": Metashape.PointClass.Created,
+    "unclassified": Metashape.PointClass.Unclassified,
+    "ground": Metashape.PointClass.Ground,
+    "low_vegetation": Metashape.PointClass.LowVegetation,
+    "medium_vegetation": Metashape.PointClass.MediumVegetation,
+    "high_vegetation": Metashape.PointClass.HighVegetation,
+    "building": Metashape.PointClass.Building,
+    "low_point": Metashape.PointClass.LowPoint,
+    "model_key_point": Metashape.PointClass.ModelKeyPoint,
+    "water": Metashape.PointClass.Water,
+    "rail": Metashape.PointClass.Rail,
+    "road_surface": Metashape.PointClass.RoadSurface,
+    "overlap_points": Metashape.PointClass.OverlapPoints,
+    "wire_guard": Metashape.PointClass.WireGuard,
+    "wire_conductor": Metashape.PointClass.WireConductor,
+    "transmission_tower": Metashape.PointClass.TransmissionTower,
+    "wire_connector": Metashape.PointClass.WireConnector,
+    "bridge_deck": Metashape.PointClass.BridgeDeck,
+    "high_noise": Metashape.PointClass.HighNoise,
+    "car": Metashape.PointClass.Car,
+    "manmade": Metashape.PointClass.Manmade
+}
 
 def progress_callback(pct):
     print(f"Progress: {pct:.2f}% complete")
@@ -43,9 +68,6 @@ def check_dense_cloud(doc: Metashape.Document) -> bool:
         return True
     return False
 
-#def check_model(doc: Metashape.Document) -> bool:
-    """Verifica se presente un modello"""
-
 def import_masks(chunk: Metashape.Chunk, masks_directory: str):
     """
     Import image masks into the specified chunk
@@ -70,142 +92,155 @@ def import_masks(chunk: Metashape.Chunk, masks_directory: str):
             else:
                 print(f"Mask not found for {camera.label}") # on {mask_file_path}")
     
-    # Invert masks
+def invert_masks(chunk: Metashape.Chunk):
+    """
+    Invert masks for all cameras in the specified chunk.
+    Args:
+        chunk (Metashape.Chunk): The chunk containing the cameras with masks to invert.
+    """
     for camera in chunk.cameras:
         if camera.mask is not None:
-            camera.mask = camera.mask.invert()
+            try:
+                camera.mask = camera.mask.invert()
+                # print(f"Mask inverted for {camera.label}")
+            except Exception as e:
+                print(f"Error inverting mask for {camera.label}: {e}")
 
 def select_points_by_mask(chunk: Metashape.Chunk, softness: float = 4, only_visible: bool = True):
     """
-    Seleziona i punti della nuvola densa che corrispondono alle maschere delle camere.
-    
+    Selects the dense cloud points that correspond to the camera masks.
+
     Args:
-        chunk (Metashape.Chunk): il chunk contenente la nuvola densa e le camere.
-        softness (float): Morbidezza dei bordi della maschera (default: 4).
-        only_visible (bool): Selezionare solo punti visibili (default: False).
-    
-    La funzione imposta l'attributo 'selected' dei punti corrispondenti alla maschera.
+        chunk (Metashape.Chunk): The chunk containing the dense cloud and the cameras.
+        softness (float): Softness of the mask edges (default: 4).
+        only_visible (bool): Select only visible points (default: True).
+
+    The function sets the 'selected' attribute of the points corresponding to the mask.
     """
     if not chunk.point_cloud:
-        raise RuntimeError("Nuvola densa non presente nel chunk.")
+        raise RuntimeError("No Dense Cloud on chunk.")
     
     cameras = [camera for camera in chunk.cameras if camera.mask is not None]
-    print("totale maskere inserite:", len(cameras))
+    print("#cameras:", len(cameras))
     if not cameras:
         raise RuntimeError("No cameras with masks found.")
 
     try:
         chunk.point_cloud.selectMaskedPoints(cameras, softness=softness, only_visible=only_visible, progress=progress_callback)
-        print("Punti selezionati con successo basandosi sulle maschere.")
-        
-        """
-        if not chunk.shapes:
-            chunk.shapes = Metashape.Shapes()
-            chunk.shapes.crs = chunk.crs
-        shape = chunk.shapes.addShape()
-        shape.type = Metashape.Shape.Polygon
-        shape.vertices = chunk.point_cloud
-        shape.label = "TESTO" """
+        print("Points successfully selected based on masks.")
 
     except Exception as e:
-        print(f"Errore durante la selezione dei punti: {e}")
-
+        print(f"Error while selecting points: {e}")
 
 def classify_selected_points(chunk: Metashape.Chunk, class_type=Metashape.PointClass.Ground):
     """
-    Classifica i punti selezionati nella nuvola densa e stampa il numero di punti classificati.
+    Classifies the selected points in the dense cloud and prints the number of classified points.
 
     Args:
-        chunk (Metashape.Chunk): il chunk contenente la nuvola densa.
-        class_type (Metashape.PointClass): Classe da assegnare ai punti selezionati (default: Created).
+        chunk (Metashape.Chunk): The chunk containing the dense cloud.
+        class_type (Metashape.PointClass): The class to assign to the selected points (default: Created).
     """
     if not chunk.point_cloud:
-        raise RuntimeError("Nuvola densa non presente nel chunk.")
+        raise RuntimeError("Dense cloud not present in chunk.")
 
     try:
-        # Assegna la classe ai punti selezionati
+        # Assign class to selected points
         chunk.point_cloud.assignClassToSelection(target=class_type, progress=progress_callback)
         
     except Exception as e:
-        print(f"Errore durante la classificazione dei punti: {e}")
+        print(f"Error while classifying points: {e}")
 
+# Not a solution - better generate and align model with mask already imported
+#def clean_point_cloud_using_masks(chunk: Metashape.Chunk):
+#    """
+#    Cleans the dense cloud by removing points covered by image masks.
+#    """
+#    if not chunk.point_cloud:
+#        raise RuntimeError("Dense cloud not present in chunk.")
 
-def clean_point_cloud_using_masks(chunk: Metashape.Chunk):
-    """
-    Pulisce la nuvola densa rimuovendo i punti coperti dalle maschere delle immagini.
-    """
-    if not chunk.point_cloud:
-        raise RuntimeError("Nuvola densa non presente nel chunk.")
+#    point_cloud = chunk.point_cloud
 
-    point_cloud = chunk.point_cloud
+#    for i, camera in enumerate(chunk.cameras, start=1):
+#        if camera.mask is None:
+#            continue
 
-    for i, camera in enumerate(chunk.cameras, start=1):
-        if camera.mask is None:
-            continue  # Salta le camere senza maschere
+#        print(f"[{i}/{len(chunk.cameras)}] Processing the mask for the chamber: {camera.label}")
 
-        print(f"[{i}/{len(chunk.cameras)}] Elaborazione della maschera per la camera: {camera.label}")
-        point_cloud.selectMaskedPoints([camera])
+        # Select points covered by the mask of the current camera.
+#        point_cloud.selectMaskedPoints([camera])
 
-        # Conta i punti selezionati
-        selected_count = sum(1 for p in point_cloud.Points if p.selected)
-        print(f"Punti selezionati dopo la maschera: {selected_count}")
+#    try:
+#        point_cloud.removeSelectedPoints()
+#        print(f"Points removed for the room: {camera.label}")
+#    except RuntimeError as e:
+#        print(f"Error while removing for {camera.label}: {e}")
 
-        # Evita di rimuovere se nessun punto è selezionato
-        if selected_count > 0:
-            try:
-                point_cloud.removeSelectedPoints()
-                print(f"Punti rimossi per la camera: {camera.label}")
-            except RuntimeError as e:
-                print(f"Errore durante la rimozione per {camera.label}: {e}")
-        else:
-            print(f"Nessun punto selezionato per la camera: {camera.label}. Salto questa camera.")
+#    print("Dense cloud clearing completed.")
     
-def shape_creation_by_cloud(chunk: Metashape.Chunk, class_point: Metashape.PointClass = Metashape.PointClass.Ground):
-     # Filtra i punti della classe "Ground" (esempio)
-    ground_points = [point.coord for point in chunk.point_cloud 
-                     if point.valid and point.classification == class_point]
-    
-    if ground_points:
-        # Crea uno shape layer se non esiste
-        if not chunk.shapes:
-            chunk.shapes = Metashape.Shapes()
-            chunk.shapes.crs = chunk.crs # usa lo stesso sistema di coordinate del chunk
-        shape = chunk.shapes.addShape()
-        shape.type = Metashape.Shape.Polygon
-        shape.vertices = ground_points
-        shape.label = "Regione Ground"
-        print("Shape generato con successo dai punti classificati!")
-    else:
-        print("Nessun punto classificato come 'Ground' trovato.")
-
-# assignClassToSelection
-# assignClass
-#cropSelectedPoints
-# point_count_by_class
-# renderMask
-
-
-
 if __name__ == "__main__":
-        
-    # Project path to update
-    project_path = "path/to/project.psx"
-    mask_path = "path/to/mask/folder"
-    output_path = "path/to/output/folder"
 
-    # Workflow
+    parser = argparse.ArgumentParser(description="Metashape script for mask import, optional inversion, and dense cloud cleaning.")
+
+    # Obligatory arguments
+    parser.add_argument('--project', required=True, type=str,
+                        help='Path to the Metashape project file (.psx).')
+    parser.add_argument('--output_dir', required=True, type=str,
+                        help='Path to the output directory for cleaned dense cloud export.')
+    parser.add_argument('--masks_dir', required=True, type=str,
+                        help='Path to the directory containing image masks (PNG files).')
+    parser.add_argument('--classification_type', required=True, type=str,
+                        help='Specifies the type of classification to apply (e.g., "ground", "building", "vegetation").')
+    
+    # Optional argument (flag)
+    parser.add_argument('--invert_masks', action='store_true',
+                        help='If set, imported masks will be inverted after import.')
+
+    args = parser.parse_args()
+
+    project_path = args.project
+    output_directory = args.output_dir
+    masks_directory = args.masks_dir
+    invert_imported_masks = args.invert_masks
+    classification_type_str = args.classification_type
+
+    # --- Path Validation ---
+    if not os.path.isfile(project_path):
+        raise FileNotFoundError(f"Project file not found: {project_path}")
+    
+    if not os.path.isdir(output_directory):
+        print(f"Output directory '{output_directory}' does not exist. Creating it...")
+        os.makedirs(output_directory)
+    
+    if not os.path.isdir(masks_directory):
+        raise NotADirectoryError(f"Masks directory not found: {masks_directory}")
+    
+    # Validate classification_type and convert to enum
+    if classification_type_str.lower() not in CLASS_MAPPING:
+        raise ValueError(f"Invalid classification type: '{classification_type_str}'. "
+                         f"Supported types are: {', '.join(CLASS_MAPPING.keys())}")
+    
+    selected_class_type = CLASS_MAPPING[classification_type_str.lower()]
+    print(f"Classification type specified: {classification_type_str}")
+
+    # --- Metashape Operations ---
+    print(f"Loading project: {project_path}")
     doc = load_project(project_path)
     if len(doc.chunks) == 0:    
         raise RuntimeError("No chunk found")
     chunk = doc.chunk
 
+    if not len(doc.chunks):
+        raise RuntimeError("No chunks found in the project.")
+
+    chunk = doc.chunks[0]
+
     # check steps
-    stato = {
+    status = {
         "Camera": check_camera(doc),
         "Dense Cloud": check_dense_cloud(doc)
     }
 
-    missing_steps = [key for key, value in stato.items() if not value]
+    missing_steps = [key for key, value in status.items() if not value]
     if missing_steps:
         print("Error: The project is incomplete.")
         for step in missing_steps:
@@ -213,26 +248,23 @@ if __name__ == "__main__":
         Metashape.app.quit()
         sys.exit(1)
 
-    # Import Mask
-    import_masks(chunk=chunk, masks_directory=mask_path)
+    print("Starting mask import...")
+    import_masks(chunk=chunk, masks_directory=masks_directory)
+    print("Mask import completed.")
     doc.save()
 
-    # Seleziona i punti della nuvola densa che ricadono nelle maschere
-    select_points_by_mask(chunk, softness=4, only_visible=True)
+    if invert_imported_masks:
+        print("Option --invert_masks was set. Inverting masks...")
+        invert_masks(chunk=chunk)
+        print("Mask inversion finished.")
+        doc.save()
+
+    select_points_by_mask(chunk=chunk, softness=4, only_visible=True)
     doc.save()
 
+    classify_selected_points(chunk=chunk, class_type=selected_class_type)
+    doc.save()
 
-    # Classificazione dei punti selezionati
-    #classify_selected_points(chunk, class_type=Metashape.PointClass.Ground)
-    #doc.save()
-
-    # Conta i punti nella classe assegnata
-    #classified_count = chunk.point_cloud.point_count_by_class
-    #print(f"Punti classificati come: {classified_count} / {chunk.point_cloud.point_count}")
-
-
-
-
-    print()
-    Metashape.app.quit()
-    sys.exit(0)
+    # Count the points in the assigned class
+    classified_count = chunk.point_cloud.point_count_by_class
+    print(f"Points classified as: {classified_count} / {chunk.point_cloud.point_count}")
