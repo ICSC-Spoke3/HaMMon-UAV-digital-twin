@@ -248,9 +248,7 @@ if __name__ == "__main__":
         Metashape.app.quit()
         sys.exit(1)
 
-    print("Starting mask import...")
     import_masks(chunk=chunk, masks_directory=masks_directory)
-    print("Mask import completed.")
     doc.save()
 
     if invert_imported_masks:
