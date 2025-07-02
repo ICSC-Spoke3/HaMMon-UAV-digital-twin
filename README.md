@@ -33,21 +33,18 @@ pip install -r requirements.txt
 HaMMon-UAV-digital-twin/
 ├── assets/        
 │   └── Metashape-2.2.1....whl # Metashape Python module 2.2.1 (Linux, Mac, Win)
-├── config.json   # E.g. configuration file to execute most of the steps
-├── config.yaml   # E.g. configuration files to export data
 ├── demo/         # Folder containing demo code
 │   └── demo_process.py     # Main demo code running UAV-digital-twin v1.0 (full workflow)
-
-export_worker_info.py: Connects to the network server and exports detailed information about each connected worker into individual JSON files.
-
-export_monitor_info.py: Processes the exported worker JSON files, extracting time, cpu_usage, and memory_usage data, and converts them into CSV format for performance analysis and plotting.
 ├── docker/        # Folder containing docker image
+├── networkTasks/            # Scripts for parallel and distributed processing
+│   ├── network_script.py       # Main distributed workflow script for running UAV-digital-twin v2
+|   ├── export_worker_info.py   # Script to export network worker information
+|   └── export_monitor_info.py  # Script to process worker info for monitoring
 ├── reports/       # Folder cointaing scripts for monitoring data analysis
 │   ├── report.ipynb    # Jupyter notebooks for running data analysis
 │   ├── report.py       # Python code for running data analysis
 │   └── sample_data/
 │       └── system.csv  # File of data sample   
-├── step_workflow.py    # Main code for running UAV-digital-twin v1.1 (single task)
 ├── src/          # Folder code for UAV-digital-twin (UML in the doc)
 │   ├── geographic_projection.py
 │   ├── mesh_processor.py
@@ -58,10 +55,13 @@ export_monitor_info.py: Processes the exported worker JSON files, extracting tim
 │   ├── settings.py
 │   ├── singleton_meta.py
 │   └── system_monitor.py
-├── requirements.txt    # Text file that lists all package dependencies required to run the project correctly
 ├── test/         # Folder containing unit tests code
+├── config.json   # E.g. configuration file to execute most of the steps
+├── config.yaml   # E.g. configuration files to export data
 ├── mask_classification_workflow.py # Script to point cloud classification
-└── rename_mask.py # Script renames label studio masks
+├── rename_mask.py  # Script renames label studio masks
+├── requirements.txt    # Text file that lists all package dependencies required to run the project correctly
+└── step_workflow.py    # Main code for running UAV-digital-twin v1.1 (single task)
 ```
 
 ## Implementations
