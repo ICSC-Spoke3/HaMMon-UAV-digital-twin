@@ -38,8 +38,8 @@ HaMMon-UAV-digital-twin/
 ├── docker/        # Folder containing docker image
 ├── networkTasks/            # Scripts for parallel and distributed processing
 │   ├── network_script.py       # Main distributed workflow script for running UAV-digital-twin v2
-|   ├── export_worker_info.py   # Script to export network worker information
-|   └── export_monitor_info.py  # Script to process worker info for monitoring
+│   ├── export_worker_info.py   # Script to export network worker information
+│   └── export_monitor_info.py  # Script to process worker info for monitoring
 ├── reports/       # Folder cointaing scripts for monitoring data analysis
 │   ├── report.ipynb    # Jupyter notebooks for running data analysis
 │   ├── report.py       # Python code for running data analysis
