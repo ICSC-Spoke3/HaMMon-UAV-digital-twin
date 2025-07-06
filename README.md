@@ -143,6 +143,30 @@ python point_cloud_classifier.py --project <path_to_project.psx> --output_dir <p
 
 - --invert_masks: (Optional flag) If set, imported masks will be inverted, allowing selection of areas outside the masked regions.
 
+## Citations
+
+If you find this work useful, please consider citing the following reference:
+
+* **Text/APA Format:**
+
+    M. Imbrosciano et al., "The Cloud-HPC infrastructure for Hazard Mapping and vulnerability Monitoring (HaMMon)," 2025 33rd Euromicro International Conference on Parallel, Distributed, and Network-Based Processing (PDP), Turin, Italy, 2025, pp. 309-316, doi: 10.1109/PDP66500.2025.00050. keywords: {Quantum computing;Clouds;High performance computing;Hazards;Artificial intelligence;Forecasting;Photogrammetry;Monitoring;Testing;Drones;Cloud;HPC;Kubernetes;ASfM;Artificial Intelligence;Post-Event Analysis;Hazard Management;Drone;Photogrammetry},
+
+
+* **BibTeX Format:**
+
+    ```bibtex
+    @INPROCEEDINGS{10974787,
+    author={Imbrosciano, Mauro and Sciacca, Eva and Vitello, Fabio and Pelonero, Leonardo and Franchina, Francesco and Becciani, Ugo and Colonnelli, Iacopo and Medić, Doriana},
+    booktitle={2025 33rd Euromicro International Conference on Parallel, Distributed, and Network-Based Processing (PDP)}, 
+    title={The Cloud-HPC infrastructure for Hazard Mapping and vulnerability Monitoring (HaMMon)}, 
+    year={2025},
+    volume={},
+    number={},
+    pages={309-316},
+    keywords={Quantum computing;Clouds;High performance computing;Hazards;Artificial intelligence;Forecasting;Photogrammetry;Monitoring;Testing;Drones;Cloud;HPC;Kubernetes;ASfM;Artificial Intelligence;Post-Event Analysis;Hazard Management;Drone;Photogrammetry},
+    doi={10.1109/PDP66500.2025.00050}}
+    ```
+
 ## License
 
 The scripts in this repository are distributed under the terms of the MIT License. See the [LICENSE](LICENSE) file for details.
