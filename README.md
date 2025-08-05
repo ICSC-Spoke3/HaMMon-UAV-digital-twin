@@ -1,6 +1,5 @@
 [![DOI](https://www.openaccessrepository.it/badge/DOI/10.15161/oar.it/eb6em-v6t60.svg)](https://doi.org/10.15161/oar.it/eb6em-v6t60)
 
-
 # UAV Photogrammetry Digital Twin Creation Scripts
 
 This repository contains a collection of Python scripts designed for generating digital twins from UAV photogrammetry data. Building upon examples from the [Agisoft Metashape](https://www.agisoft.com/) Scripts [repository](https://github.com/agisoft-llc/metashape-scripts), which is licensed under the MIT License.
