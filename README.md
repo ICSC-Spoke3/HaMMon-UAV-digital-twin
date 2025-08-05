@@ -1,4 +1,5 @@
-[![DOI](https://www.openaccessrepository.it/badge/DOI/10.15161/oar.it/eb6em-v6t60.png)](https://www.openaccessrepository.it/records/eb6em-v6t60)
+<a align="center" href="https://doi.org/10.15161/oar.it/eb6em-v6t60"><img src="https://www.openaccessrepository.it/badge/DOI/10.15161/oar.it/eb6em-v6t60.svg"></a>
+
 
 # UAV Photogrammetry Digital Twin Creation Scripts
 
