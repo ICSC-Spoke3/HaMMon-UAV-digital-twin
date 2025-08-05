@@ -1,4 +1,4 @@
-<a align="center" href="https://doi.org/10.15161/oar.it/eb6em-v6t60"><img src="https://www.openaccessrepository.it/badge/DOI/10.15161/oar.it/eb6em-v6t60.svg"></a>
+<a align="center" href="https://doi.org/10.15161/oar.it/eb6em-v6t60"><img src="https://www.openaccessrepository.it/badge/DOI/10.15161/oar.it/eb6em-v6t60.png"></a>
 
 
 # UAV Photogrammetry Digital Twin Creation Scripts
