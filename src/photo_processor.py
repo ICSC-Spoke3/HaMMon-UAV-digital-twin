@@ -1,5 +1,6 @@
 # photo_processor.py
 import threading
+import Metashape
 from src.project import Project
 
 """
@@ -27,6 +28,34 @@ class PhotoProcessor:
             self.project.monitoring.stop()
         self.project.save_project(version="addPhotos")
         print("-- DEBUG: "+ str(len(self.project.chunk.cameras)) + " images loaded")
+
+    """
+    Add mask to camera photos in the chunk.
+    """
+    def addMasks(self, progress_printer: str, mask_path: str) -> None:
+        if self.project.monitoring is not None:
+            thread = threading.Thread(target=self.project.monitoring.start, args=('addMasks',))
+            thread.start()
+
+        # Il path usa {filename} come wildcard per abbinare nome foto a nome maschera.
+        try:
+            self.project.chunk.generateMasks(
+                path=mask_path,
+                masking_mode=Metashape.MaskingMode.MaskingModeFile,
+                mask_operation=Metashape.MaskOperation.MaskOperationReplacement, # replace any already mask in cameras
+                tolerance=10,
+                replace_asset=True,
+                progress=progress_printer
+            )
+            print("-- DEBUG: Masks loaded")
+        except RuntimeError as e:
+            print(f"-- ERROR: Masks import: {e}")
+            if self.project.monitoring is not None:
+                self.project.monitoring.stop()
+            return
+        if self.project.monitoring is not None:
+            self.project.monitoring.stop()
+        self.project.save_project(version="addMasks")
     
     """
     Estimate the image quality. Cameras with a quality less than 0.5 are considered blurred and it’s recommended to disable them.
@@ -64,6 +93,7 @@ class PhotoProcessor:
             'reference_preselection': False,
             'filter_stationary_points': True,
             'keep_keypoints': True,
+            'mask_tiepoints': True,
             'guided_matching': False,
             'subdivide_task': True
         }

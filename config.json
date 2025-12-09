@@ -3,10 +3,13 @@
         "settings": {
             "cpu_enable": false,
             "gpu_mask": "11",
-            "log": "../storage/palazzo_fantini/progetto_palazzo_fantini/"
+            "log": "path\\to\\project\\folder\\log"
         },
         "project":{
-            "path": "../storage/palazzo_fantini/progetto_palazzo_fantini"
+            "path": "path\\to\\project"
+        },
+        "path_masks":{
+            "path": "path\\to\\project\\{filename}_mask.png"
         },
         "PhotoProcessor":{
             "matchPhotos":{

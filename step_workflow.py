@@ -16,7 +16,7 @@ output_save_folder = "."
 image_files = []
 flag_monitoring = False
 
-valid_steps = ['settings', 'project', 'PhotoProcessor', 'PointCloudProcessor', "3DModelProcessor", "OrthoAndDEMCreation", "exportResults"]
+valid_steps = ['settings', 'project', 'path_masks', 'PhotoProcessor', 'PointCloudProcessor', "3DModelProcessor", "OrthoAndDEMCreation", "exportResults"]
 
 # return if any file.ext in path
 def is_file_path(path: str) -> bool:
@@ -70,11 +70,23 @@ def execute_steps(steps_params_to_run: dict) -> None:
 
         print(" == == == Loading/NewProject == == ==")
     else:
-        raise Exception("Non è stato specificato un save path o load project")
+        raise Exception("Not set a save path or load project")
 
     if 'PhotoProcessor' in steps_params_to_run:
         photoprocess = PhotoProcessor(photos_path=image_files)
         photoprocess.addPhotos(progress_printer=ProgressPrinter("addPhotos"))
+
+        # check masks on config file
+        if 'path_masks' in steps_params_to_run:
+            if not isinstance(steps_params_to_run['path_masks']['path'], str) or not os.path.normpath(steps_params_to_run['path_masks']['path']):
+                raise ValueError("Error: specify a suitable path to path_masks file")
+            
+            # set absolute mask path
+            mask_abs_path = os.path.abspath(steps_params_to_run['path_masks']['path'])
+            print(mask_abs_path)
+            photoprocess.addMasks(progress_printer=ProgressPrinter("addMasks"), mask_path=mask_abs_path)
+            print("dopo il mask")
+            
         photoprocess.filterImageQuality(progress_printer=ProgressPrinter("filterPhotos"))
         if 'matchPhotos' in steps_params_to_run['PhotoProcessor']:
             photoprocess.matchPhotos(progress_printer=ProgressPrinter("matchPhotos"), **steps_params_to_run['PhotoProcessor']['matchPhotos'])

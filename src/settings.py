@@ -70,7 +70,7 @@ class Settings:
             gpu_mask = 2**num_gpus - 1
 
         Metashape.app.gpu_mask = gpu_mask
-        print("-- maschera utilizzata:", Metashape.app.gpu_mask)
+        print("-- GPU mask used:", Metashape.app.gpu_mask)
 
     """
     enable log file
